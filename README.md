@@ -1,4 +1,4 @@
-# Monomi
+# jinjarope
 
 [![PyPI License](https://img.shields.io/pypi/l/jinjarope.svg)](https://pypi.org/project/jinjarope/)
 [![Package status](https://img.shields.io/pypi/status/jinjarope.svg)](https://pypi.org/project/jinjarope/)
@@ -38,4 +38,63 @@ The latest released version is available at the [Python package index](https://p
 
 ``` py
 pip install jinjarope
+```
+
+
+## Quick guide
+
+Jinjarope contains a range of Jinja2 loaders (including fsspec-based ones) as well as a `jinja2.Environment` subclass with added functionality.
+
+For debugging purposes, an FsSpec filesystem implementation for jinja2 loaders is also included.
+
+
+
+### NestedDictLoader
+
+``` toml
+[example]
+template = "{{ something }}"
+```
+``` py
+content = tomllib.load(toml_file)
+loader = NestedDictLoader(content)
+env = Environment(loader=loader)
+env.get_template("example/template")
+```
+
+
+### FsSpecFileSystemLoader
+
+This loader can be used like a FileSystemLoader, but also works on any fsspec-supported
+remote path.
+Using the `dir::` prefix, any folder can be set as root.
+
+``` py
+# protocol path
+loader = FsSpecFileSystemLoader("dir::github://phil65:jinjarope@main/tests/testresources")
+env = Environment(loader=loader)
+env.get_template("testfile.jinja").render()
+
+# protocol and storage options
+loader = FsSpecFileSystemLoader("github", org="phil65", repo="jinjarope")
+env = Environment(loader=loader)
+env.get_template("README.md").render()
+
+# fsspec filesystem
+fs = fsspec.filesystem("github", org="phil65", repo="jinjarope")
+loader = FsSpecFileSystemLoader(fs)
+env = Environment(loader=loader)
+env.get_template("README.md").render()
+```
+
+
+### FsSpecProtocolPathLoader
+
+This loader accepts any FsSpec protocol path to be used directly.
+A complete protocol URL to the template file is required.
+
+``` py
+loader = FsSpecProtocolPathLoader()
+env = Environment(loader=loader)
+env.get_template("github://phil65:jinjarope@main/tests/testresources/testfile.jinja").render()
 ```

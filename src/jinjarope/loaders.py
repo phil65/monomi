@@ -255,11 +255,12 @@ class NestedDictLoader(LoaderMixin, jinja2.BaseLoader):
         [example]
         template = "{{ something }}"
         ```
-
+        ``` py
         content = tomllib.load(toml_file)
         loader = NestedDictLoader(content)
         env = Environment(loader=loader)
         env.get_template("example/template")
+        ```
     """
 
     ID = "nested_dict"
