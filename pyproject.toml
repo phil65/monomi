@@ -45,12 +45,12 @@ test-cov-html = "pytest --cov-report=html"
 lint = [
   "hatch run ruff --fix .",
   "hatch run ruff format .",
-  "hatch run mypy monomi/",
+  "hatch run mypy src/monomi/",
 ]
 lint-check = [
   "hatch run ruff .",
   "hatch run ruff format --check .",
-  "hatch run mypy monomi/",
+  "hatch run mypy src/monomi/",
 ]
 
 [build-system]
