@@ -27,7 +27,7 @@ dependencies = [
     "mkdocs-material",
     "mkdocstrings[python]",
     "mkdocs >=1.5",
-    "mknodes",
+    "mkdocs-mknodes",
 
     # used for formatting signature
     "black",
