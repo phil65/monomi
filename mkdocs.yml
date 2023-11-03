@@ -51,7 +51,7 @@ theme:
 plugins:
 - search
 - mknodes:
-    build_fn: mknodes.MkDefaultWebsite.for_project
+    build_fn: mknodes:MkDefaultWebsite.for_project
     global_resources: false
 - mkdocstrings:
     default_handler: python
