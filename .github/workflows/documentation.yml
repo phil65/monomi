@@ -40,7 +40,7 @@ jobs:
         pip install hatch
         hatch env create
     - name: Build
-      run: hatch run docs-build-test
+      run: hatch run mknodes build
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v1
       with:
