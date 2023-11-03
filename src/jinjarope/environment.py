@@ -9,7 +9,7 @@ from typing import Any
 
 import jinja2
 
-from monomi import envglobals, loaders, undefined as undefined_
+from jinjarope import envglobals, loaders, undefined as undefined_
 
 
 logger = logging.getLogger(__name__)

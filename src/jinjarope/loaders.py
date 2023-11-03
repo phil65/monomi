@@ -13,7 +13,7 @@ import jinja2
 
 from mknodes.utils import helpers
 
-from monomi import utils
+from jinjarope import utils
 
 
 class LoaderMixin:

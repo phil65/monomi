@@ -20,7 +20,7 @@ import time
 import tomllib
 from typing import Any
 
-from monomi import utils
+from jinjarope import utils
 
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ logger = logging.getLogger(__name__)
 version_info = dict(
     python_version=sys.version.split("(")[0].strip(),
     jinja_version=metadata.version("jinja2"),
-    monomi_version=metadata.version("monomi"),
+    jinjarope_version=metadata.version("jinjarope"),
     system=platform.system(),
     architecture=platform.architecture(),
     python_implementation=platform.python_implementation(),
