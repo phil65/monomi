@@ -6,7 +6,7 @@ allow-direct-references = true
 [tool.hatch.version]
 source = "regex_commit"
 commit_extra_args = ["-e"]
-path = "monomi/__init__.py"
+path = "src/monomi/__init__.py"
 
 [tool.hatch.dirs.env]
 virtual = ".hatch"
