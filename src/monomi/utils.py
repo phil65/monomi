@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import functools
+
 from typing import Any
 
 
@@ -18,3 +20,11 @@ def get_repr(_obj: Any, *args: Any, **kwargs: Any) -> str:
         kw_parts.append(f"{k}={v!r}")
     sig = ", ".join(parts + kw_parts)
     return f"{classname}({sig})"
+
+
+@functools.cache
+def fsspec_get(path: str) -> str:
+    import fsspec
+
+    with fsspec.open(path) as file:
+        return file.read().decode()

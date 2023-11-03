@@ -26,6 +26,9 @@ dependencies = [
     "pymdown-extensions",
     "mkdocs-material",
     "mkdocstrings[python]",
+    "mkdocs >=1.5",
+    "mknodes",
+
     # used for formatting signature
     "black",
     "pygments",
@@ -74,43 +77,19 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Software Development :: User Interfaces",
     "Topic :: Internet",
-    "Topic :: Text Processing :: Markup :: Markdown",
 ]
-keywords = [
-    "framework",
-    "docs",
-    "docstrings",
-    "documentation",
-    "internet",
-    "markdown",
-]
+keywords = ["filesystem", "fsspec", "internet", "templates", "jinja2"]
 
 requires-python = ">=3.11"
 dependencies = [
-    # MkDocs
-    "mkdocs >=1.5",
-    "mknodes",
-
-    # CLI
-    "rich",
-    "typer",
-
-    # Tools
     "jinja2",
-    "universal_pathlib",
+    "fsspec",
 ]
 license = "MIT"
-
-[project.scripts]
-mknodes = "monomi.cli:cli"
-
-[project.entry-points."mkdocs.plugins"]
-mknodes = "monomi.plugin:MkNodesPlugin"
 
 [project.urls]
 Documentation = "https://phil65.github.io/monomi/"
 Source = "https://github.com/phil65/monomi"
-Gitter = "https://app.gitter.im/#/room/#mknodes:gitter.im"
 
 [tool.pytest.ini_options]
 minversion = "7.0"

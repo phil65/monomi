@@ -1,7 +1,7 @@
-site_name: MkNodes (MkDocs plugin)
-site_description: "Don´t write docs. Code them."
+site_name: Monomi
+site_description: "Jinja2 helpers & loaders."
 repo_url: "https://github.com/phil65/monomi/"
-site_url: https://phil65.github.io/mkdocs-mknodes/
+site_url: https://phil65.github.io/monomi/
 site_author: Philipp Temminghoff
 copyright: Copyright &copy; 2023 Philipp Temminghoff
 
@@ -51,8 +51,7 @@ theme:
 plugins:
 - search
 - mknodes:
-    build_fn: mkdocs_mknodes.manual.root:build
-    show_page_info: true
+    build_fn: mknodes.MkDefaultWebsite.for_project
     global_resources: false
 - mkdocstrings:
     default_handler: python
@@ -60,8 +59,6 @@ plugins:
       python:
         import:
         - url: https://docs.python.org/3/objects.inv
-          domains: [std, py]
-        - url: https://phil65.github.io/mknodes/objects.inv
           domains: [std, py]
         options:
           # https://mkdocstrings.github.io/python/usage/
@@ -82,15 +79,3 @@ markdown_extensions:
 - pymdownx.emoji
 - toc:
     permalink: true
-
-# extra:
-#   social:
-  # - icon: fontawesome/brands/github
-  #   link: https://github.com/phil65
-  # - icon: fontawesome/brands/gitter
-  #   link: https://matrix.to/#/#mknodes:gitter.im
-  # - icon: fontawesome/brands/python
-  #   link: https://pypi.org/project/mknodes/
-  # generator: false disable "made with Material"
-  # version:  # multiple doc versions
-  #   provider: mike

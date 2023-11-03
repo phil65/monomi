@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping
-import functools
 import os
 import pathlib
 import types
@@ -13,15 +12,8 @@ import fsspec.core
 import jinja2
 
 from mknodes.utils import helpers
+
 from monomi import utils
-
-
-@functools.cache
-def fsspec_get(path: str) -> str:
-    import fsspec
-
-    with fsspec.open(path) as file:
-        return file.read().decode()
 
 
 class LoaderMixin:
@@ -158,7 +150,7 @@ class FsSpecProtocolPathLoader(LoaderMixin, jinja2.BaseLoader):
         environment: jinja2.Environment | None,
         template: str,
     ) -> tuple[str, str, Callable[[], bool] | None]:
-        src = fsspec_get(template)
+        src = utils.fsspec_get(template)
         path = pathlib.Path(template).as_posix()
         return src, path, lambda: True
 

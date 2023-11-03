@@ -9,8 +9,7 @@ from typing import Any
 
 import jinja2
 
-from mknodes.utils import jinjahelpers, pathhelpers
-from monomi import loaders, undefined as undefined_
+from monomi import envglobals, loaders, undefined as undefined_
 
 
 logger = logging.getLogger(__name__)
@@ -65,8 +64,8 @@ class Environment(jinja2.Environment):
         self._extra_files: set[str] = set()
         self._extra_paths: set[str] = set()
         super().__init__(**kwargs)
-        self.filters.update(jinjahelpers.get_filters())
-        self.globals.update(jinjahelpers.get_globals())
+        self.filters.update(envglobals.ENV_FILTERS)
+        self.globals.update(envglobals.ENV_GLOBALS)
         self.filters["render_template"] = self.render_template
         self.filters["render_string"] = self.render_string
         self.filters["render_file"] = self.render_file
@@ -101,7 +100,7 @@ class Environment(jinja2.Environment):
         if file in self._extra_files:
             return
         self._extra_files.add(file)
-        content = pathhelpers.load_file_cached(file)
+        content = envglobals.load_file_cached(file)
         new_loader = loaders.DictLoader({file: content})
         self._add_loader(new_loader)
 
@@ -161,7 +160,7 @@ class Environment(jinja2.Environment):
             file: Template file to load
             variables: Extra variables for the environment
         """
-        content = pathhelpers.load_file_cached(str(file))
+        content = envglobals.load_file_cached(str(file))
         return self.render_string(content, variables)
 
     def render_template(

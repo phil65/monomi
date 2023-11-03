@@ -1,16 +1,18 @@
 from __future__ import annotations
 
 import ast
+
+from collections.abc import Sequence
 import contextlib
 import datetime
 import functools
 import importlib
-
 from importlib import metadata
 import io
 import json
 import logging
 import os
+import pathlib
 import platform
 import pprint
 import sys
@@ -18,7 +20,7 @@ import time
 import tomllib
 from typing import Any
 
-from mknodes.utils import helpers, pathhelpers
+from monomi import utils
 
 
 logger = logging.getLogger(__name__)
@@ -27,11 +29,39 @@ logger = logging.getLogger(__name__)
 version_info = dict(
     python_version=sys.version.split("(")[0].strip(),
     jinja_version=metadata.version("jinja2"),
-    mknodes_version=metadata.version("mknodes"),
+    monomi_version=metadata.version("monomi"),
     system=platform.system(),
     architecture=platform.architecture(),
     python_implementation=platform.python_implementation(),
 )
+
+
+@functools.cache
+def load_file_cached(path: str | os.PathLike) -> str:
+    if "://" in str(path):
+        return utils.fsspec_get(str(path))
+    return pathlib.Path(path).read_text(encoding="utf-8")
+
+
+def get_output_from_call(
+    call: str | Sequence[str],
+    cwd: str | os.PathLike | None,
+) -> str | None:
+    import subprocess
+
+    if not isinstance(call, str):
+        call = " ".join(call)
+    try:
+        return subprocess.run(
+            call,
+            stdout=subprocess.PIPE,
+            text=True,
+            shell=True,
+            cwd=cwd,
+        ).stdout
+    except subprocess.CalledProcessError:
+        logger.warning("Executing %s failed", call)
+        return None
 
 
 def format_js_map(dct: dict, indent: int = 4) -> str:
@@ -116,10 +146,10 @@ ENV_FILTERS = {
     "dump_json": json.dumps,
     "load_json": json.loads,
     "load_toml": tomllib.loads,
-    "load_file": pathhelpers.load_file_cached,
+    "load_file": load_file_cached,
     "path_join": os.path.join,
     "format_js_map": format_js_map,
-    "check_output": helpers.get_output_from_call,
+    "check_output": get_output_from_call,
     "getenv": os.getenv,
 }
 
