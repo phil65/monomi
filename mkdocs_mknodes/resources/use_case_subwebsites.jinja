@@ -1,0 +1,14 @@
+Since websites are also nothing more than regular MkNavs, they can also get nested.
+As an example, we will embed a website for **MkDocStrings** into the site nav at the left.
+
+The following code is used to build this section:
+
+``` py
+@nav.route.nav("Sub-Websites")
+def sub_websites(nav: mk.MkNav):
+    page = nav.add_page(is_index=True)
+    page += mk.MkTemplate("use_case_subwebsites.jinja")  # what you are reading now
+    proj = mk.Project.for_path("https://github.com/mkdocstrings/mkdocstrings.git")
+    website_nav = mk.MkDefaultWebsite(section="MkDocStrings", context=proj.context)
+    nav += website_nav
+```

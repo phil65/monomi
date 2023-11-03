@@ -1,0 +1,19 @@
+Using a custom syntax, it is also possible to directly use MkNodes as pages.
+
+
+The following config...
+
+{{ config | MkCode(language="yaml") }}
+
+Combined with this CLI call...
+
+
+{{"mknodes build" | MkCode(language="terminal")}}
+
+
+Will create this website:
+
+
+{{ "https://phil65.github.io/mkdocs-mknodes/mkdocstrings" | MkLink(as_button=True, icon="web") }}
+
+

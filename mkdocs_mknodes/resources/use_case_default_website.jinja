@@ -1,0 +1,21 @@
+**MkNodes** offers a node representing a complete basic default website template called [MkDefaultWebsite][mknodes.MkDefaultWebsite].
+By passing keyword arguments defined in the config, it is also possible to inject some
+static pages. That way it is possible to construct a basic website for small projects without
+much effort. The injected pages can even be remote. As an example, we will construct a small
+website for MkDocs.
+
+The following config...
+
+{{ config | MkCode(language="yaml") }}
+
+Combined with this CLI call...
+
+{{"mknodes build" | MkCode(language="terminal")}}
+
+
+Will create this website:
+
+
+{{ "https://phil65.github.io/mkdocs-mknodes/mkdocs" | MkLink(as_button=True, icon="web") }}
+
+

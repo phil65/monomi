@@ -1,0 +1,35 @@
+
+```mermaid
+flowchart
+  style 437499 fill:#0000AA
+  style 553415 fill:#0000AA
+  style 618757 fill:#660000
+  style 683622 fill:#660000
+  style 332511 fill:#9f00df
+  style 893065 fill:#9f00df
+  714252["MkNav"] --- 463152["MkPage"]
+  553415[("Project X")] --- 714252
+  618757[("Project Y")] --- 471096["Root MkNav"]
+  471096 --- 714252
+  332511[("Project Z")] --- 463152
+  subgraph 683622["Context Y"]
+    310485["MkNav"] --- 831529["MkPage"]
+    831529 --- 412394["MkNode"]
+    831529 --- 591080["..."]
+    167774["MkPage"] --- 512291["MkNode"]
+    167774 --- 545444["..."]
+    471096 --- 310485
+    471096 --- 167774
+  end
+  subgraph 437499["Context X"]
+    103229["MkPage"] --- 601764["MkNode"]
+    103229 --- 769363["..."]
+    714252 --- 103229
+  end
+  subgraph 893065["Context Z"]
+    463152 --- 920059["MkNode"]
+    463152 --- 503161["..."]
+    920059 --- 645054["MkNode"]
+    920059 --- 549467["..."]
+  end
+```

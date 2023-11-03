@@ -1,0 +1,35 @@
+site_name: Not set
+repo_url: "https://github.com/phil65/mknodes/"
+site_url: https://phil65.github.io/mknodes/
+docs_dir: docs
+site_dir: site
+theme:
+  name: material
+  custom_dir: overrides
+  palette:
+  - media: "(prefers-color-scheme: light)"
+    scheme: default
+    primary: custom
+    toggle:
+      icon: material/brightness-7
+      name: Switch to dark mode
+  - media: "(prefers-color-scheme: dark)"
+    scheme: slate
+    primary: custom
+    toggle:
+      icon: material/brightness-4
+      name: Switch to light mode
+  features:
+  - announce.dismiss
+  - navigation.tabs # make top level tabs
+  - navigation.indexes # documents can be directly attached to sections (overview pages)
+  - navigation.footer # next/previous page buttons in footer
+  - navigation.top  # adds back-to-top button
+  - toc.follow  # makes toc follow scrolling
+
+plugins:
+- search
+- mknodes:
+    build_fn: mknodes:MkDefaultWebsite.for_project
+    clone_depth: 100
+- mkdocstrings
