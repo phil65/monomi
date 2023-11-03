@@ -10,6 +10,12 @@ from .loaders import (
     PackageLoader,
     DictLoader,
 )
+from .loaderregistry import LoaderRegistry
+
+
+registry = LoaderRegistry()
+
+get_loader = registry.get_loader
 
 __all__ = [
     "Environment",
@@ -19,4 +25,5 @@ __all__ = [
     "ChoiceLoader",
     "PackageLoader",
     "DictLoader",
+    "get_loader",
 ]

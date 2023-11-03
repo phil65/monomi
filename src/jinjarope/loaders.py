@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping
-import os
 import pathlib
 import types
 
@@ -10,8 +9,6 @@ from typing import Any
 import fsspec
 import fsspec.core
 import jinja2
-
-from mknodes.utils import helpers
 
 from jinjarope import utils
 
@@ -293,112 +290,6 @@ class NestedDictLoader(LoaderMixin, jinja2.BaseLoader):
         return data, None, lambda: True  # type: ignore[return-value]
 
 
-class LoaderRegistry:
-    """Registry which caches and builds jinja loaders."""
-
-    def __init__(self) -> None:
-        self.fs_loaders: dict[str, FileSystemLoader] = {}
-        self.fsspec_loaders: dict[str, FsSpecFileSystemLoader] = {}
-        self.package_loaders: dict[str, PackageLoader] = {}
-
-    def by_path(
-        self,
-        path: str | os.PathLike,
-    ) -> FileSystemLoader | FsSpecFileSystemLoader:
-        """Convenience method to get a suiting loader for given path.
-
-        Return a FsSpec loader for protocol-like paths or else a FileSystem loader.
-
-        Arguments:
-            path: The path to get a loader for
-        """
-        if "://" in str(path):
-            return self.get_fsspec_loader(str(path))
-        return self.get_filesystem_loader(path)
-
-    def get_fsspec_loader(self, path: str) -> FsSpecFileSystemLoader:
-        """Return a FsSpec loader for given path from registry.
-
-        If the loader does not exist yet, create and cache it.
-
-        Arguments:
-            path: The path to get a loader for
-        """
-        if path in self.fsspec_loaders:
-            return self.fsspec_loaders[path]
-        loader = FsSpecFileSystemLoader(path)
-        self.fsspec_loaders[path] = loader
-        return loader
-
-    def get_filesystem_loader(self, path: str | os.PathLike) -> FileSystemLoader:
-        """Return a FileSystem loader for given path from registry.
-
-        If the loader does not exist yet, create and cache it.
-
-        Arguments:
-            path: The path to get a loader for
-        """
-        path = pathlib.Path(path).as_posix()
-        if path in self.fs_loaders:
-            return self.fs_loaders[path]
-        loader = FileSystemLoader(path)
-        self.fs_loaders[path] = loader
-        return loader
-
-    def get_package_loader(self, package: str) -> PackageLoader:
-        """Return a Package loader for given (dotted) package path from registry.
-
-        If the loader does not exist yet, create and cache it.
-
-        Arguments:
-            package: The package to get a loader for
-        """
-        if package in self.package_loaders:
-            return self.package_loaders[package]
-        loader = PackageLoader(package)
-        self.package_loaders[package] = loader
-        return loader
-
-    def get_loader(
-        self,
-        dir_paths: list[str] | None = None,
-        module_paths: list[str] | None = None,
-        static: dict[str, str] | None = None,
-        fsspec_paths: bool = True,
-    ) -> ChoiceLoader:
-        """Construct a ChoiceLoader based on given keyword arguments and return it.
-
-        Loader is constructed from cached sub-loaders if existing, otherwise they are
-        created (and cached).
-
-        Arguments:
-            dir_paths: Directory paths (either FsSpec-protocol URLs to a folder or
-                       filesystem paths)
-            module_paths: (dotted) package paths
-            static: A dictionary containing a path-> template mapping
-            fsspec_paths: Whether a loader for FsSpec protcol paths should be added
-        """
-        m_paths = helpers.reduce_list(module_paths or [])
-        loader = ChoiceLoader([self.get_package_loader(p) for p in m_paths])
-        for file in helpers.reduce_list(dir_paths or []):
-            if "://" in file:
-                loader |= self.get_fsspec_loader(file)
-            else:
-                loader |= self.get_filesystem_loader(file)
-        if static:
-            loader |= DictLoader(static)
-        if fsspec_paths:
-            loader |= FsSpecProtocolPathLoader()
-        return loader
-
-
-registry = LoaderRegistry()
-
-docs_loader = registry.get_filesystem_loader("docs/")
-fsspec_protocol_loader = FsSpecProtocolPathLoader()
-resource_loader = ChoiceLoader([docs_loader, fsspec_protocol_loader])
-
-
 def from_json(dct_or_list) -> jinja2.BaseLoader | None:
     if not dct_or_list:
         return None
@@ -412,6 +303,8 @@ def from_json(dct_or_list) -> jinja2.BaseLoader | None:
                 loaders.append(FsSpecFileSystemLoader(item))
             case str():
                 loaders.append(FileSystemLoader(item))
+            case types.ModuleType():
+                loaders.append(PackageLoader(item))
             case dict():
                 for kls in jinja2.BaseLoader.__subclasses__():
                     if not issubclass(kls, LoaderMixin):
@@ -439,10 +332,10 @@ LOADERS = dict(
 
 
 if __name__ == "__main__":
-    from mknodes.jinja import environment
+    from jinjarope import Environment
 
     loader = FsSpecFileSystemLoader("dir::github://phil65:mknodes@main/docs")
-    env = environment.Environment()
+    env = Environment()
     env.loader = loader
     template = env.get_template("icons.jinja")
     print(template.render())

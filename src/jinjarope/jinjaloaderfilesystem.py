@@ -70,11 +70,9 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
 
 
 if __name__ == "__main__":
-    from mknodes.jinja import loaders as loaders_
+    from jinjarope import loaders
 
     fsspec.register_implementation("jinja", JinjaLoaderFileSystem)
-    env = jinja2.Environment(loader=loaders_.resource_loader)
+    env = jinja2.Environment(loader=loaders.PackageLoader("jinjarope"))
     fs = fsspec.filesystem("jinja", env=env)
     print(fs.ls(""))
-    # with fs.open("licenses/templates/TORQUE-1.1.txt") as file:
-    #     print(file.read())

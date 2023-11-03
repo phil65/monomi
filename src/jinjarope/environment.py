@@ -30,7 +30,6 @@ class Environment(jinja2.Environment):
         | dict
         | list[dict]
         | None = None,
-        load_templates: bool = False,
         **kwargs: Any,
     ):
         """Constructor.
@@ -42,7 +41,6 @@ class Environment(jinja2.Environment):
                         Changes jinja default to not clean cache.
             auto_reload: Whether to check templates for changes on loading
             loader: Loader to use (Also accepts a JSON representation of loaders)
-            load_templates: Adds additional loaders to the env (deprecated).
             kwargs: Keyword arguments passed to parent
         """
         if isinstance(undefined, str):
@@ -52,15 +50,9 @@ class Environment(jinja2.Environment):
             trim_blocks=trim_blocks,
             auto_reload=auto_reload,
             cache_size=cache_size,
+            loader=loaders.from_json(loader),
             **kwargs,
         )
-        loader = loaders.from_json(loader)
-        if load_templates and loader:
-            kwargs["loader"] = loaders.resource_loader | loader
-        elif load_templates:
-            kwargs["loader"] = loaders.resource_loader
-        else:
-            kwargs["loader"] = loader
         self._extra_files: set[str] = set()
         self._extra_paths: set[str] = set()
         super().__init__(**kwargs)
@@ -213,7 +205,9 @@ class Environment(jinja2.Environment):
         static: dict[str, str] | None = None,
         fsspec_paths: bool = True,
     ):
-        self.loader = loaders.registry.get_loader(
+        import jinjarope
+
+        self.loader = jinjarope.get_loader(
             dir_paths=dir_paths,
             module_paths=module_paths,
             static=static,
@@ -238,11 +232,8 @@ class BlockNotFoundError(Exception):
 
 if __name__ == "__main__":
     env = Environment()
-    txt = """{% filter styled(bold=True) %}
+    txt = """{% filter indent %}
     test
     {% endfilter %}
     """
     print(env.render_string(txt))
-    # text = env.render_string(r"{{ 'test' | MkHeader }}")
-    # text = env.render_string(r"{{ 50 | MkProgressBar }}")
-    # env.render_string(r"{{test('hallo')}}")

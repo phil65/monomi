@@ -155,5 +155,5 @@ ENV_FILTERS = {
 
 
 if __name__ == "__main__":
-    a = evaluate("import mknodes\nmknodes.MkHeader('Hello')")
+    a = evaluate("str('test')")
     print(a)
