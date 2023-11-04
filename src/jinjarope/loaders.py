@@ -279,7 +279,7 @@ class FsSpecFileSystemLoader(LoaderMixin, jinja2.BaseLoader):
         self.storage_options = kwargs
 
     def __repr__(self):
-        return utils.get_repr(self, fs=self.fs.protocol, **self.storage_options)
+        return utils.get_repr(self, fs=self.fs)
 
     def __eq__(self, other):
         return (
