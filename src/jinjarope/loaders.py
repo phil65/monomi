@@ -59,6 +59,28 @@ class PrefixLoader(LoaderMixin, jinja2.PrefixLoader):
         return hash(tuple(sorted(self.mapping.items())))
 
 
+class ModuleLoader(LoaderMixin, jinja2.ModuleLoader):
+    """This loader loads templates from precompiled templates.
+
+    Templates can be precompiled with :meth:`Environment.compile_templates`.
+    """
+
+    ID = "module"
+
+    def __repr__(self):
+        return utils.get_repr(self, path=self.module.__path__)
+
+    def __eq__(self, other):
+        return (
+            type(self) == type(other)
+            and self.package_name == other.package_name
+            and self.module == other.module
+        )
+
+    def __hash__(self):
+        return hash(self.package_name) + hash(self.module)
+
+
 class FunctionLoader(LoaderMixin, jinja2.FunctionLoader):
     """A loader for loading templates from a function.
 
