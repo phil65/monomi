@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 import datetime
 import functools
 import importlib
@@ -83,6 +83,35 @@ def format_js_map(mapping: dict | str, indent: int = 4) -> str:
     return f"{{{row_str}}}"
 
 
+def format_css_rule(dct: Mapping) -> str:
+    """Format a nested dictionary as CSS rule.
+
+    Mapping must be of shape {".a": {"b": "c"}}
+
+    Arguments:
+        dct: The mapping to convert to CSS text
+    """
+    data: dict[str, list] = {}
+
+    def _parse(obj, selector: str = ""):
+        for key, value in obj.items():
+            if hasattr(value, "items"):
+                rule = selector + " " + key
+                data[rule] = []
+                _parse(value, rule)
+
+            else:
+                prop = data[selector]
+                prop.append(f"\t{key}: {value};\n")
+
+    _parse(dct)
+    string = ""
+    for key, value in sorted(data.items()):
+        if data[key]:
+            string += key[1:] + " {\n" + "".join(value) + "}\n\n"
+    return string
+
+
 def add(text, prefix: str = "", suffix: str = ""):
     if not text:
         return ""
@@ -113,6 +142,7 @@ ENV_FILTERS = {
     "load_file": load_file_cached,
     "path_join": os.path.join,
     "format_js_map": format_js_map,
+    "format_css_rule": format_css_rule,
     "check_output": get_output_from_call,
     "getenv": os.getenv,
 }

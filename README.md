@@ -143,5 +143,6 @@ prefix_loader = "path_prefix" / jinjarope.FileSystemLoader(...)
 * `load_file`: Accepts a path or a fsspec protocol URL and returns content as str
 * `path_join`: **os.path.join**
 * `format_js_map`: **format_js_map** (format a dictionary as JavaScript map)
+* `format_css_rule`: **format_css_rule** (format a dictionary of shape {".a": {"b": "c"}} as CSS rule)
 * `check_output`: **subprocess.check_output** (as str)
 * `getenv`: **os.getenv**
