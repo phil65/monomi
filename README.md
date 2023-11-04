@@ -101,24 +101,24 @@ env.get_template("github://phil65:jinjarope@main/tests/testresources/testfile.ji
 
 ### Additional filters
 
-`pformat`: **pprint.pformat**
-`repr`: **repr**
-`rstrip`: **str.rstrip**
-`lstrip`: **str.lstrip**
-`removesuffix`: **str.removesuffix**
-`removeprefix`: **str.removeprefix**
-`add`: Optionally add a prefix / suffix to a value if value is truth-y
-`issubclass`: **issubclass**
-`isinstance`: **isinstance**
-`import_module`: **importlib.import_module**
-`hasattr`: **hasattr**
-`evaluate`: Evaluate text as python code and return last statement
-`partial`: **functools.partial**
-`dump_json`: **json.dumps**
-`load_json`: **json.loads**
-`load_toml`: **tomllib.loads**
-`load_file`: Accepts a path or a fsspec protocol URL and returns content as str
-`path_join`: **os.path.join**
-`format_js_map`: **format_js_map** (format a dictionary as JavaScript map)
-`check_output`: **subprocess.check_output** (as str)
-`getenv`: **os.getenv**
+* `pformat`: **pprint.pformat**
+* `repr`: **repr**
+* `rstrip`: **str.rstrip**
+* `lstrip`: **str.lstrip**
+* `removesuffix`: **str.removesuffix**
+* `removeprefix`: **str.removeprefix**
+* `add`: Optionally add a prefix / suffix to a value if value is truth-y
+* `issubclass`: **issubclass**
+* `isinstance`: **isinstance**
+* `import_module`: **importlib.import_module**
+* `hasattr`: **hasattr**
+* `evaluate`: Evaluate text as python code and return last statement
+* `partial`: **functools.partial**
+* `dump_json`: **json.dumps**
+* `load_json`: **json.loads**
+* `load_toml`: **tomllib.loads**
+* `load_file`: Accepts a path or a fsspec protocol URL and returns content as str
+* `path_join`: **os.path.join**
+* `format_js_map`: **format_js_map** (format a dictionary as JavaScript map)
+* `check_output`: **subprocess.check_output** (as str)
+* `getenv`: **os.getenv**
