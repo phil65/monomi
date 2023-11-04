@@ -49,6 +49,19 @@ class PrefixLoader(LoaderMixin, jinja2.PrefixLoader):
         return utils.get_repr(self, self.mapping)
 
 
+class FunctionLoader(LoaderMixin, jinja2.FunctionLoader):
+    """A loader for loading templates from a function.
+
+    The function takes a template path as parameter and either returns
+    a (text, None, uptodate_fn) tuple or just the text as str.
+    """
+
+    ID = "function"
+
+    def __repr__(self):
+        return utils.get_repr(self, self.load_func)
+
+
 class PackageLoader(LoaderMixin, jinja2.PackageLoader):
     """A loader for loading templates from a package."""
 
@@ -233,17 +246,6 @@ class FsSpecFileSystemLoader(LoaderMixin, jinja2.BaseLoader):
         return src, path, lambda: True
 
 
-def flatten_dict(dct: Mapping, sep: str = "/", parent_key: str = "") -> Mapping:
-    items: list[tuple[str, str]] = []
-    for k, v in dct.items():
-        new_key = parent_key + sep + k if parent_key else k
-        if isinstance(v, Mapping):
-            items.extend(flatten_dict(v, parent_key=new_key, sep=sep).items())
-        else:
-            items.append((new_key, v))
-    return dict(items)
-
-
 class NestedDictLoader(LoaderMixin, jinja2.BaseLoader):
     """A jinja loader for loading templates from nested dicts.
 
@@ -278,7 +280,7 @@ class NestedDictLoader(LoaderMixin, jinja2.BaseLoader):
         return utils.get_repr(self, mapping=self._data)
 
     def list_templates(self) -> list[str]:
-        return list(flatten_dict(self._data).keys())
+        return list(utils.flatten_dict(self._data).keys())
 
     def get_source(
         self,

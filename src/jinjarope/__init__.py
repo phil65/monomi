@@ -8,6 +8,7 @@ from .loaders import (
     FsSpecProtocolPathLoader,
     ChoiceLoader,
     PackageLoader,
+    FunctionLoader,
     PrefixLoader,
     DictLoader,
 )
@@ -26,6 +27,7 @@ __all__ = [
     "FileSystemLoader",
     "ChoiceLoader",
     "PackageLoader",
+    "FunctionLoader",
     "PrefixLoader",
     "DictLoader",
     "get_loader",

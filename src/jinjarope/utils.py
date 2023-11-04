@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 import functools
 
 from typing import Any, TypeVar
@@ -37,3 +37,14 @@ T = TypeVar("T")
 def reduce_list(data_set: Iterable[T]) -> list[T]:
     """Reduce duplicate items in a list and preserve order."""
     return list(dict.fromkeys(data_set))
+
+
+def flatten_dict(dct: Mapping, sep: str = "/", parent_key: str = "") -> Mapping:
+    items: list[tuple[str, str]] = []
+    for k, v in dct.items():
+        new_key = parent_key + sep + k if parent_key else k
+        if isinstance(v, Mapping):
+            items.extend(flatten_dict(v, parent_key=new_key, sep=sep).items())
+        else:
+            items.append((new_key, v))
+    return dict(items)
