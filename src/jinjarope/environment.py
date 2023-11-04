@@ -9,7 +9,7 @@ import pathlib
 import time
 
 from types import CodeType
-from typing import Any, Literal, overload
+from typing import Any, ClassVar, Literal, overload
 import weakref
 
 import jinja2
@@ -25,6 +25,9 @@ logger = logging.getLogger(__name__)
 
 class Environment(jinja2.Environment):
     """An enhanced Jinja environment."""
+
+    _decorator_globals: ClassVar[dict[str, Any]] = {}
+    _decorator_filters: ClassVar[dict[str, Any]] = {}
 
     def __init__(
         self,
@@ -65,6 +68,8 @@ class Environment(jinja2.Environment):
         super().__init__(**kwargs)
         self.filters.update(envglobals.ENV_FILTERS)
         self.globals.update(envglobals.ENV_GLOBALS)
+        self.filters.update(self._decorator_filters)
+        self.globals.update(self._decorator_globals)
         self.filters["render_template"] = self.render_template
         self.filters["render_string"] = self.render_string
         self.filters["render_file"] = self.render_file
@@ -82,6 +87,14 @@ class Environment(jinja2.Environment):
     def __getitem__(self, val: str) -> jinja2.Template:
         """Return a template by path."""
         return self.get_template(val)
+
+    @classmethod
+    def register_globals(cls, fn):
+        cls._decorator_globals.update(fn())
+
+    @classmethod
+    def register_filters(cls, fn):
+        cls._decorator_filters.update(fn())
 
     @overload
     def compile(  # type: ignore[misc]  # noqa: A003
@@ -324,6 +337,8 @@ class Environment(jinja2.Environment):
 
 
 class BlockNotFoundError(Exception):
+    """Exception for not-found template blocks."""
+
     def __init__(
         self,
         block_name: str,
