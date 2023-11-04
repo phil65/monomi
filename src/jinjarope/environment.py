@@ -92,12 +92,14 @@ class Environment(jinja2.Environment):
         return self.get_template(val)
 
     @classmethod
-    def register_globals(cls, fn):
+    def register_globals(cls, fn: Callable) -> Callable:
         cls._decorator_globals.append(fn)
+        return fn
 
     @classmethod
-    def register_filters(cls, fn):
+    def register_filters(cls, fn: Callable) -> Callable:
         cls._decorator_filters.append(fn)
+        return fn
 
     @overload
     def compile(  # type: ignore[misc]  # noqa: A003
