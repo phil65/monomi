@@ -48,21 +48,6 @@ Jinjarope contains a range of Jinja2 loaders (including fsspec-based ones) as we
 For debugging purposes, an FsSpec filesystem implementation for jinja2 loaders is also included.
 
 
-
-### NestedDictLoader
-
-``` toml
-[example]
-template = "{{ something }}"
-```
-``` py
-content = tomllib.load(toml_file)
-loader = NestedDictLoader(content)
-env = Environment(loader=loader)
-env.get_template("example/template")
-```
-
-
 ### FsSpecFileSystemLoader
 
 This loader can be used like a FileSystemLoader, but also works on any fsspec-supported
@@ -71,19 +56,19 @@ Using the `dir::` prefix, any folder can be set as root.
 
 ``` py
 # protocol path
-loader = FsSpecFileSystemLoader("dir::github://phil65:jinjarope@main/tests/testresources")
-env = Environment(loader=loader)
+loader = jinjarope.FsSpecFileSystemLoader("dir::github://phil65:jinjarope@main/tests/testresources")
+env = jinjarope.Environment(loader=loader)
 env.get_template("testfile.jinja").render()
 
 # protocol and storage options
-loader = FsSpecFileSystemLoader("github", org="phil65", repo="jinjarope")
-env = Environment(loader=loader)
+loader = jinjarope.FsSpecFileSystemLoader("github", org="phil65", repo="jinjarope")
+env = jinjarope.Environment(loader=loader)
 env.get_template("README.md").render()
 
 # fsspec filesystem
 fs = fsspec.filesystem("github", org="phil65", repo="jinjarope")
-loader = FsSpecFileSystemLoader(fs)
-env = Environment(loader=loader)
+loader = jinjarope.FsSpecFileSystemLoader(fs)
+env = jinjarope.Environment(loader=loader)
 env.get_template("README.md").render()
 ```
 
@@ -94,10 +79,48 @@ This loader accepts any FsSpec protocol path to be used directly.
 A complete protocol URL to the template file is required.
 
 ``` py
-loader = FsSpecProtocolPathLoader()
-env = Environment(loader=loader)
+loader = jinjarope.FsSpecProtocolPathLoader()
+env = jinjarope.Environment(loader=loader)
 env.get_template("github://phil65:jinjarope@main/tests/testresources/testfile.jinja").render()
 ```
+
+
+### NestedDictLoader
+
+``` toml
+[example]
+template = "{{ something }}"
+```
+``` py
+content = tomllib.load(toml_file)
+loader = jinjarope.NestedDictLoader(content)
+env = jinjarope.Environment(loader=loader)
+env.get_template("example/template")
+```
+
+
+### General loader information
+
+**jinjarope** also contains subclasses for all default **jinja2** loaders. These loaders
+have implementations for some magic methods (`__eq__`, `__hash__`, `__repr__`, , `__getitem__`).
+
+``` py
+loader = jinjarope.FileSystemLoader(...)
+template_source = loader["path/to/template.jinja"]
+```
+
+The loaders can also get ORed to return a ChoiceLoader.
+
+``` py
+choice_loader = jinjarope.FileSystemLoader(..) | jinjarope.PackageLoader(...)
+```
+
+Prefix loaders can get created using pathlib-style string concatenations
+
+``` py
+prefix_loader = "path_prefix" / jinjarope.FileSystemLoader(...)
+```
+
 
 ### Additional filters
 
