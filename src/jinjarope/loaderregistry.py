@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 import os
 import pathlib
 import types
@@ -80,6 +81,7 @@ class LoaderRegistry:
         *args: str | types.ModuleType,
         dir_paths: list[str] | None = None,
         module_paths: list[str] | None = None,
+        functions: list[Callable] | None = None,
         static: dict[str, str] | None = None,
         fsspec_paths: bool = True,
     ) -> jinja2.BaseLoader:
@@ -95,6 +97,7 @@ class LoaderRegistry:
             dir_paths: Directory paths (either FsSpec-protocol URLs to a folder or
                        filesystem paths)
             module_paths: (dotted) package paths
+            functions: A list of callables
             static: A dictionary containing a path-> template mapping
             fsspec_paths: Whether a loader for FsSpec protcol paths should be added
         """
@@ -103,6 +106,8 @@ class LoaderRegistry:
                 return self.by_path(path)
             case (types.ModuleType() as mod,):
                 return loaders.PackageLoader(mod)
+            case (Callable() as fn,):
+                return loaders.FunctionLoader(fn)
         m_paths = utils.reduce_list(module_paths or [])
         loader = loaders.ChoiceLoader([self.get_package_loader(p) for p in m_paths])
         for file in utils.reduce_list(dir_paths or []):
@@ -110,6 +115,8 @@ class LoaderRegistry:
                 loader |= self.get_fsspec_loader(file)
             else:
                 loader |= self.get_filesystem_loader(file)
+        for fn in functions or []:
+            loader |= loaders.FunctionLoader(fn)
         if static:
             loader |= loaders.DictLoader(static)
         if fsspec_paths:
