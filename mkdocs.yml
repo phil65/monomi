@@ -53,6 +53,7 @@ plugins:
 - mknodes:
     build_fn: mknodes:MkDefaultWebsite.for_project
     global_resources: false
+    render_by_default: false
 - mkdocstrings:
     default_handler: python
     handlers:
