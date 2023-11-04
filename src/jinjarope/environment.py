@@ -5,9 +5,12 @@ import logging
 import os
 import pathlib
 
-from typing import Any
+from types import CodeType
+from typing import Any, Literal, overload
+import weakref
 
 import jinja2
+import jinja2.nodes
 
 from jinjarope import envglobals, loaders, undefined as undefined_
 
@@ -25,11 +28,9 @@ class Environment(jinja2.Environment):
         trim_blocks: bool = True,
         cache_size: int = -1,
         auto_reload: bool = False,
-        loader: jinja2.BaseLoader
-        | list[jinja2.BaseLoader]
-        | dict
-        | list[dict]
-        | None = None,
+        loader: (
+            jinja2.BaseLoader | list[jinja2.BaseLoader] | dict | list[dict] | None
+        ) = None,
         **kwargs: Any,
     ):
         """Constructor.
@@ -43,6 +44,7 @@ class Environment(jinja2.Environment):
             loader: Loader to use (Also accepts a JSON representation of loaders)
             kwargs: Keyword arguments passed to parent
         """
+        self.cache_code = True
         if isinstance(undefined, str):
             undefined = undefined_.UNDEFINED_BEHAVIOR[undefined]
         kwargs = dict(
@@ -61,6 +63,11 @@ class Environment(jinja2.Environment):
         self.filters["render_template"] = self.render_template
         self.filters["render_string"] = self.render_string
         self.filters["render_file"] = self.render_file
+        self.template_cache: weakref.WeakValueDictionary[
+            str | jinja2.nodes.Template,
+            CodeType | str | None,
+        ] = weakref.WeakValueDictionary()
+        self.add_extension("jinja2.ext.loopcontrols")
 
     def __contains__(self, template: str | os.PathLike):
         """Check whether given template path exists."""
@@ -69,6 +76,59 @@ class Environment(jinja2.Environment):
     def __getitem__(self, val: str) -> jinja2.Template:
         """Return a template by path."""
         return self.get_template(val)
+
+    @overload
+    def compile(  # type: ignore[misc]  # noqa: A003
+        self,
+        source: str | jinja2.nodes.Template,
+        name: str | None = None,
+        filename: str | None = None,
+        raw: Literal[False] = False,
+        defer_init: bool = False,
+    ) -> CodeType:
+        ...
+
+    @overload
+    def compile(  # noqa: A003
+        self,
+        source: str | jinja2.nodes.Template,
+        name: str | None = None,
+        filename: str | None = None,
+        raw: Literal[True] = ...,
+        defer_init: bool = False,
+    ) -> str:
+        ...
+
+    def compile(  # noqa: A003
+        self,
+        source: str | jinja2.nodes.Template,
+        name: str | None = None,
+        filename: str | None = None,
+        raw: bool = False,
+        defer_init: bool = False,
+    ) -> CodeType | str:
+        """Compile the template."""
+        if (
+            not self.cache_code
+            or name is not None
+            or filename is not None
+            or raw is not False
+            or defer_init is not False
+        ):
+            # If there are any non-default keywords args, we do
+            # not cache.
+            return super().compile(  # type: ignore[no-any-return,call-overload]
+                source,
+                name,
+                filename,
+                raw,
+                defer_init,
+            )
+
+        if (cached := self.template_cache.get(source)) is None:
+            cached = self.template_cache[source] = super().compile(source)
+
+        return cached
 
     def inherit_from(self, env: jinja2.Environment):
         """Inherit complete configuration from another environment."""
@@ -212,6 +272,23 @@ class Environment(jinja2.Environment):
             module_paths=module_paths,
             static=static,
             fsspec_paths=fsspec_paths,
+        )
+
+    def get_config(self) -> dict[str, str | bool | None]:
+        """All environment settings as a dict (not included: undefined and loaders)."""
+        return dict(
+            block_start_string=self.block_start_string,
+            block_end_string=self.block_end_string,
+            variable_start_string=self.variable_start_string,
+            variable_end_string=self.variable_end_string,
+            comment_start_string=self.comment_start_string,
+            comment_end_string=self.comment_end_string,
+            line_statement_prefix=self.line_statement_prefix,
+            line_comment_prefix=self.line_comment_prefix,
+            trim_blocks=self.trim_blocks,
+            lstrip_blocks=self.lstrip_blocks,
+            newline_sequence=self.newline_sequence,
+            keep_trailing_newline=self.keep_trailing_newline,
         )
 
 
