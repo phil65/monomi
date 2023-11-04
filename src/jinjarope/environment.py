@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import ast
+
+from collections.abc import Callable
 import contextlib
 import io
 import logging
 import os
 import pathlib
 import time
-
 from types import CodeType
 from typing import Any, ClassVar, Literal, overload
 import weakref
@@ -26,8 +27,8 @@ logger = logging.getLogger(__name__)
 class Environment(jinja2.Environment):
     """An enhanced Jinja environment."""
 
-    _decorator_globals: ClassVar[dict[str, Any]] = {}
-    _decorator_filters: ClassVar[dict[str, Any]] = {}
+    _decorator_globals: ClassVar[list[Callable]] = []
+    _decorator_filters: ClassVar[list[Callable]] = []
 
     def __init__(
         self,
@@ -68,8 +69,10 @@ class Environment(jinja2.Environment):
         super().__init__(**kwargs)
         self.filters.update(envglobals.ENV_FILTERS)
         self.globals.update(envglobals.ENV_GLOBALS)
-        self.filters.update(self._decorator_filters)
-        self.globals.update(self._decorator_globals)
+        for fn in self._decorator_filters:
+            self.filters.update(fn())
+        for fn in self._decorator_globals:
+            self.globals.update(fn())
         self.filters["render_template"] = self.render_template
         self.filters["render_string"] = self.render_string
         self.filters["render_file"] = self.render_file
@@ -90,11 +93,11 @@ class Environment(jinja2.Environment):
 
     @classmethod
     def register_globals(cls, fn):
-        cls._decorator_globals.update(fn())
+        cls._decorator_globals.append(fn)
 
     @classmethod
     def register_filters(cls, fn):
-        cls._decorator_filters.update(fn())
+        cls._decorator_filters.append(fn)
 
     @overload
     def compile(  # type: ignore[misc]  # noqa: A003
