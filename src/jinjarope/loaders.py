@@ -19,11 +19,15 @@ class LoaderMixin:
     ID: str
     loader: jinja2.BaseLoader
     list_templates: Callable
+    get_source: Callable
 
     def __or__(self, other: jinja2.BaseLoader):
         own = self.loaders if isinstance(self, jinja2.ChoiceLoader) else [self]  # type: ignore[list-item]
         others = other.loaders if isinstance(other, jinja2.ChoiceLoader) else [other]
         return ChoiceLoader([*own, *others])
+
+    def __getitem__(self, val: str) -> str:
+        return self.get_source(None, val)[0]
 
     def __contains__(self, path):
         return pathlib.Path(path).as_posix() in self.list_templates()
@@ -48,6 +52,12 @@ class PrefixLoader(LoaderMixin, jinja2.PrefixLoader):
     def __repr__(self):
         return utils.get_repr(self, self.mapping)
 
+    def __eq__(self, other):
+        return type(self) == type(other) and self.mapping == other.mapping
+
+    def __hash__(self):
+        return hash(tuple(sorted(self.mapping.items())))
+
 
 class FunctionLoader(LoaderMixin, jinja2.FunctionLoader):
     """A loader for loading templates from a function.
@@ -60,6 +70,12 @@ class FunctionLoader(LoaderMixin, jinja2.FunctionLoader):
 
     def __repr__(self):
         return utils.get_repr(self, self.load_func)
+
+    def __eq__(self, other):
+        return type(self) == type(other) and self.load_func == other.load_func
+
+    def __hash__(self):
+        return hash(self.load_func)
 
 
 class PackageLoader(LoaderMixin, jinja2.PackageLoader):
@@ -97,6 +113,16 @@ class PackageLoader(LoaderMixin, jinja2.PackageLoader):
             package_path=self.package_path,
         )
 
+    def __eq__(self, other):
+        return (
+            type(self) == type(other)
+            and self.package_name == other.package_name
+            and self.package_path == other.package_path
+        )
+
+    def __hash__(self):
+        return hash(self.package_name) + hash(self.package_path)
+
 
 class FileSystemLoader(LoaderMixin, jinja2.FileSystemLoader):
     """A loader to load templates from the file system."""
@@ -113,6 +139,12 @@ class FileSystemLoader(LoaderMixin, jinja2.FileSystemLoader):
             paths = [other]
         return FileSystemLoader([*self.searchpath, *paths])
 
+    def __eq__(self, other):
+        return type(self) == type(other) and self.searchpath == other.searchpath
+
+    def __hash__(self):
+        return hash(tuple(self.searchpath))
+
 
 class ChoiceLoader(LoaderMixin, jinja2.ChoiceLoader):
     """A loader which combines multiple other loaders."""
@@ -121,6 +153,12 @@ class ChoiceLoader(LoaderMixin, jinja2.ChoiceLoader):
 
     def __repr__(self):
         return utils.get_repr(self, loaders=self.loaders, _shorten=False)
+
+    def __eq__(self, other):
+        return type(self) == type(other) and self.loaders == other.loaders
+
+    def __hash__(self):
+        return hash(tuple(self.loaders))
 
 
 class DictLoader(LoaderMixin, jinja2.DictLoader):
@@ -138,6 +176,12 @@ class DictLoader(LoaderMixin, jinja2.DictLoader):
             mapping = self.mapping | other
         return DictLoader(mapping)
 
+    def __eq__(self, other):
+        return type(self) == type(other) and self.mapping == other.mapping
+
+    def __hash__(self):
+        return hash(tuple(sorted(self.mapping.items())))
+
 
 class FsSpecProtocolPathLoader(LoaderMixin, jinja2.BaseLoader):
     """A jinja loader for fsspec filesystems.
@@ -154,6 +198,12 @@ class FsSpecProtocolPathLoader(LoaderMixin, jinja2.BaseLoader):
     """
 
     ID = "fsspec_protocol_path"
+
+    def __eq__(self, other):
+        return type(self) == type(other)
+
+    def __hash__(self):
+        return hash(type(self))
 
     def get_source(
         self,
@@ -230,6 +280,21 @@ class FsSpecFileSystemLoader(LoaderMixin, jinja2.BaseLoader):
 
     def __repr__(self):
         return utils.get_repr(self, fs=self.fs.protocol, **self.storage_options)
+
+    def __eq__(self, other):
+        return (
+            type(self) == type(other)
+            and self.storage_options == other.storage_options
+            and self.fs == other.fs
+            and self.path == other.path
+        )
+
+    def __hash__(self):
+        return (
+            hash(tuple(sorted(self.storage_options.items())))
+            + hash(self.fs)
+            + hash(self.path)
+        )
 
     def list_templates(self) -> list[str]:
         return self.fs.ls(self.fs.root_marker)
