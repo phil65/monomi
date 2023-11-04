@@ -15,6 +15,8 @@ import weakref
 import jinja2
 import jinja2.nodes
 
+import jinjarope
+
 from jinjarope import envglobals, loaders, undefined as undefined_
 
 
@@ -73,7 +75,7 @@ class Environment(jinja2.Environment):
         ] = weakref.WeakValueDictionary()
         self.add_extension("jinja2.ext.loopcontrols")
 
-    def __contains__(self, template: str | os.PathLike):
+    def __contains__(self, template: str | os.PathLike) -> bool:
         """Check whether given template path exists."""
         return pathlib.Path(template).as_posix() in self.list_templates()
 
@@ -190,7 +192,7 @@ class Environment(jinja2.Environment):
             case _:
                 self.loader = loaders.ChoiceLoader(loaders=[new_loader, self.loader])
 
-    def render_string(self, string: str, variables: dict | None = None):
+    def render_string(self, string: str, variables: dict | None = None) -> str:
         """Render a template string.
 
         Arguments:
@@ -269,8 +271,6 @@ class Environment(jinja2.Environment):
         static: dict[str, str] | None = None,
         fsspec_paths: bool = True,
     ):
-        import jinjarope
-
         self.loader = jinjarope.get_loader(
             dir_paths=dir_paths,
             module_paths=module_paths,
