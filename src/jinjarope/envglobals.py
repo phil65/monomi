@@ -1,14 +1,11 @@
 from __future__ import annotations
 
-import ast
-
 from collections.abc import Sequence
-import contextlib
 import datetime
 import functools
 import importlib
+
 from importlib import metadata
-import io
 import json
 import logging
 import os
@@ -16,9 +13,7 @@ import pathlib
 import platform
 import pprint
 import sys
-import time
 import tomllib
-from typing import Any
 
 from jinjarope import utils
 
@@ -88,37 +83,6 @@ def format_js_map(mapping: dict | str, indent: int = 4) -> str:
     return f"{{{row_str}}}"
 
 
-def evaluate(
-    code: str,
-    context: dict[str, Any] | None = None,
-) -> str:
-    """Evaluate python code and return the caught stdout + return value of last line.
-
-    Arguments:
-        code: The code to execute
-        context: Globals for the execution evironment
-    """
-    import mknodes as mk
-
-    now = time.time()
-    if context is None:
-        context = {"mk": mk}
-    logger.debug("Evaluating code:\n%s", code)
-    tree = ast.parse(code)
-    eval_expr = ast.Expression(tree.body[-1].value)  # type: ignore
-    # exec_expr = ast.Module(tree.body[:-1])  # type: ignore
-    exec_expr = ast.parse("")
-    exec_expr.body = tree.body[:-1]
-    compiled = compile(exec_expr, "file", "exec")
-    buffer = io.StringIO()
-    with contextlib.redirect_stdout(buffer):
-        exec(compiled, context)
-        val = eval(compile(eval_expr, "file", "eval"), context)
-    logger.debug("Code evaluation took %s seconds.", time.time() - now)
-    # result = mk.MkContainer([buffer.getvalue(), val])
-    return val or ""
-
-
 def add(text, prefix: str = "", suffix: str = ""):
     if not text:
         return ""
@@ -142,7 +106,6 @@ ENV_FILTERS = {
     "isinstance": isinstance,
     "import_module": importlib.import_module,
     "hasattr": hasattr,
-    "evaluate": evaluate,
     "partial": functools.partial,
     "dump_json": json.dumps,
     "load_json": json.loads,
@@ -156,5 +119,5 @@ ENV_FILTERS = {
 
 
 if __name__ == "__main__":
-    a = evaluate("str('test')")
+    a = format_js_map({"test": "abc"})
     print(a)

@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import ast
 import contextlib
+import io
 import logging
 import os
 import pathlib
+import time
 
 from types import CodeType
 from typing import Any, Literal, overload
@@ -63,6 +66,7 @@ class Environment(jinja2.Environment):
         self.filters["render_template"] = self.render_template
         self.filters["render_string"] = self.render_string
         self.filters["render_file"] = self.render_file
+        self.filters["evaluate"] = self.evaluate
         self.template_cache: weakref.WeakValueDictionary[
             str | jinja2.nodes.Template,
             CodeType | str | None,
@@ -273,6 +277,33 @@ class Environment(jinja2.Environment):
             static=static,
             fsspec_paths=fsspec_paths,
         )
+
+    def evaluate(
+        self,
+        code: str,
+        context: dict[str, Any] | None = None,
+    ) -> str:
+        """Evaluate python code and return the caught stdout + return value of last line.
+
+        Arguments:
+            code: The code to execute
+            context: Globals for the execution evironment
+        """
+        now = time.time()
+        logger.debug("Evaluating code:\n%s", code)
+        tree = ast.parse(code)
+        eval_expr = ast.Expression(tree.body[-1].value)  # type: ignore
+        # exec_expr = ast.Module(tree.body[:-1])  # type: ignore
+        exec_expr = ast.parse("")
+        exec_expr.body = tree.body[:-1]
+        compiled = compile(exec_expr, "file", "exec")
+        buffer = io.StringIO()
+        with contextlib.redirect_stdout(buffer):
+            exec(compiled, self.globals)
+            val = eval(compile(eval_expr, "file", "eval"), self.globals)
+        logger.debug("Code evaluation took %s seconds.", time.time() - now)
+        # result = mk.MkContainer([buffer.getvalue(), val])
+        return val or ""
 
     def get_config(self) -> dict[str, str | bool | None]:
         """All environment settings as a dict (not included: undefined and loaders)."""
