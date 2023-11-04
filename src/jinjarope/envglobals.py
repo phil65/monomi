@@ -64,13 +64,14 @@ def get_output_from_call(
         return None
 
 
-def format_js_map(dct: dict, indent: int = 4) -> str:
+def format_js_map(mapping: dict | str, indent: int = 4) -> str:
     """Return JS map str for given dictionary.
 
     Arguments:
-        dct: Dictionary to dump
+        mapping: Dictionary to dump
         indent: The amount of indentation for the key-value pairs
     """
+    dct = json.loads(mapping) if isinstance(mapping, str) else mapping
     rows = []
     indent_str = " " * indent
     for k, v in dct.items():
