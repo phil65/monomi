@@ -12,23 +12,24 @@ UPDATE_CMD = f"""{ENV_PREFIX}python -m pip list {" ".join(PARAMS)}"""
 
 
 @duty(capture=False)
-def build(ctx):
+def build(ctx, *args: str):
     """Build a MkNodes page."""
-    ctx.run(f"{ENV_PREFIX}mknodes build")
+    args_str = " " + " ".join(args) if args else ""
+    ctx.run(f"{ENV_PREFIX}mknodes build{args_str}")
 
 
 @duty(capture=False)
-def serve(ctx, args: str | None = None):
+def serve(ctx, *args: str):
     """Serve a MkNodes page."""
-    args = f" {args}" if args else ""
-    ctx.run(f"{ENV_PREFIX}mknodes serve{args}")
+    args_str = " " + " ".join(args) if args else ""
+    ctx.run(f"{ENV_PREFIX}mknodes serve{args_str}")
 
 
 @duty(capture=False)
-def test(ctx, args: str | None = None):
+def test(ctx, *args: str):
     """Serve a MkNodes page."""
-    args = f" {args}" if args else ""
-    ctx.run(f"{ENV_PREFIX}pytest{args}")
+    args_str = " " + " ".join(args) if args else ""
+    ctx.run(f"{ENV_PREFIX}pytest{args_str}")
 
 
 @duty(capture=False)
@@ -38,15 +39,16 @@ def clean(ctx):
 
 
 @duty
-def update(ctx):
+def update(ctx, *args: str):
     """Update all environment packages using pip directly."""
-    requirements = ctx.run(UPDATE_CMD)
+    args_str = " " + " ".join(args) if args else ""
+    requirements = ctx.run(UPDATE_CMD + args_str)
     requirements = "\n".join(requirements.split("\n")[1:])
     packages = [x["name"] for x in json.loads(requirements)]
     if packages:
-        package_str = " ".join(packages)
-        print(f"Packages to update: {package_str}")
-        ctx.run(f"{ENV_PREFIX}python -m pip install -U {package_str}", capture=False)
+        pkgs = " ".join(packages)
+        print(f"Packages to update: {pkgs}")
+        ctx.run(f"{ENV_PREFIX}python -m pip install -U {pkgs}{args_str}", capture=False)
     else:
         print("No packages to update!")
     ctx.run(f"{ENV_PREFIX}python -m pip install -e .", capture=False)
