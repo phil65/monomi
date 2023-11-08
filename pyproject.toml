@@ -216,6 +216,10 @@ target-version = "py311"
 [tool.ruff.flake8-quotes]
 docstring-quotes = "double"
 
+[tool.ruff.format]
+# Enable preview style formatting.
+preview = true
+
 [tool.ruff.isort]
 lines-after-imports = 2
 lines-between-types = 1
