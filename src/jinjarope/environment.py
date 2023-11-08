@@ -109,8 +109,7 @@ class Environment(jinja2.Environment):
         filename: str | None = None,
         raw: Literal[False] = False,
         defer_init: bool = False,
-    ) -> CodeType:
-        ...
+    ) -> CodeType: ...
 
     @overload
     def compile(  # noqa: A003
@@ -120,8 +119,7 @@ class Environment(jinja2.Environment):
         filename: str | None = None,
         raw: Literal[True] = ...,
         defer_init: bool = False,
-    ) -> str:
-        ...
+    ) -> str: ...
 
     def compile(  # noqa: A003
         self,
