@@ -14,6 +14,7 @@ import platform
 import pprint
 import sys
 import tomllib
+from typing import Any
 
 from jinjarope import utils
 
@@ -118,6 +119,52 @@ def add(text, prefix: str = "", suffix: str = ""):
     return f"{prefix}{text}{suffix}"
 
 
+def regex_replace(
+    value: str = "",
+    pattern: str = "",
+    replacement: str = "",
+    ignorecase: bool = False,
+    multiline: bool = False,
+    count: int = 0,
+):
+    """Perform a `re.sub` returning a string.
+
+    Arguments:
+        value: The value to search-replace.
+        pattern: The regex pattern to use
+        replacement: The replacement pattern to use
+        ignorecase: Whether to ignore casing
+        multiline: Whether to do a multiline regex search
+        count: Amount of maximum substitutes.
+    """
+    import re
+
+    flags = 0
+    if ignorecase:
+        flags |= re.I
+    if multiline:
+        flags |= re.M
+    pat = re.compile(pattern, flags=flags)
+    output, _subs = pat.subn(replacement, value, count=count)
+    return output
+
+
+def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
+    """Value ? true_val : false_val.
+
+    Arguments:
+        value: The value to check.
+        true_val: The value to return if given value is true-ish
+        false_val: The value to return if given value is false-ish
+        none_val: Optional value to return if given value is None
+    """
+    if value is None and none_val is not None:
+        return none_val
+    if bool(value):
+        return true_val
+    return false_val
+
+
 ENV_GLOBALS = {
     "now": datetime.datetime.now,
     "importlib": importlib,
@@ -130,7 +177,9 @@ ENV_FILTERS = {
     "lstrip": str.lstrip,
     "removesuffix": str.removesuffix,
     "removeprefix": str.removeprefix,
+    "regex_replace": regex_replace,
     "add": add,
+    "ternary": ternary,
     "issubclass": issubclass,
     "isinstance": isinstance,
     "import_module": importlib.import_module,
