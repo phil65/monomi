@@ -1,9 +1,23 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping
+from collections.abc import Iterable, Iterator, Mapping
 import functools
 
 from typing import Any, TypeVar
+
+
+ClassType = TypeVar("ClassType", bound=type)
+
+
+def iter_subclasses(klass: ClassType) -> Iterator[ClassType]:
+    """(Recursively) iterate all subclasses of given klass.
+
+    Arguments:
+        klass: class to get subclasses from
+    """
+    for kls in klass.__subclasses__():
+        yield from iter_subclasses(kls)
+        yield kls
 
 
 def get_repr(_obj: Any, *args: Any, **kwargs: Any) -> str:
