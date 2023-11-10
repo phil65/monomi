@@ -8,6 +8,7 @@ import importlib
 from importlib import metadata
 import json
 import logging
+import operator
 import os
 import pathlib
 import platform
@@ -16,7 +17,7 @@ import sys
 import tomllib
 from typing import Any
 
-from jinjarope import utils
+from jinjarope import envtests, utils
 
 
 logger = logging.getLogger(__name__)
@@ -165,8 +166,58 @@ def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     return false_val
 
 
+def resolve(name: str, module: str | None = None):
+    """Resolve ``name`` to a Python object via imports / attribute lookups.
+
+    If ``module`` is None, ``name`` must be "absolute" (no leading dots).
+
+    If ``module`` is not None, and ``name`` is "relative" (has leading dots),
+    the object will be found by navigating relative to ``module``.
+
+    Returns the object, if found.  If not, propagates the error.
+    """
+    names = name.split(".")
+    if not names[0]:
+        if module is None:
+            msg = "relative name without base module"
+            raise ValueError(msg)
+        modules = module.split(".")
+        names.pop(0)
+        while not name[0]:
+            modules.pop()
+            names.pop(0)
+        names = modules + names
+
+    used = names.pop(0)
+    found = importlib.import_module(used)
+    for n in names:
+        used += "." + n
+        try:
+            found = getattr(found, n)
+        except AttributeError:
+            importlib.import_module(used)
+            found = getattr(found, n)
+
+    return found
+
+
+def is_instance(obj: object, typ: str | type) -> bool:
+    kls = resolve(typ) if isinstance(typ, str) else typ
+    if not isinstance(kls, type):
+        raise TypeError(kls)
+    return isinstance(obj, kls)
+
+
+def is_subclass(obj: type, typ: str | type) -> bool:
+    kls = resolve(typ) if isinstance(typ, str) else typ
+    if not isinstance(kls, type):
+        raise TypeError(kls)
+    return issubclass(obj, kls)
+
+
 ENV_GLOBALS = {
     "now": datetime.datetime.now,
+    "utcnow": datetime.datetime.utcnow,
     "importlib": importlib,
     "environment": version_info,
 }
@@ -177,11 +228,12 @@ ENV_FILTERS = {
     "lstrip": str.lstrip,
     "removesuffix": str.removesuffix,
     "removeprefix": str.removeprefix,
+    "contains": operator.contains,
     "regex_replace": regex_replace,
     "add": add,
     "ternary": ternary,
-    "issubclass": issubclass,
-    "isinstance": isinstance,
+    "issubclass": is_subclass,
+    "isinstance": is_instance,
     "import_module": importlib.import_module,
     "hasattr": hasattr,
     "partial": functools.partial,
@@ -197,6 +249,16 @@ ENV_FILTERS = {
 }
 
 
-if __name__ == "__main__":
-    a = format_js_map({"test": "abc"})
-    print(a)
+ENV_TESTS = {
+    "is_number": envtests.is_number,
+    "list": envtests._is_list,
+    "set": envtests._is_set,
+    "tuple": envtests._is_tuple,
+    "datetime": envtests._is_datetime,
+    "string_like": envtests._is_string_like,
+    "subclass": is_subclass,
+    "instance": is_instance,
+    # "match": envtests.regex_match,
+    # "search": envtests.regex_search,
+    "contains": operator.contains,
+}

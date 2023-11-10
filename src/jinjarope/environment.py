@@ -69,6 +69,7 @@ class Environment(jinja2.Environment):
         super().__init__(**kwargs)
         self.filters.update(envglobals.ENV_FILTERS)
         self.globals.update(envglobals.ENV_GLOBALS)
+        self.tests.update(envglobals.ENV_TESTS)
         for fn in self._decorator_filters:
             self.filters.update(fn())
         for fn in self._decorator_globals:
