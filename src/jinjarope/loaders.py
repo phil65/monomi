@@ -4,7 +4,7 @@ from collections.abc import Callable, Mapping
 import pathlib
 import types
 
-from typing import Any
+from typing import Any, Literal
 
 import fsspec
 import fsspec.core
@@ -378,6 +378,63 @@ class NestedDictLoader(LoaderMixin, jinja2.BaseLoader):
         for part in template.split("/"):
             data = data[part]
         return data, None, lambda: True  # type: ignore[return-value]
+
+
+class TemplateFileLoader(NestedDictLoader):
+    """A jinja loader for loading templates from config files.
+
+    This loader allows to access templates from config files.
+    Config files often often resemble nested dicts when getting loaded / deserialized.
+
+    The loader will load config file from given path and will make it accessible in the
+    same way as the `NestedDictLoader`. (esp. TOML is well-suited for this)
+
+    Config files can be loaded from any fsspec protocol URL.
+
+    Examples:
+        ``` py
+        loader = TemplateFileLoader("http://path_to_toml_file.toml")
+        env = Environment(loader=loader)
+        env.get_template("example/template")
+        ```
+        ``` py
+        loader = TemplateFileLoader("path/to/file.json")
+        env = Environment(loader=loader)
+        env.get_template("example/template")
+        ```
+    """
+
+    ID = "template_file"
+
+    def __init__(
+        self,
+        path: str | pathlib.Path,
+        fmt: Literal["toml", "json"] | None = None,
+    ):
+        """Constructor.
+
+        Arguments:
+            path: Path / fsspec protocol URL to the file
+            fmt: Config file format. If None, try to auto-infer from file extension
+        """
+        self.path = str(path)
+        text = utils.fsspec_get(path)
+        if fmt == "toml" or (not fmt and self.path.endswith(".toml")):
+            import tomllib
+
+            mapping = tomllib.loads(text)
+        elif fmt == "json" or (not fmt and self.path.endswith(".json")):
+            import json
+
+            mapping = json.loads(text)
+        else:
+            msg = f"Could not deserialize file {self.path!r}"
+            raise RuntimeError(msg)
+        super().__init__(mapping=mapping)
+        self._data = mapping
+
+    def __repr__(self):
+        return utils.get_repr(self, path=self.path)
 
 
 def from_json(dct_or_list) -> jinja2.BaseLoader | None:
