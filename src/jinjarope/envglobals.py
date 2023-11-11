@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+import configparser
 import datetime
 import functools
 import importlib
 
 from importlib import metadata
+import io
 import json
 import logging
 import operator
@@ -15,7 +17,7 @@ import platform
 import pprint
 import sys
 import tomllib
-from typing import Any
+from typing import Any, Literal
 
 from jinjarope import envtests, utils
 
@@ -31,6 +33,29 @@ version_info = dict(
     architecture=platform.architecture(),
     python_implementation=platform.python_implementation(),
 )
+
+
+def serialize(data: Any, mode: Literal["yaml", "json", "ini", "toml"] | None) -> str:  # type: ignore[return]
+    match mode:
+        case None | "yaml":
+            import yaml
+
+            return yaml.dump(data)
+        case "json":
+            return json.dumps(data, indent=4)
+        case "ini":
+            config = configparser.ConfigParser()
+            config.read_dict(data)
+            file = io.StringIO()
+            with file as fp:
+                config.write(fp)
+                return file.getvalue()
+        case "toml" if isinstance(data, dict):
+            import tomli_w
+
+            return tomli_w.dumps(data)
+        case _:
+            raise TypeError(mode)
 
 
 @functools.cache
@@ -240,6 +265,7 @@ ENV_FILTERS = {
     "dump_json": json.dumps,
     "load_json": json.loads,
     "load_toml": tomllib.loads,
+    "serialize": serialize,
     "load_file": load_file_cached,
     "path_join": os.path.join,
     "format_js_map": format_js_map,
