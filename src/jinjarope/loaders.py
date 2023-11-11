@@ -458,8 +458,15 @@ def from_json(dct_or_list) -> jinja2.BaseLoader | None:
                         continue
                     dct_copy = item.copy()
                     if dct_copy.pop("type") == kls.ID:  # type: ignore[attr-defined]
-                        path = dct_copy.pop("path")
-                        instance = kls(path, **dct_copy)  # type: ignore[call-arg]
+                        if kls.ID == "prefix":  # type: ignore[attr-defined]
+                            mapping = {
+                                k: from_json(v)
+                                for k, v in dct_copy.pop("mapping").items()
+                            }
+                            instance = kls(mapping)  # type: ignore[call-arg]
+                        else:
+                            instance = kls(**dct_copy)
+
                         loaders.append(instance)
     match len(loaders):
         case 1:
