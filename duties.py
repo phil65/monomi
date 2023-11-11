@@ -64,3 +64,10 @@ def lint(ctx):
 def lint_check(ctx):
     """Update all environment packages using pip directly."""
     ctx.run(f"{ENV_PREFIX}lint-check")
+
+
+@duty(capture=False)
+def version(ctx, *args: str):
+    """Bump package version."""
+    args_str = " " + " ".join(args) if args else ""
+    ctx.run(f"hatch version{args_str}")
