@@ -1,12 +1,13 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 import datetime
 import math
 
 from typing import Any
 
 
-def is_number(value):
+def is_number(value: Any) -> bool:
     """Try to convert value to a float."""
     try:
         fvalue = float(value)
@@ -37,7 +38,7 @@ def _to_set(value: Any) -> set[Any]:
     return set(value)
 
 
-def _to_tuple(value):
+def _to_tuple(value: Sequence):
     """Convert value to tuple."""
     return tuple(value)
 
