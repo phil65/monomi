@@ -210,6 +210,24 @@ class Environment(jinja2.Environment):
             case _:
                 self.loader = loaders.ChoiceLoader(loaders=[new_loader, self.loader])
 
+    def render_condition(
+        self,
+        string: str,
+        variables: dict | None = None,
+        **kwargs: Any,
+    ) -> bool:
+        """Render a template condition.
+
+        Returns True for true-ish return values from a render_string call.
+
+        Arguments:
+            string: String to evaluate for True-ishness
+            variables: Extra variables for the rendering
+            kwargs: Further extra variables for rendering
+        """
+        result = self.render_string(string=string, variables=variables, **kwargs)
+        return result not in ["None", "False", ""]
+
     def render_string(
         self,
         string: str,
@@ -220,8 +238,8 @@ class Environment(jinja2.Environment):
 
         Arguments:
             string: String to render
-            variables: Extra variables for the environment
-            kwargs: Further extra variables for the render call
+            variables: Extra variables for the rendering
+            kwargs: Further extra variables for rendering
         """
         variables = (variables or {}) | kwargs
         cls = self.template_class
@@ -240,8 +258,8 @@ class Environment(jinja2.Environment):
 
         Arguments:
             file: Template file to load
-            variables: Extra variables for the environment
-            kwargs: Further extra variables for the render call
+            variables: Extra variables for the rendering
+            kwargs: Further extra variables for rendering
         """
         content = envglobals.load_file_cached(str(file))
         return self.render_string(content, variables, **kwargs)
@@ -258,10 +276,10 @@ class Environment(jinja2.Environment):
 
         Arguments:
             template_name: Template name
-            variables: Extra variables for this render call
+            variables: Extra variables for rendering
             block_name: Render specific block from the template
             parent_template: The name of the parent template importing this template
-            kwargs: Further extra variables for the render call
+            kwargs: Further extra variables for rendering
         """
         variables = (variables or {}) | kwargs
         template = self.get_template(template_name, parent=parent_template)
