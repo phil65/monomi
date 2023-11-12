@@ -8,6 +8,7 @@ import importlib
 
 from importlib import metadata
 import io
+import itertools
 import json
 import logging
 import operator
@@ -256,6 +257,7 @@ ENV_FILTERS = {
     "contains": operator.contains,
     "regex_replace": regex_replace,
     "add": add,
+    "pairwise": itertools.pairwise,
     "ternary": ternary,
     "issubclass": is_subclass,
     "isinstance": is_instance,
