@@ -280,6 +280,7 @@ ENV_TESTS = {
     "list": envtests._is_list,
     "set": envtests._is_set,
     "tuple": envtests._is_tuple,
+    "dict": envtests._is_dict,
     "datetime": envtests._is_datetime,
     "string_like": envtests._is_string_like,
     "subclass": is_subclass,

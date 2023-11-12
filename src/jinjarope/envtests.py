@@ -33,6 +33,11 @@ def _is_tuple(value: Any) -> bool:
     return isinstance(value, tuple)
 
 
+def _is_dict(value: Any) -> bool:
+    """Return whether a value is a tuple."""
+    return isinstance(value, dict)
+
+
 def _to_set(value: Any) -> set[Any]:
     """Convert value to set."""
     return set(value)
