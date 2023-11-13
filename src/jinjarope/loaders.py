@@ -232,7 +232,10 @@ class FsSpecProtocolPathLoader(LoaderMixin, jinja2.BaseLoader):
         environment: jinja2.Environment | None,
         template: str,
     ) -> tuple[str, str, Callable[[], bool] | None]:
-        src = utils.fsspec_get(template)
+        try:
+            src = utils.fsspec_get(template)
+        except FileNotFoundError as e:
+            raise jinja2.TemplateNotFound(template) from e
         path = pathlib.Path(template).as_posix()
         return src, path, lambda: True
 
@@ -326,9 +329,11 @@ class FsSpecFileSystemLoader(LoaderMixin, jinja2.BaseLoader):
         environment: jinja2.Environment,
         template: str,
     ) -> tuple[str, str, Callable[[], bool] | None]:
-        with self.fs.open(template) as file:
-            src = file.read().decode()
-
+        try:
+            with self.fs.open(template) as file:
+                src = file.read().decode()
+        except FileNotFoundError as e:
+            raise jinja2.TemplateNotFound(template) from e
         path = pathlib.Path(template).as_posix()
         return src, path, lambda: True
 
@@ -375,8 +380,12 @@ class NestedDictLoader(LoaderMixin, jinja2.BaseLoader):
         template: str,
     ) -> tuple[str, str, Callable[[], bool] | None]:
         data: Any = self._data
-        for part in template.split("/"):
-            data = data[part]
+        try:
+            for part in template.split("/"):
+                data = data[part]
+            assert isinstance(data, str)
+        except (AssertionError, KeyError) as e:
+            raise jinja2.TemplateNotFound(template) from e
         return data, None, lambda: True  # type: ignore[return-value]
 
 
@@ -494,5 +503,5 @@ if __name__ == "__main__":
     template = env.get_template("icons.jinja")
     print(template.render())
     loader = FsSpecProtocolPathLoader()
-    result = loader.get_source(env, "github://phil65:mknodes@main/README.md")
+    result = loader.get_source(env, "github://phil65:mknodes@main/READMdE.md")
     print(repr(loader))
