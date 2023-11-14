@@ -250,6 +250,7 @@ ENV_GLOBALS = {
 }
 ENV_FILTERS = {
     "pformat": pprint.pformat,
+    "format_code": utils.format_code,
     "repr": repr,
     "zip": zip,
     "rstrip": str.rstrip,

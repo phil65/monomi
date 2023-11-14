@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator, Mapping
+from collections.abc import Callable, Iterable, Iterator, Mapping
 import functools
+import logging
 
 from typing import Any, TypeVar
 
+
+logger = logging.getLogger(__name__)
 
 ClassType = TypeVar("ClassType", bound=type)
 
@@ -62,3 +65,35 @@ def flatten_dict(dct: Mapping, sep: str = "/", parent_key: str = "") -> Mapping:
         else:
             items.append((new_key, v))
     return dict(items)
+
+
+@functools.lru_cache(maxsize=1)
+def _get_black_formatter() -> Callable[[str, int], str]:
+    try:
+        from black import InvalidInput, Mode, format_str
+    except ModuleNotFoundError:
+        logger.info("Formatting signatures requires Black to be installed.")
+        return lambda text, _: text
+
+    def formatter(code: str, line_length: int) -> str:
+        mode = Mode(line_length=line_length)
+        try:
+            return format_str(code, mode=mode)
+        except InvalidInput:
+            return code
+
+    return formatter
+
+
+def format_code(code: str, line_length: int = 100):
+    code = code.strip()
+    if len(code) < line_length:
+        return code
+    formatter = _get_black_formatter()
+    return formatter(code, line_length)
+
+
+if __name__ == "__main__":
+    code = "def test(sth, fsjkdalfjksdalfjsadk, fjskldjfkdsljf, fsdkjlafjkdsafj): pass"
+    result = format_code(code, line_length=50)
+    print(result)
