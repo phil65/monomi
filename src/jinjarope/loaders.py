@@ -113,7 +113,8 @@ class PackageLoader(LoaderMixin, jinja2.PackageLoader):
     ) -> None:
         """Instanciate a PackageLoader.
 
-        `package` can either be a `ModuleType` or a (dotted) module path.
+        Compared to the jinja2 equivalent, this loader also supports
+        `ModuleType`s and dotted module paths for the `package` argument.
 
         Arguments:
             package: The python package to create a loader for
@@ -322,7 +323,11 @@ class FsSpecFileSystemLoader(LoaderMixin, jinja2.BaseLoader):
         )
 
     def list_templates(self) -> list[str]:
-        return self.fs.ls(self.fs.root_marker)
+        return [
+            f"{path}{self.fs.sep}{f}" if path else f
+            for path, _dirs, files in self.fs.walk(self.fs.root_marker)
+            for f in files
+        ]
 
     def get_source(
         self,
@@ -468,10 +473,8 @@ def from_json(dct_or_list) -> jinja2.BaseLoader | None:
                     dct_copy = item.copy()
                     if dct_copy.pop("type") == kls.ID:  # type: ignore[attr-defined]
                         if kls.ID == "prefix":  # type: ignore[attr-defined]
-                            mapping = {
-                                k: from_json(v)
-                                for k, v in dct_copy.pop("mapping").items()
-                            }
+                            mapping = dct_copy.pop("mapping")
+                            mapping = {k: from_json(v) for k, v in mapping.items()}
                             instance = kls(mapping)  # type: ignore[call-arg]
                         else:
                             instance = kls(**dct_copy)
@@ -500,8 +503,8 @@ if __name__ == "__main__":
     loader = FsSpecFileSystemLoader("dir::github://phil65:mknodes@main/docs")
     env = Environment()
     env.loader = loader
-    template = env.get_template("icons.jinja")
-    print(template.render())
-    loader = FsSpecProtocolPathLoader()
-    result = loader.get_source(env, "github://phil65:mknodes@main/READMdE.md")
-    print(repr(loader))
+    # template = env.get_template("icons.jinja")
+    print(env.list_templates())
+    # loader = FsSpecProtocolPathLoader()
+    # result = loader.get_source(env, "github://phil65:mknodes@main/READMdE.md")
+    # print(repr(loader))
