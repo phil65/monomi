@@ -36,6 +36,34 @@ version_info = dict(
 )
 
 
+def html_link(link: str | None, text: str | None = None) -> str:
+    """Create a html link.
+
+    If link is empty string or None, just the text will get returned.
+
+    Arguments:
+        link: Target url
+        text: Text to show for the link
+    """
+    if not link:
+        return text or ""
+    return f'<a href="{link}">{text or link}</a>'
+
+
+def md_link(link: str | None, text: str | None = None) -> str:
+    """Create a markdown link.
+
+    If link is empty string or None, just the text will get returned.
+
+    Arguments:
+        link: Target url
+        text: Text to show for the link
+    """
+    if not link:
+        return text or ""
+    return f"[{text or link}]({link})"
+
+
 def serialize(data: Any, mode: Literal["yaml", "json", "ini", "toml"] | None) -> str:  # type: ignore[return]
     """Serialize given json-like object to given format.
 
@@ -294,6 +322,8 @@ ENV_GLOBALS = {
 ENV_FILTERS = {
     "pformat": pprint.pformat,
     "format_code": utils.format_code,
+    "html_link": html_link,
+    "md_link": md_link,
     "repr": repr,
     "zip": zip,
     "any": do_any,
