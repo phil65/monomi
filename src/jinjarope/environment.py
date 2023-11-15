@@ -84,6 +84,7 @@ class Environment(jinja2.Environment):
         ] = weakref.WeakValueDictionary()
         self.add_extension("jinja2.ext.loopcontrols")
         self.add_extension("jinja2.ext.do")
+        self.add_extension("jinjarope.requiredblock.RequiredBlock")
 
     def __contains__(self, template: str | os.PathLike) -> bool:
         """Check whether given template path exists."""
