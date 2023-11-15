@@ -36,7 +36,32 @@ version_info = dict(
 )
 
 
-def html_link(link: str | None, text: str | None = None) -> str:
+def wrap_in_elem(
+    text: str | None,
+    tag: str,
+    add_linebreaks: bool = False,
+    **kwargs,
+) -> str:
+    """Wrap given text in an HTML/XML tag (with attributes).
+
+    If text is empty, just return an empty string.
+
+    Arguments:
+        text: Text to wrap
+        tag: Tag to wrap text in
+        add_linebreaks: Adds a linebreak before and after the text
+        kwargs: additional key-value pairs to be inserted as attributes for tag.
+                Key strings will have "_" stripped from the end to allow using keywords.
+    """
+    if not text:
+        return ""
+    attrs = [f'{k.rstrip("_")}="{v}"' for k, v in kwargs.items()]
+    attr_str = (" " + " ".join(attrs)) if attrs else ""
+    nl = "\n" if add_linebreaks else ""
+    return f"<{tag}{attr_str}>{nl}{text}{nl}</{tag}>"
+
+
+def html_link(link: str | None, text: str | None = None, **kwargs) -> str:
     """Create a html link.
 
     If link is empty string or None, just the text will get returned.
@@ -44,10 +69,14 @@ def html_link(link: str | None, text: str | None = None) -> str:
     Arguments:
         link: Target url
         text: Text to show for the link
+        kwargs: additional key-value pairs to be inserted as attributes.
+                Key strings will have "_" stripped from the end to allow using keywords.
     """
     if not link:
         return text or ""
-    return f'<a href="{link}">{text or link}</a>'
+    attrs = [f'{k.rstrip("_")}="{v}"' for k, v in kwargs.items()]
+    attr_str = (" " + " ".join(attrs)) if attrs else ""
+    return f"<a href={link!r}{attr_str}>{text or link}</a>"
 
 
 def md_link(
@@ -330,6 +359,7 @@ ENV_FILTERS = {
     "format_code": utils.format_code,
     "html_link": html_link,
     "md_link": md_link,
+    "wrap_in_elem": wrap_in_elem,
     "repr": repr,
     "zip": zip,
     "any": do_any,
