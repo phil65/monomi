@@ -87,20 +87,45 @@ class Environment(jinja2.Environment):
         self.add_extension("jinjarope.requiredblock.RequiredBlock")
 
     def __contains__(self, template: str | os.PathLike) -> bool:
-        """Check whether given template path exists."""
+        """Check whether given template path exists.
+
+        Arguments:
+            template: The template path to check
+        """
         return pathlib.Path(template).as_posix() in self.list_templates()
 
     def __getitem__(self, val: str) -> jinja2.Template:
-        """Return a template by path."""
+        """Return a template by path.
+
+        val: The template path
+        """
         return self.get_template(val)
 
     @classmethod
     def register_globals(cls, fn: Callable) -> Callable:
+        """Decorator for collecting globals.
+
+        The decorated method will get executed everytime an environment gets
+        instanciated and should return a dictionary with additional globals for
+        the environment.
+
+        Arguments:
+            fn: The function to decorate
+        """
         cls._decorator_globals.append(fn)
         return fn
 
     @classmethod
     def register_filters(cls, fn: Callable) -> Callable:
+        """Decorator for collecting filters.
+
+        The decorated method will get executed everytime an environment gets
+        instanciated and should return a dictionary with additional filters for
+        the environment.
+
+        Arguments:
+            fn: The function to decorate
+        """
         cls._decorator_filters.append(fn)
         return fn
 
@@ -156,7 +181,11 @@ class Environment(jinja2.Environment):
         return cached
 
     def inherit_from(self, env: jinja2.Environment):
-        """Inherit complete configuration from another environment."""
+        """Inherit complete configuration from another environment.
+
+        Arguments:
+            env: The environment to inherit settings from
+        """
         self.__dict__.update(env.__dict__)
         self.linked_to = env
         self.overlayed = True

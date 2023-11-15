@@ -13,9 +13,7 @@ def is_number(value: Any) -> bool:
         fvalue = float(value)
     except (ValueError, TypeError):
         return False
-    if not math.isfinite(fvalue):
-        return False
-    return True
+    return math.isfinite(fvalue)
 
 
 def _is_list(value: Any) -> bool:
