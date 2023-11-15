@@ -192,6 +192,23 @@ def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     return false_val
 
 
+def do_any(seq: Sequence, attribute: str | None = None) -> bool:
+    """Check if at least one of the item in the sequence evaluates to true.
+
+    The `any` builtin as a filter for Jinja templates.
+
+    Arguments:
+        seq: An iterable object.
+        attribute: The attribute name to use on each object of the iterable.
+
+    Returns:
+        A boolean telling if any object of the iterable evaluated to True.
+    """
+    if attribute is None:
+        return any(seq)
+    return any(_[attribute] for _ in seq)
+
+
 def resolve(name: str, module: str | None = None):
     """Resolve ``name`` to a Python object via imports / attribute lookups.
 
@@ -253,6 +270,7 @@ ENV_FILTERS = {
     "format_code": utils.format_code,
     "repr": repr,
     "zip": zip,
+    "any": do_any,
     "rstrip": str.rstrip,
     "lstrip": str.lstrip,
     "removesuffix": str.removesuffix,
