@@ -50,7 +50,11 @@ def html_link(link: str | None, text: str | None = None) -> str:
     return f'<a href="{link}">{text or link}</a>'
 
 
-def md_link(link: str | None, text: str | None = None) -> str:
+def md_link(
+    link: str | None,
+    text: str | None = None,
+    tooltip: str | None = None,
+) -> str:
     """Create a markdown link.
 
     If link is empty string or None, just the text will get returned.
@@ -58,10 +62,12 @@ def md_link(link: str | None, text: str | None = None) -> str:
     Arguments:
         link: Target url
         text: Text to show for the link
+        tooltip: Optional tooltip
     """
     if not link:
         return text or ""
-    return f"[{text or link}]({link})"
+    tt = f" '{tooltip}'" if tooltip else ""
+    return f"[{text or link}]({link}{tt})"
 
 
 def serialize(data: Any, mode: Literal["yaml", "json", "ini", "toml"] | None) -> str:  # type: ignore[return]
