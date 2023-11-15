@@ -37,6 +37,12 @@ version_info = dict(
 
 
 def serialize(data: Any, mode: Literal["yaml", "json", "ini", "toml"] | None) -> str:  # type: ignore[return]
+    """Serialize given json-like object to given format.
+
+    Arguments:
+        data: The data to serialize
+        mode: The serialization mode
+    """
     match mode:
         case None | "yaml":
             import yaml
@@ -61,6 +67,11 @@ def serialize(data: Any, mode: Literal["yaml", "json", "ini", "toml"] | None) ->
 
 @functools.cache
 def load_file_cached(path: str | os.PathLike) -> str:
+    """Return the str-content of file at given path.
+
+    Arguments:
+        path: The path to get str content from
+    """
     if "://" in str(path):
         return utils.fsspec_get(str(path))
     return pathlib.Path(path).read_text(encoding="utf-8")
@@ -70,6 +81,12 @@ def get_output_from_call(
     call: str | Sequence[str],
     cwd: str | os.PathLike | None,
 ) -> str | None:
+    """Execute a system call and return its output as a string.
+
+    Arguments:
+        call: The system call to make
+        cwd: The working directory for the call
+    """
     import subprocess
 
     if not isinstance(call, str):
@@ -109,6 +126,15 @@ def format_js_map(mapping: dict | str, indent: int = 4) -> str:
                 rows.append(f"{indent_str}{k}: {v!r},")
     row_str = "\n" + "\n".join(rows) + "\n"
     return f"{{{row_str}}}"
+
+
+def svg_to_data_uri(svg: str) -> str:
+    """Wrap svg as data URL.
+
+    Arguments:
+        svg: The svg to wrap into a data URL
+    """
+    return f"url('data:image/svg+xml;charset=utf-8,{ svg }')"
 
 
 def format_css_rule(dct: Mapping) -> str:
@@ -293,6 +319,7 @@ ENV_FILTERS = {
     "path_join": os.path.join,
     "format_js_map": format_js_map,
     "format_css_rule": format_css_rule,
+    "svg_to_data_uri": svg_to_data_uri,
     "check_output": get_output_from_call,
     "getenv": os.getenv,
 }
