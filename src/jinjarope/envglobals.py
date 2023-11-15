@@ -61,14 +61,14 @@ def wrap_in_elem(
     return f"<{tag}{attr_str}>{nl}{text}{nl}</{tag}>"
 
 
-def html_link(link: str | None, text: str | None = None, **kwargs) -> str:
+def html_link(text: str | None = None, link: str | None = None, **kwargs) -> str:
     """Create a html link.
 
     If link is empty string or None, just the text will get returned.
 
     Arguments:
-        link: Target url
         text: Text to show for the link
+        link: Target url
         kwargs: additional key-value pairs to be inserted as attributes.
                 Key strings will have "_" stripped from the end to allow using keywords.
     """
@@ -80,8 +80,8 @@ def html_link(link: str | None, text: str | None = None, **kwargs) -> str:
 
 
 def md_link(
-    link: str | None,
     text: str | None = None,
+    link: str | None = None,
     tooltip: str | None = None,
 ) -> str:
     """Create a markdown link.
@@ -89,8 +89,8 @@ def md_link(
     If link is empty string or None, just the text will get returned.
 
     Arguments:
-        link: Target url
         text: Text to show for the link
+        link: Target url
         tooltip: Optional tooltip
     """
     if not link:
