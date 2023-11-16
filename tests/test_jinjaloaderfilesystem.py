@@ -28,3 +28,10 @@ def test_jinja_loader_file_system():
     assert fs.cat("about.html") == b"About"
     with pytest.raises(FileNotFoundError):
         fs.cat("nonexistent.html")
+    with pytest.raises(FileNotFoundError):
+        fs.ls("not-existing-dir")
+    fs.env = jinja2.Environment()
+    with pytest.raises(FileNotFoundError):
+        fs.ls("no-loader-set")
+    with pytest.raises(FileNotFoundError):
+        fs.open("no-loader-set")

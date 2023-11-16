@@ -32,7 +32,7 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
     def ls(self, path: str, detail: bool = True, **kwargs) -> list:
         """Implementation for AbstractFileSystem."""
         if not self.env.loader:
-            return []
+            raise FileNotFoundError(path)
         paths = self.env.loader.list_templates()
         path = pathlib.Path(path).as_posix().strip("/")
         if path in {"", "/", "."}:
@@ -69,7 +69,7 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
     def _open(self, path: str, mode="rb", **kwargs) -> io.BytesIO:
         if not self.env.loader:
             msg = "Environment has no loader set"
-            raise RuntimeError(msg)
+            raise FileNotFoundError(msg)
         try:
             src, _filename, _uptodate = self.env.loader.get_source(self.env, path)
             return io.BytesIO(src.encode())
