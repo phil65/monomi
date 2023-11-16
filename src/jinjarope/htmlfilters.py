@@ -4,12 +4,14 @@ from collections.abc import Mapping
 import json
 import re
 
+from typing import Any
+
 
 def wrap_in_elem(
     text: str | None,
     tag: str,
     add_linebreaks: bool = False,
-    **kwargs,
+    **kwargs: Any,
 ) -> str:
     """Wrap given text in an HTML/XML tag (with attributes).
 
@@ -30,7 +32,7 @@ def wrap_in_elem(
     return f"<{tag}{attr_str}>{nl}{text}{nl}</{tag}>"
 
 
-def html_link(text: str | None = None, link: str | None = None, **kwargs) -> str:
+def html_link(text: str | None = None, link: str | None = None, **kwargs: Any) -> str:
     """Create a html link.
 
     If link is empty string or None, just the text will get returned.
@@ -86,6 +88,8 @@ def svg_to_data_uri(svg: str) -> str:
 
 def clean_svg(text: str) -> str:
     """Strip off unwanted stuff from svg text which might be added by external libs.
+
+    Removes xml headers and doctype declarations.
 
     Arguments:
         text: The text to cleanup / filter
