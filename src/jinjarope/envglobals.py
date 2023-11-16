@@ -20,7 +20,7 @@ import sys
 import tomllib
 from typing import Any, Literal
 
-from jinjarope import envtests, htmlfilters, iterfilters, utils
+from jinjarope import envtests, htmlfilters, iterfilters, mdfilters, regexfilters, utils
 
 
 logger = logging.getLogger(__name__)
@@ -105,36 +105,6 @@ def add(text, prefix: str = "", suffix: str = ""):
     return f"{prefix}{text}{suffix}"
 
 
-def regex_replace(
-    value: str = "",
-    pattern: str = "",
-    replacement: str = "",
-    ignorecase: bool = False,
-    multiline: bool = False,
-    count: int = 0,
-):
-    """Perform a `re.sub` returning a string.
-
-    Arguments:
-        value: The value to search-replace.
-        pattern: The regex pattern to use
-        replacement: The replacement pattern to use
-        ignorecase: Whether to ignore casing
-        multiline: Whether to do a multiline regex search
-        count: Amount of maximum substitutes.
-    """
-    import re
-
-    flags = 0
-    if ignorecase:
-        flags |= re.I
-    if multiline:
-        flags |= re.M
-    pat = re.compile(pattern, flags=flags)
-    output, _subs = pat.subn(replacement, value, count=count)
-    return output
-
-
 def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     """Value ? true_val : false_val.
 
@@ -212,9 +182,13 @@ ENV_FILTERS = {
     "repr": repr,
     "pformat": pprint.pformat,
     "format_code": utils.format_code,
+    # Markdown filters
+    "md_link": mdfilters.md_link,
+    "md_escape": mdfilters.md_escape,
+    "md_style": mdfilters.md_style,
+    "extract_header_section": mdfilters.extract_header_section,
     # HTML filters
     "html_link": htmlfilters.html_link,
-    "md_link": htmlfilters.md_link,
     "wrap_in_elem": htmlfilters.wrap_in_elem,
     "format_js_map": htmlfilters.format_js_map,
     "format_css_rule": htmlfilters.format_css_rule,
@@ -232,7 +206,11 @@ ENV_FILTERS = {
     "lstrip": str.lstrip,
     "removesuffix": str.removesuffix,
     "removeprefix": str.removeprefix,
-    "regex_replace": regex_replace,
+    # Regex filters
+    "re_replace": regexfilters.re_replace,
+    "re_findall": regexfilters.re_findall,
+    "re_search": regexfilters.re_search,
+    "re_escape": regexfilters.re_escape,
     # serialization filters
     "dump_json": json.dumps,
     "load_json": json.loads,

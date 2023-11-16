@@ -48,26 +48,6 @@ def html_link(text: str | None = None, link: str | None = None, **kwargs) -> str
     return f"<a href={link!r}{attr_str}>{text or link}</a>"
 
 
-def md_link(
-    text: str | None = None,
-    link: str | None = None,
-    tooltip: str | None = None,
-) -> str:
-    """Create a markdown link.
-
-    If link is empty string or None, just the text will get returned.
-
-    Arguments:
-        text: Text to show for the link
-        link: Target url
-        tooltip: Optional tooltip
-    """
-    if not link:
-        return text or ""
-    tt = f" '{tooltip}'" if tooltip else ""
-    return f"[{text or link}]({link}{tt})"
-
-
 def format_js_map(mapping: dict | str, indent: int = 4) -> str:
     """Return JS map str for given dictionary.
 

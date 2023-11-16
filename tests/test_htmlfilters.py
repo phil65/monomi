@@ -31,24 +31,6 @@ def test_html_link():
     assert htmlfilters.html_link(None, None) == ""
 
 
-def test_md_link():
-    assert (
-        htmlfilters.md_link("GitHub", "http://github.com")
-        == "[GitHub](http://github.com)"
-    )
-    assert (
-        htmlfilters.md_link("GitHub", "http://github.com", "GitHub homepage")
-        == "[GitHub](http://github.com 'GitHub homepage')"
-    )
-    assert htmlfilters.md_link("GitHub", "") == "GitHub"
-    assert htmlfilters.md_link("GitHub", None) == "GitHub"
-    assert (
-        htmlfilters.md_link(None, "http://github.com")
-        == "[http://github.com](http://github.com)"
-    )
-    assert htmlfilters.md_link(None, None) == ""
-
-
 def test_format_js_map():
     assert htmlfilters.format_js_map({"key": "value"}) == "{\n    key: 'value',\n}"
     assert htmlfilters.format_js_map('{"key": "value"}') == "{\n    key: 'value',\n}"
