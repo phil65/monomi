@@ -333,12 +333,10 @@ class Environment(jinja2.Environment):
         Arguments:
             kwargs: Globals to set
         """
-        temp = {}
-        for k, v in kwargs.items():
-            temp[k] = self.globals.get(k)
-            self.globals[k] = v
+        temp = self.globals.copy()
+        self.globals.update(kwargs)
         yield
-        self.globals.update(temp)
+        self.globals = temp
 
     def setup_loader(
         self,
