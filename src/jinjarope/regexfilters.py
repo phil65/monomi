@@ -15,7 +15,7 @@ def re_replace(
     ignorecase: bool = False,
     multiline: bool = False,
     count: int = 0,
-):
+) -> str:
     """Perform a `re.sub` returning a string.
 
     Filter adapted from Ansible
@@ -44,7 +44,7 @@ def re_findall(
     *,
     ignorecase: bool = False,
     multiline: bool = False,
-):
+) -> list:
     """Perform re.findall and return the list of matches.
 
     Filter adapted from Ansible
@@ -66,10 +66,10 @@ def re_findall(
 def re_search(
     value: str,
     regex: str,
-    *args,
+    *args: str,
     ignorecase: bool = False,
     multiline: bool = False,
-):
+) -> list | None | str:
     """Perform re.search and return the list of matches or a backref.
 
     Filter adapted from Ansible
@@ -105,7 +105,7 @@ def re_search(
     return None
 
 
-def re_escape(string: str, re_type: Literal["python", "posix_basic"] = "python"):
+def re_escape(string: str, re_type: Literal["python", "posix_basic"] = "python") -> str:
     """Escape all regular expressions special characters from STRING.
 
     Filter adapted from Ansible
