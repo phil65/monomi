@@ -169,9 +169,14 @@ ENV_GLOBALS = {
 ENV_FILTERS = {
     # Format filters
     "repr": repr,
-    "slugify": utils.slugify,
+    "slugify": textfilters.slugify,
     "pformat": pprint.pformat,
-    "format_code": utils.format_code,
+    "format_code": textfilters.format_code,
+    # Text modification filters
+    "rstrip": textfilters.rstrip,
+    "lstrip": textfilters.lstrip,
+    "removesuffix": textfilters.removesuffix,
+    "removeprefix": textfilters.removeprefix,
     # Markdown filters
     "md_link": mdfilters.md_link,
     "md_escape": mdfilters.md_escape,
@@ -191,11 +196,6 @@ ENV_FILTERS = {
     "pairwise": iterfilters.pairwise,
     "zip": iterfilters.do_zip,
     "any": iterfilters.do_any,
-    # Text modification filters
-    "rstrip": textfilters.rstrip,
-    "lstrip": textfilters.lstrip,
-    "removesuffix": textfilters.removesuffix,
-    "removeprefix": textfilters.removeprefix,
     # Regex filters
     "re_replace": regexfilters.re_replace,
     "re_findall": regexfilters.re_findall,
