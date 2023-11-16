@@ -77,25 +77,38 @@ def load_file_cached(path: str | os.PathLike) -> str:
     return pathlib.Path(path).read_text(encoding="utf-8")
 
 
+_cache: dict[str, str] = {}
+
+
 def get_output_from_call(
     call: str | Sequence[str],
     cwd: str | os.PathLike | None,
+    use_cache: bool = False,
 ) -> str | None:
     """Execute a system call and return its output as a string.
 
     Arguments:
         call: The system call to make
         cwd: The working directory for the call
+        use_cache: Whether to cache the output of calls
     """
+    import pathlib
     import subprocess
 
+    if not call:
+        return None
     if not isinstance(call, str):
         call = " ".join(call)
+    key = pathlib.Path(cwd or ".").absolute().as_posix() + call
+    if key in _cache and use_cache:
+        return _cache[key]
     msg = f"Executing {call!r}..."
     logger.info(msg)
     try:
         pipe = subprocess.PIPE
-        return subprocess.run(call, stdout=pipe, text=True, shell=True, cwd=cwd).stdout
+        text = subprocess.run(call, stdout=pipe, text=True, shell=True, cwd=cwd).stdout
+        _cache[key] = text
+        return text  # noqa: TRY300
     except subprocess.CalledProcessError:
         logger.warning("Executing %s failed", call)
         return None
