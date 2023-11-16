@@ -79,6 +79,28 @@ def is_protocol_url(string: str) -> bool:
     return "://" in string and "\n" not in string
 
 
+def is_python_keyword(string: str) -> bool:
+    """Return true when given string represents a python keyword.
+
+    Arguments:
+        string: The string to check
+    """
+    import keyword
+
+    return keyword.iskeyword(string)
+
+
+def is_python_builtin(string: str) -> bool:
+    """Return true when given string represents a python builtin.
+
+    Arguments:
+        string: The string to check
+    """
+    import builtins
+
+    return string in dir(builtins)
+
+
 def is_fsspec_url(string: str | os.PathLike[str]) -> bool:
     """Returns true if the given URL looks like an fsspec protocol, except http/https.
 

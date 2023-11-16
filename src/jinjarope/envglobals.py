@@ -261,6 +261,8 @@ ENV_TESTS = {
     "http_url": envtests.is_http_url,
     "fsspec_url": envtests.is_fsspec_url,
     "url": envtests.is_protocol_url,
+    "python_keyword": envtests.is_python_keyword,
+    "python_builtin": envtests.is_python_builtin,
     # "match": envtests.regex_match,
     # "search": envtests.regex_search,
     "contains": operator.contains,
