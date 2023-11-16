@@ -229,6 +229,8 @@ ENV_TESTS = {
     "set": envtests._is_set,
     "tuple": envtests._is_tuple,
     "dict": envtests._is_dict,
+    "callable": envtests._is_callable,
+    "type": envtests._is_type,
     "datetime": envtests._is_datetime,
     "string_like": envtests._is_string_like,
     "subclass": is_subclass,

@@ -21,6 +21,16 @@ def is_number(value: Any) -> bool:
     return math.isfinite(fvalue)
 
 
+def _is_type(value: Any) -> bool:
+    """Return whether a value is a type."""
+    return isinstance(value, type)
+
+
+def _is_callable(value: Any) -> bool:
+    """Return whether a value is callable."""
+    return callable(value)
+
+
 def _is_list(value: Any) -> bool:
     """Return whether a value is a list."""
     return isinstance(value, list)
