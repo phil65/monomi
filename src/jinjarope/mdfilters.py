@@ -83,6 +83,8 @@ def md_style(
         code: Whether styled text should styled as (inline) code
         align: Optional text alignment
     """
+    if not text:
+        return text or ""
     if size:
         text = f"<font size='{size}'>{text}</font>"
     if bold:
