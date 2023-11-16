@@ -1,3 +1,5 @@
+# Format
+
 [filters.repr]
 fn = "repr"
 group = "format"
@@ -34,6 +36,8 @@ template = """
 {{ "AVeryLargeCodeBlock(a_parameter=3, another_parameter=4, abc=False)" | format_code }}
 """
 
+# Markdown
+
 [filters.md_link]
 fn = "jinjarope.mdfilters.md_link"
 group = "markdown"
@@ -69,6 +73,8 @@ group = "markdown"
 template = """
 {{ "# Section 1\nABC\n# Section 2\nDEF" | extract_header_section("Section 2") }}
 """
+
+# HTML
 
 [filters.html_link]
 fn = "jinjarope.htmlfilters.html_link"
@@ -123,6 +129,8 @@ group = "html"
 template = """
 {{ '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>\n<body></body>' | clean_svg }}
 """
+
+# Itertools
 
 [filters.batched]
 fn = "jinjarope.iterfilters.batched"
@@ -184,6 +192,8 @@ template = """
 {{ [True, False] | any }}
 """
 
+# Text
+
 [filters.rstrip]
 fn = "jinjarope.textfilters.rstrip"
 group = "text"
@@ -219,6 +229,8 @@ group = "text"
 template = """
 {{ "ccca" | removeprefix("c") }}
 """
+
+# Regex
 
 [filters.re_replace]
 fn = "jinjarope.regexfilters.re_replace"
@@ -256,6 +268,8 @@ template = """
 {{ "[abc]" | re_escape }}
 """
 
+# Serialize
+
 [filters.dump_json]
 fn = "json.dumps"
 group = "serialize"
@@ -291,6 +305,8 @@ group = "serialize"
 template = """
 {{ {"a": "b"} | serialize("toml") }}
 """
+
+# Misc
 
 [filters.add]
 fn = "jinjarope.envglobals.add"
