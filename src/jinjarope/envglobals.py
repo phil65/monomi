@@ -246,6 +246,7 @@ ENV_TESTS = {
     "subclass": is_subclass,
     "instance": is_instance,
     "http_url": envtests.is_http_url,
+    "fsspec_url": envtests.is_fsspec_url,
     "url": envtests.is_protocol_url,
     # "match": envtests.regex_match,
     # "search": envtests.regex_search,

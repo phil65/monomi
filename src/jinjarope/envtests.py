@@ -3,8 +3,13 @@ from __future__ import annotations
 from collections.abc import Sequence
 import datetime
 import math
+import os
+import re
 
 from typing import Any
+
+
+_RFC_3986_PATTERN = re.compile(r"^[A-Za-z][A-Za-z0-9+\-+.]*://")
 
 
 def is_number(value: Any) -> bool:
@@ -72,3 +77,16 @@ def is_protocol_url(string: str) -> bool:
         string: The string to check
     """
     return "://" in string and "\n" not in string
+
+
+def is_fsspec_url(string: str | os.PathLike[str]) -> bool:
+    """Returns true if the given URL looks like an fsspec protocol, except http/https.
+
+    Arguments:
+        string: The URL to check
+    """
+    return (
+        isinstance(string, str)
+        and bool(_RFC_3986_PATTERN.match(string))
+        and not string.startswith(("http://", "https://"))
+    )
