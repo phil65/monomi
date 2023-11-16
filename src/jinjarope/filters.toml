@@ -36,6 +36,15 @@ template = """
 {{ "AVeryLargeCodeBlock(a_parameter=3, another_parameter=4, abc=False)" | format_code }}
 """
 
+[filters.format_signature]
+fn = "jinjarope.textfilters.format_signature"
+group = "format"
+
+[filters.format_signature.examples.basic]
+template = """
+{{ "".removesuffix | format_signature }}
+"""
+
 # Markdown
 
 [filters.md_link]

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections.abc import Callable
+import inspect
 import os
 
 from jinjarope import utils
@@ -57,6 +59,22 @@ def format_code(code: str, line_length: int = 100):
         return code
     formatter = utils._get_black_formatter()
     return formatter(code, line_length)
+
+
+def format_signature(
+    fn: Callable,
+    follow_wrapped: bool = True,
+    eval_str: bool = False,
+) -> str:
+    """Format signature of a callable.
+
+    Arguments:
+        fn: The callable to format the signature from
+        follow_wrapped: Whether to unwrap the callable
+        eval_str: Un-stringize annotations using eval
+    """
+    sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=eval_str)
+    return str(sig)
 
 
 def slugify(text: str | os.PathLike) -> str:
