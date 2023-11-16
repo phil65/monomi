@@ -20,7 +20,15 @@ import sys
 import tomllib
 from typing import Any, Literal
 
-from jinjarope import envtests, htmlfilters, iterfilters, mdfilters, regexfilters, utils
+from jinjarope import (
+    envtests,
+    htmlfilters,
+    iterfilters,
+    jinjafile,
+    mdfilters,
+    regexfilters,
+    utils,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -136,50 +144,15 @@ def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     return false_val
 
 
-def resolve(name: str, module: str | None = None):
-    """Resolve ``name`` to a Python object via imports / attribute lookups.
-
-    If ``module`` is None, ``name`` must be "absolute" (no leading dots).
-
-    If ``module`` is not None, and ``name`` is "relative" (has leading dots),
-    the object will be found by navigating relative to ``module``.
-
-    Returns the object, if found.  If not, propagates the error.
-    """
-    names = name.split(".")
-    if not names[0]:
-        if module is None:
-            msg = "relative name without base module"
-            raise ValueError(msg)
-        modules = module.split(".")
-        names.pop(0)
-        while not name[0]:
-            modules.pop()
-            names.pop(0)
-        names = modules + names
-
-    used = names.pop(0)
-    found = importlib.import_module(used)
-    for n in names:
-        used += "." + n
-        try:
-            found = getattr(found, n)
-        except AttributeError:
-            importlib.import_module(used)
-            found = getattr(found, n)
-
-    return found
-
-
 def is_instance(obj: object, typ: str | type) -> bool:
-    kls = resolve(typ) if isinstance(typ, str) else typ
+    kls = utils.resolve(typ) if isinstance(typ, str) else typ
     if not isinstance(kls, type):
         raise TypeError(kls)
     return isinstance(obj, kls)
 
 
 def is_subclass(obj: type, typ: str | type) -> bool:
-    kls = resolve(typ) if isinstance(typ, str) else typ
+    kls = utils.resolve(typ) if isinstance(typ, str) else typ
     if not isinstance(kls, type):
         raise TypeError(kls)
     return issubclass(obj, kls)
@@ -191,6 +164,7 @@ ENV_GLOBALS = {
     "utcnow": datetime.datetime.utcnow,
     "importlib": importlib,
     "environment": version_info,
+    "JinjaFile": jinjafile.JinjaFile,
 }
 ENV_FILTERS = {
     # Format filters

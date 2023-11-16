@@ -2,11 +2,15 @@ from __future__ import annotations
 
 from collections.abc import Callable, Iterator, Mapping
 import functools
+import importlib
 
 from importlib.metadata import EntryPoint, entry_points
 import logging
 import os
+import types
 from typing import Any, TypeVar
+
+from jinjarope import envtests
 
 
 logger = logging.getLogger(__name__)
@@ -128,6 +132,46 @@ def slugify(text: str | os.PathLike) -> str:
     text = str(text).lower()
     text = re.sub("[^0-9a-zA-Z_.]", "_", text)
     return re.sub("^[^0-9a-zA-Z_#]+", "", text)
+
+
+@functools.cache
+def resolve(name: str, module: str | None = None) -> types.ModuleType | Callable:
+    """Resolve ``name`` to a Python object via imports / attribute lookups.
+
+    If ``module`` is None, ``name`` must be "absolute" (no leading dots).
+
+    If ``module`` is not None, and ``name`` is "relative" (has leading dots),
+    the object will be found by navigating relative to ``module``.
+
+    Returns the object, if found.  If not, propagates the error.
+    """
+    names = name.split(".")
+    if not names[0]:
+        if module is None:
+            msg = "relative name without base module"
+            raise ValueError(msg)
+        modules = module.split(".")
+        names.pop(0)
+        while not name[0]:
+            modules.pop()
+            names.pop(0)
+        names = modules + names
+
+    used = names.pop(0)
+    if envtests.is_python_builtin(used):
+        import builtins
+
+        return getattr(builtins, used)
+    found = importlib.import_module(used)
+    for n in names:
+        used += "." + n
+        try:
+            found = getattr(found, n)
+        except AttributeError:
+            importlib.import_module(used)
+            found = getattr(found, n)
+
+    return found
 
 
 @functools.cache
