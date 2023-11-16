@@ -7,7 +7,7 @@ import types
 
 import jinja2
 
-from jinjarope import loaders, utils
+from jinjarope import fsspecloaders, loaders, utils
 
 
 class LoaderRegistry:
@@ -15,13 +15,13 @@ class LoaderRegistry:
 
     def __init__(self) -> None:
         self.fs_loaders: dict[str, loaders.FileSystemLoader] = {}
-        self.fsspec_loaders: dict[str, loaders.FsSpecFileSystemLoader] = {}
+        self.fsspec_loaders: dict[str, fsspecloaders.FsSpecFileSystemLoader] = {}
         self.package_loaders: dict[str, loaders.PackageLoader] = {}
 
     def by_path(
         self,
         path: str | os.PathLike,
-    ) -> loaders.FileSystemLoader | loaders.FsSpecFileSystemLoader:
+    ) -> loaders.FileSystemLoader | fsspecloaders.FsSpecFileSystemLoader:
         """Convenience method to get a suiting loader for given path.
 
         Return a FsSpec loader for protocol-like paths or else a FileSystem loader.
@@ -33,7 +33,7 @@ class LoaderRegistry:
             return self.get_fsspec_loader(str(path))
         return self.get_filesystem_loader(path)
 
-    def get_fsspec_loader(self, path: str) -> loaders.FsSpecFileSystemLoader:
+    def get_fsspec_loader(self, path: str) -> fsspecloaders.FsSpecFileSystemLoader:
         """Return a FsSpec loader for given path from registry.
 
         If the loader does not exist yet, create and cache it.
@@ -43,7 +43,7 @@ class LoaderRegistry:
         """
         if path in self.fsspec_loaders:
             return self.fsspec_loaders[path]
-        loader = loaders.FsSpecFileSystemLoader(path)
+        loader = fsspecloaders.FsSpecFileSystemLoader(path)
         self.fsspec_loaders[path] = loader
         return loader
 
@@ -120,7 +120,7 @@ class LoaderRegistry:
         if static:
             loader |= loaders.DictLoader(static)
         if fsspec_paths:
-            loader |= loaders.FsSpecProtocolPathLoader()
+            loader |= fsspecloaders.FsSpecProtocolPathLoader()
         return loader
 
 

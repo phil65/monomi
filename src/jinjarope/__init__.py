@@ -5,8 +5,6 @@ from .environment import BlockNotFoundError, Environment
 from .loaders import (
     LoaderMixin,
     FileSystemLoader,
-    FsSpecFileSystemLoader,
-    FsSpecProtocolPathLoader,
     ChoiceLoader,
     ModuleLoader,
     NestedDictLoader,
@@ -15,6 +13,10 @@ from .loaders import (
     FunctionLoader,
     PrefixLoader,
     DictLoader,
+)
+from .fsspecloaders import (
+    FsSpecFileSystemLoader,
+    FsSpecProtocolPathLoader,
 )
 from .loaderregistry import LoaderRegistry
 from . import utils
