@@ -54,14 +54,14 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
         if detail:
             items = [
                 {
-                    "name": i,
+                    "name": pathlib.Path(i).name,
                     "type": "file" if "." in pathlib.Path(i).name else "directory",
                 }
                 for i in paths
                 if i.rsplit("/", 1)[0] == path
             ]
         else:
-            items = [i for i in paths if i.rsplit("/", 1)[0] == path]
+            items = [pathlib.Path(i).name for i in paths if i.rsplit("/", 1)[0] == path]
         if not items:
             raise FileNotFoundError(path)
         return items
