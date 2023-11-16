@@ -40,8 +40,8 @@ dependencies = [
 
 [tool.hatch.envs.default.scripts]
 test = "pytest -vv"
-test-cov-xml = "pytest --cov-report=xml"
-test-cov-html = "pytest --cov-report=html"
+test-cov-xml = "pytest --cov-report=xml --cov jinjarope"
+test-cov-html = "pytest --cov-report=html --cov jinjarope"
 lint = [
   "hatch run ruff --fix .",
   "hatch run ruff format .",
