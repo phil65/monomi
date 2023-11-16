@@ -70,8 +70,11 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
         if not self.env.loader:
             msg = "Environment has no loader set"
             raise RuntimeError(msg)
-        src, _filename, _uptodate = self.env.loader.get_source(self.env, path)
-        return io.BytesIO(src.encode())
+        try:
+            src, _filename, _uptodate = self.env.loader.get_source(self.env, path)
+            return io.BytesIO(src.encode())
+        except jinja2.TemplateNotFound as e:
+            raise FileNotFoundError(path) from e
 
 
 if __name__ == "__main__":
