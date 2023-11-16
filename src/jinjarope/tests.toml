@@ -1,0 +1,160 @@
+[tests.number]
+fn = "jinjarope.envtests.is_number"
+group = "type"
+[tests.number.examples.basic]
+template = """
+{% if 5 is number %}
+True!
+{% endif %}
+"""
+
+[tests.list]
+fn = "jinjarope.envtests._is_list"
+group = "type"
+[tests.list.examples.basic]
+template = """
+{% if [] is list %}
+True!
+{% endif %}
+"""
+
+[tests.set]
+fn = "jinjarope.envtests._is_set"
+group = "type"
+[tests.set.examples.basic]
+template = """
+{% if [] is set %}
+True!
+{% endif %}
+"""
+
+[tests.tuple]
+fn = "jinjarope.envtests._is_tuple"
+group = "type"
+[tests.tuple.examples.basic]
+template = """
+{% if () is tuple %}
+True!
+{% endif %}
+"""
+
+[tests.dict]
+fn = "jinjarope.envtests._is_dict"
+group = "type"
+[tests.dict.examples.basic]
+template = """
+{% if {"a": "b"} is dict %}
+True!
+{% endif %}
+"""
+
+[tests.callable]
+fn = "jinjarope.envtests._is_callable"
+group = "type"
+[tests.callable.examples.basic]
+template = """
+{% if zip is callable %}
+True!
+{% endif %}
+"""
+
+[tests.type]
+fn = "jinjarope.envtests._is_type"
+group = "type"
+[tests.type.examples.basic]
+template = """
+{% if zip is type %}
+True!
+{% endif %}
+"""
+
+[tests.datetime]
+fn = "jinjarope.envtests._is_datetime"
+group = "type"
+[tests.datetime.examples.basic]
+template = """
+{% if "a" is datetime %}
+True!
+{% endif %}
+"""
+
+[tests.string_like]
+fn = "jinjarope.envtests._is_string_like"
+group = "type"
+[tests.string_like.examples.basic]
+template = """
+{% if "abc" is string_like %}
+True!
+{% endif %}
+"""
+
+[tests.subclass]
+fn = "jinjarope.envglobals.is_subclass"
+group = "type"
+[tests.subclass.examples.basic]
+template = """
+{% if JinjaFile is subclass("dict") %}
+True!
+{% endif %}
+"""
+
+[tests.instance]
+fn = "jinjarope.envglobals.is_instance"
+group = "type"
+[tests.instance.examples.basic]
+template = """
+{% if {"a": "b"} is instance("dict") %}
+True!
+{% endif %}
+"""
+
+[tests.http_url]
+fn = "jinjarope.envtests.is_http_url"
+group = "url"
+[tests.http_url.examples.basic]
+template = """
+{% if "http://some.url" is http_url %}
+True!
+{% endif %}
+"""
+
+[tests.fsspec_url]
+fn = "jinjarope.envtests.is_fsspec_url"
+group = "url"
+[tests.fsspec_url.examples.basic]
+template = """
+{% if "github://some.path" is fsspec_url %}
+True!
+{% endif %}
+"""
+
+[tests.url]
+fn = "jinjarope.envtests.is_protocol_url"
+group = "url"
+[tests.url.examples.basic]
+template = """
+{% if "abc://" is url %}
+True!
+{% endif %}
+"""
+
+[tests.python_keyword]
+fn = "jinjarope.envtests.is_python_keyword"
+group = "python"
+[tests.python_keyword.examples.basic]
+template = """
+{% if "for" is python_keyword %}
+True!
+{% endif %}
+"""
+
+[tests.python_builtin]
+fn = "jinjarope.envtests.is_python_builtin"
+group = "python"
+[tests.python_builtin.examples.basic]
+template = """
+{% if "repr" is python_builtin %}
+True!
+{% endif %}
+"""
+

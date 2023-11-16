@@ -70,8 +70,10 @@ class Environment(jinja2.Environment):
         file = jinjafile.JinjaFile("src/jinjarope/filters.toml")
         dct = file.get_filters_dict()
         self.filters.update(dct)
+        file = jinjafile.JinjaFile("src/jinjarope/tests.toml")
+        dct = file.get_tests_dict()
+        self.tests.update(dct)
         self.globals.update(envglobals.ENV_GLOBALS)
-        self.tests.update(envglobals.ENV_TESTS)
         for fn in self._decorator_filters:
             self.filters.update(fn())
         for fn in self._decorator_globals:

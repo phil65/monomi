@@ -10,7 +10,6 @@ from importlib import metadata
 import io
 import json
 import logging
-import operator
 import os
 import pathlib
 import platform
@@ -20,7 +19,6 @@ import tomllib
 from typing import Any, Literal
 
 from jinjarope import (
-    envtests,
     htmlfilters,
     iterfilters,
     jinjafile,
@@ -220,27 +218,4 @@ ENV_FILTERS = {
     "path_join": os.path.join,
     "check_output": get_output_from_call,
     "getenv": os.getenv,
-}
-
-
-ENV_TESTS = {
-    "is_number": envtests.is_number,
-    "list": envtests._is_list,
-    "set": envtests._is_set,
-    "tuple": envtests._is_tuple,
-    "dict": envtests._is_dict,
-    "callable": envtests._is_callable,
-    "type": envtests._is_type,
-    "datetime": envtests._is_datetime,
-    "string_like": envtests._is_string_like,
-    "subclass": is_subclass,
-    "instance": is_instance,
-    "http_url": envtests.is_http_url,
-    "fsspec_url": envtests.is_fsspec_url,
-    "url": envtests.is_protocol_url,
-    "python_keyword": envtests.is_python_keyword,
-    "python_builtin": envtests.is_python_builtin,
-    # "match": envtests.regex_match,
-    # "search": envtests.regex_search,
-    "contains": operator.contains,
 }

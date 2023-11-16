@@ -424,3 +424,39 @@ group = "misc"
 template = """
 {{ "CI" | getenv }}
 """
+
+[filters.render_template]
+fn = "jinjarope.Environment.render_template"
+group = "environment"
+
+[filters.render_template.examples.basic]
+template = """
+{{ ".empty" | render_template }}
+"""
+
+[filters.render_string]
+fn = "jinjarope.Environment.render_string"
+group = "environment"
+
+[filters.render_string.examples.basic]
+template = """
+{{ "{{ 1 + 2 }} = 3" | render_string }}
+"""
+
+[filters.render_file]
+fn = "jinjarope.Environment.render_file"
+group = "environment"
+
+[filters.render_file.examples.basic]
+template = """
+{{ "https://raw.githubusercontent.com/phil65/jinjarope/main/tests/__init__.py" | render_file }}
+"""
+
+[filters.evaluate]
+fn = "jinjarope.Environment.evaluate"
+group = "environment"
+
+[filters.evaluate.examples.basic]
+template = """
+{{ "1 + 2" | evaluate }}
+"""
