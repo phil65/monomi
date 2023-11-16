@@ -82,7 +82,7 @@ _cache: dict[str, str] = {}
 
 def get_output_from_call(
     call: str | Sequence[str],
-    cwd: str | os.PathLike | None,
+    cwd: str | os.PathLike | None = None,
     use_cache: bool = False,
 ) -> str | None:
     """Execute a system call and return its output as a string.
