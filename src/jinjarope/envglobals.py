@@ -91,6 +91,8 @@ def get_output_from_call(
 
     if not isinstance(call, str):
         call = " ".join(call)
+    msg = f"Executing {call!r}..."
+    logger.info(msg)
     try:
         pipe = subprocess.PIPE
         return subprocess.run(call, stdout=pipe, text=True, shell=True, cwd=cwd).stdout
