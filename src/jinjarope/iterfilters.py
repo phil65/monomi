@@ -9,6 +9,26 @@ from typing import TypeVar
 T = TypeVar("T")
 
 
+def pairwise(items: Iterable[T]) -> itertools.pairwise[tuple[T, T]]:
+    """Return an iterator of overlapping pairs taken from the input iterator.
+
+    s -> (s0,s1), (s1,s2), (s2, s3), ...
+
+    Arguments:
+        items: The items to iter pair-wise
+    """
+    return itertools.pairwise(items)
+
+
+def do_zip(*items: Iterable[T]):
+    """Zip iterables into a single one.
+
+    Arguments:
+        items: The iterables to zip
+    """
+    return zip(*items)
+
+
 def reduce_list(items: Iterable[T]) -> list[T]:
     """Reduce duplicate items in a list and preserve order.
 

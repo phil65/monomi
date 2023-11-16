@@ -8,7 +8,6 @@ import importlib
 
 from importlib import metadata
 import io
-import itertools
 import json
 import logging
 import operator
@@ -27,6 +26,7 @@ from jinjarope import (
     jinjafile,
     mdfilters,
     regexfilters,
+    textfilters,
     utils,
 )
 
@@ -188,14 +188,14 @@ ENV_FILTERS = {
     "batched": iterfilters.batched,
     "reduce_list": iterfilters.reduce_list,
     "flatten_dict": iterfilters.flatten_dict,
-    "pairwise": itertools.pairwise,
-    "zip": zip,
+    "pairwise": iterfilters.pairwise,
+    "zip": iterfilters.do_zip,
     "any": iterfilters.do_any,
     # Text modification filters
-    "rstrip": str.rstrip,
-    "lstrip": str.lstrip,
-    "removesuffix": str.removesuffix,
-    "removeprefix": str.removeprefix,
+    "rstrip": textfilters.rstrip,
+    "lstrip": textfilters.lstrip,
+    "removesuffix": textfilters.removesuffix,
+    "removeprefix": textfilters.removeprefix,
     # Regex filters
     "re_replace": regexfilters.re_replace,
     "re_findall": regexfilters.re_findall,

@@ -10,7 +10,6 @@ render_macros: true
 {{ f.filter_fn | MkDocStrings }}
 
 Jinja call:
-
 {{ v.template | MkCode(language="jinja") }}
 
 Result:

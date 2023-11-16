@@ -154,7 +154,7 @@ template = """
 """
 
 [filters.pairwise]
-fn = "itertools.pairwise"
+fn = "jinjarope.iterfilters.pairwise"
 group = "iter"
 
 [filters.pairwise.examples.basic]
@@ -165,7 +165,7 @@ template = """
 """
 
 [filters.zip]
-fn = "zip"
+fn = "jinjarope.iterfilters.do_zip"
 group = "iter"
 
 [filters.zip.examples.basic]
@@ -185,7 +185,7 @@ template = """
 """
 
 [filters.rstrip]
-fn = "str.rstrip"
+fn = "jinjarope.textfilters.rstrip"
 group = "text"
 
 [filters.rstrip.examples.basic]
@@ -194,7 +194,7 @@ template = """
 """
 
 [filters.lstrip]
-fn = "str.lstrip"
+fn = "jinjarope.textfilters.lstrip"
 group = "text"
 
 [filters.lstrip.examples.basic]
@@ -203,7 +203,7 @@ template = """
 """
 
 [filters.removesuffix]
-fn = "str.removesuffix"
+fn = "jinjarope.textfilters.removesuffix"
 group = "text"
 
 [filters.removesuffix.examples.basic]
@@ -212,7 +212,7 @@ template = """
 """
 
 [filters.removeprefix]
-fn = "str.removeprefix"
+fn = "jinjarope.textfilters.removeprefix"
 group = "text"
 
 [filters.removeprefix.examples.basic]
