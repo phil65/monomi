@@ -7,7 +7,7 @@ import types
 
 import jinja2
 
-from jinjarope import fsspecloaders, loaders, utils
+from jinjarope import fsspecloaders, iterfilters, loaders
 
 
 class LoaderRegistry:
@@ -108,9 +108,9 @@ class LoaderRegistry:
                 return loaders.PackageLoader(mod)
             case (Callable() as fn,):
                 return loaders.FunctionLoader(fn)
-        m_paths = utils.reduce_list(module_paths or [])
+        m_paths = iterfilters.reduce_list(module_paths or [])
         loader = loaders.ChoiceLoader([self.get_package_loader(p) for p in m_paths])
-        for file in utils.reduce_list(dir_paths or []):
+        for file in iterfilters.reduce_list(dir_paths or []):
             if "://" in file:
                 loader |= self.get_fsspec_loader(file)
             else:

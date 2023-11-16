@@ -8,7 +8,7 @@ from typing import Any, Literal
 
 import jinja2
 
-from jinjarope import utils
+from jinjarope import iterfilters, utils
 
 
 class LoaderMixin:
@@ -238,7 +238,7 @@ class NestedDictLoader(LoaderMixin, jinja2.BaseLoader):
         return utils.get_repr(self, mapping=self._data)
 
     def list_templates(self) -> list[str]:
-        return list(utils.flatten_dict(self._data).keys())
+        return list(iterfilters.flatten_dict(self._data).keys())
 
     def get_source(
         self,

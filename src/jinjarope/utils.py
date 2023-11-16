@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, Iterator, Mapping
+from collections.abc import Callable, Iterator
 import functools
 import logging
 
@@ -54,34 +54,6 @@ def fsspec_get(path: str) -> str:
 
 
 T = TypeVar("T")
-
-
-def reduce_list(items: Iterable[T]) -> list[T]:
-    """Reduce duplicate items in a list and preserve order.
-
-    Arguments:
-        items: The iterable to recude to a unique-item list
-    """
-    return list(dict.fromkeys(items))
-
-
-def flatten_dict(dct: Mapping, sep: str = "/", _parent_key: str = "") -> Mapping:
-    """Flatten a nested dictionary to a flat one.
-
-    The individual parts of the "key path" are joined with given separator.
-
-    Arguments:
-        dct: The dictionary to flatten
-        sep: The separator to use for joining
-    """
-    items: list[tuple[str, str]] = []
-    for k, v in dct.items():
-        new_key = _parent_key + sep + k if _parent_key else k
-        if isinstance(v, Mapping):
-            items.extend(flatten_dict(v, _parent_key=new_key, sep=sep).items())
-        else:
-            items.append((new_key, v))
-    return dict(items)
 
 
 @functools.lru_cache(maxsize=1)
