@@ -18,7 +18,7 @@ import jinja2.nodes
 
 import jinjarope
 
-from jinjarope import envglobals, loaders, undefined as undefined_, utils
+from jinjarope import envglobals, jinjafile, loaders, undefined as undefined_, utils
 
 
 logger = logging.getLogger(__name__)
@@ -67,7 +67,9 @@ class Environment(jinja2.Environment):
         self._extra_files: set[str] = set()
         self._extra_paths: set[str] = set()
         super().__init__(**kwargs)
-        self.filters.update(envglobals.ENV_FILTERS)
+        file = jinjafile.JinjaFile("src/jinjarope/filters.toml")
+        dct = file.get_filters_dict()
+        self.filters.update(dct)
         self.globals.update(envglobals.ENV_GLOBALS)
         self.tests.update(envglobals.ENV_TESTS)
         for fn in self._decorator_filters:

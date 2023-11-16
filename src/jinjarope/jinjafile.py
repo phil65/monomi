@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 import dataclasses
 import os
 import tomllib
@@ -20,8 +21,21 @@ class JinjaFile(dict):
     def filters(self) -> list[JinjaFilter]:
         return [
             JinjaFilter(filter_name, **dct)
-            for filter_name, dct in self["filters"].items()
+            for filter_name, dct in self.get("filters", {}).items()
         ]
+
+    @property
+    def tests(self) -> list[JinjaFilter]:
+        return [
+            JinjaFilter(filter_name, **dct)
+            for filter_name, dct in self.get("tests", {}).items()
+        ]
+
+    def get_filters_dict(self) -> dict[str, Callable]:
+        return {f.identifier: f.filter_fn for f in self.filters}
+
+    def get_tests_dict(self) -> dict[str, Callable]:
+        return {f.identifier: f.filter_fn for f in self.tests}
 
 
 @dataclasses.dataclass
