@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator
+from collections.abc import Callable, Iterator, Mapping
 import functools
+
+from importlib.metadata import EntryPoint, entry_points
 import logging
 import os
-
 from typing import Any, TypeVar
 
 
@@ -80,6 +81,13 @@ def _get_black_formatter() -> Callable[[str, int], str]:
     return formatter
 
 
+@functools.lru_cache
+def _entry_points(group: str) -> Mapping[str, EntryPoint]:
+    eps = {ep.name: ep for ep in entry_points(group=group)}
+    logger.debug("Available %r entry points: %s", group, sorted(eps))
+    return eps
+
+
 def format_code(code: str, line_length: int = 100):
     """Format code to given line length using `black`.
 
@@ -125,4 +133,3 @@ def slugify(text: str | os.PathLike) -> str:
 if __name__ == "__main__":
     code = "def test(sth, fsjkdalfjksdalfjsadk, fjskldjfkdsljf, fsdkjlafjkdsafj): pass"
     result = format_code(code, line_length=50)
-    print(result)

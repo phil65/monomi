@@ -18,7 +18,7 @@ import jinja2.nodes
 
 import jinjarope
 
-from jinjarope import envglobals, loaders, undefined as undefined_
+from jinjarope import envglobals, loaders, undefined as undefined_, utils
 
 
 logger = logging.getLogger(__name__)
@@ -74,6 +74,8 @@ class Environment(jinja2.Environment):
             self.filters.update(fn())
         for fn in self._decorator_globals:
             self.globals.update(fn())
+        for ep in utils._entry_points("jinjarope.environment").values():
+            ep.load()(self)
         self.filters["render_template"] = self.render_template
         self.filters["render_string"] = self.render_string
         self.filters["render_file"] = self.render_file
