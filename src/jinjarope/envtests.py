@@ -54,3 +54,21 @@ def _is_datetime(value: Any) -> bool:
 def _is_string_like(value: Any) -> bool:
     """Return whether a value is a string or string like object."""
     return isinstance(value, str | bytes | bytearray)
+
+
+def is_http_url(string: str) -> bool:
+    """Return true when given string represents a HTTP url.
+
+    Arguments:
+        string: The string to check
+    """
+    return string.startswith(("http://", "https://", "www.")) and "\n" not in string
+
+
+def is_protocol_url(string: str) -> bool:
+    """Return true when given string represents any type of URL.
+
+    Arguments:
+        string: The string to check
+    """
+    return "://" in string and "\n" not in string

@@ -241,6 +241,8 @@ ENV_TESTS = {
     "string_like": envtests._is_string_like,
     "subclass": is_subclass,
     "instance": is_instance,
+    "http_url": envtests.is_http_url,
+    "url": envtests.is_protocol_url,
     # "match": envtests.regex_match,
     # "search": envtests.regex_search,
     "contains": operator.contains,
