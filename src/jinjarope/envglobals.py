@@ -180,6 +180,7 @@ ENV_GLOBALS = {
 ENV_FILTERS = {
     # Format filters
     "repr": repr,
+    "slugify": utils.slugify,
     "pformat": pprint.pformat,
     "format_code": utils.format_code,
     # Markdown filters
@@ -225,6 +226,7 @@ ENV_FILTERS = {
     "hasattr": hasattr,
     "partial": functools.partial,
     "load_file": load_file_cached,
+    "get_hash": utils.get_hash,
     "path_join": os.path.join,
     "check_output": get_output_from_call,
     "getenv": os.getenv,

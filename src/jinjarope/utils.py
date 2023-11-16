@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterator
 import functools
 import logging
+import os
 
 from typing import Any, TypeVar
 
@@ -91,6 +92,34 @@ def format_code(code: str, line_length: int = 100):
         return code
     formatter = _get_black_formatter()
     return formatter(code, line_length)
+
+
+def get_hash(obj: Any, hash_length: int | None = 7) -> str:
+    """Get a Md5 hash for given object.
+
+    Arguments:
+        obj: The object to get a hash for ()
+        hash_length: Optional cut-off value to limit length
+    """
+    import hashlib
+
+    hash_md5 = hashlib.md5(str(obj).encode("utf-8"))
+    return hash_md5.hexdigest()[:hash_length]
+
+
+def slugify(text: str | os.PathLike) -> str:
+    """Create a slug for given text.
+
+    Returned text only contains alphanumerical and underscore.
+
+    Arguments:
+        text: text to get a slug for
+    """
+    import re
+
+    text = str(text).lower()
+    text = re.sub("[^0-9a-zA-Z_.]", "_", text)
+    return re.sub("^[^0-9a-zA-Z_#]+", "", text)
 
 
 if __name__ == "__main__":
