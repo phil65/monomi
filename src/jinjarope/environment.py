@@ -78,6 +78,7 @@ class Environment(jinja2.Environment):
         self.filters["render_string"] = self.render_string
         self.filters["render_file"] = self.render_file
         self.filters["evaluate"] = self.evaluate
+        self.globals["filters"] = self.filters
         self.tests["existing_template"] = lambda template_name: template_name in self
         self.template_cache: weakref.WeakValueDictionary[
             str | jinja2.nodes.Template,
