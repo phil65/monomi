@@ -235,6 +235,7 @@ ENV_FILTERS = {
     # misc
     "add": add,
     "ternary": ternary,
+    "get_doc": utils.get_doc,
     "issubclass": is_subclass,
     "isinstance": is_instance,
     "import_module": importlib.import_module,

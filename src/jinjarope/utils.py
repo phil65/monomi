@@ -130,6 +130,46 @@ def slugify(text: str | os.PathLike) -> str:
     return re.sub("^[^0-9a-zA-Z_#]+", "", text)
 
 
+@functools.cache
+def get_doc(
+    obj,
+    *,
+    escape: bool = False,
+    fallback: str = "",
+    from_base_classes: bool = False,
+    only_summary: bool = False,
+    only_description: bool = False,
+) -> str:
+    """Get __doc__ for given object.
+
+    Arguments:
+        obj: Object to get docstrings from
+        escape: Whether docstrings should get escaped
+        fallback: Fallback in case docstrings dont exist
+        from_base_classes: Use base class docstrings if docstrings dont exist
+        only_summary: Only return first line of docstrings
+        only_description: Only return block after first line
+    """
+    import inspect
+
+    from jinjarope import mdfilters
+
+    match obj:
+        case _ if from_base_classes:
+            doc = inspect.getdoc(obj)
+        case _ if obj.__doc__:
+            doc = inspect.cleandoc(obj.__doc__)
+        case _:
+            doc = None
+    if not doc:
+        return fallback
+    if only_summary:
+        doc = doc.split("\n")[0]
+    if only_description:
+        doc = "\n".join(doc.split("\n")[1:])
+    return mdfilters.md_escape(doc) if doc and escape else doc
+
+
 if __name__ == "__main__":
     code = "def test(sth, fsjkdalfjksdalfjsadk, fjskldjfkdsljf, fsdkjlafjkdsafj): pass"
     result = format_code(code, line_length=50)
