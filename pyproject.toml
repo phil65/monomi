@@ -23,7 +23,6 @@ dependencies = [
     "pytest-cov",
 
     # Docs
-    "pymdown-extensions",
     "mkdocs-material",
     "mkdocstrings[python]",
     "mkdocs >=1.5",
