@@ -7,13 +7,12 @@ from .loaders import (
     FileSystemLoader,
     ChoiceLoader,
     ModuleLoader,
-    NestedDictLoader,
-    TemplateFileLoader,
     PackageLoader,
     FunctionLoader,
     PrefixLoader,
     DictLoader,
 )
+from .configloaders import NestedDictLoader, TemplateFileLoader
 from .fsspecloaders import (
     FsSpecFileSystemLoader,
     FsSpecProtocolPathLoader,

@@ -1,14 +1,12 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
+from collections.abc import Callable
 import pathlib
 import types
 
-from typing import Any, Literal
-
 import jinja2
 
-from jinjarope import iterfilters, utils
+from jinjarope import utils
 
 
 class LoaderMixin:
@@ -204,114 +202,6 @@ class DictLoader(LoaderMixin, jinja2.DictLoader):
         return hash(tuple(sorted(self.mapping.items())))
 
 
-class NestedDictLoader(LoaderMixin, jinja2.BaseLoader):
-    """A jinja loader for loading templates from nested dicts.
-
-    This loader allows to access templates from nested dicts.
-    Can be used to load templates defined with markup like TOML.
-
-    Examples:
-        ``` toml
-        [example]
-        template = "{{ something }}"
-        ```
-        ``` py
-        content = tomllib.load(toml_file)
-        loader = NestedDictLoader(content)
-        env = Environment(loader=loader)
-        env.get_template("example/template")
-        ```
-    """
-
-    ID = "nested_dict"
-
-    def __init__(self, mapping: Mapping):
-        """Constructor.
-
-        Arguments:
-            mapping: A nested dict containing templates
-        """
-        super().__init__()
-        self._data = mapping
-
-    def __repr__(self):
-        return utils.get_repr(self, mapping=self._data)
-
-    def list_templates(self) -> list[str]:
-        return list(iterfilters.flatten_dict(self._data).keys())
-
-    def get_source(
-        self,
-        environment: jinja2.Environment,
-        template: str,
-    ) -> tuple[str, str, Callable[[], bool] | None]:
-        data: Any = self._data
-        try:
-            for part in template.split("/"):
-                data = data[part]
-            assert isinstance(data, str)
-        except (AssertionError, KeyError) as e:
-            raise jinja2.TemplateNotFound(template) from e
-        return data, None, lambda: True  # type: ignore[return-value]
-
-
-class TemplateFileLoader(NestedDictLoader):
-    """A jinja loader for loading templates from config files.
-
-    This loader allows to access templates from config files.
-    Config files often often resemble nested dicts when getting loaded / deserialized.
-
-    The loader will load config file from given path and will make it accessible in the
-    same way as the `NestedDictLoader`. (esp. TOML is well-suited for this)
-
-    Config files can be loaded from any fsspec protocol URL.
-
-    Examples:
-        ``` py
-        loader = TemplateFileLoader("http://path_to_toml_file.toml")
-        env = Environment(loader=loader)
-        env.get_template("example/template")
-        ```
-        ``` py
-        loader = TemplateFileLoader("path/to/file.json")
-        env = Environment(loader=loader)
-        env.get_template("example/template")
-        ```
-    """
-
-    ID = "template_file"
-
-    def __init__(
-        self,
-        path: str | pathlib.Path,
-        fmt: Literal["toml", "json"] | None = None,
-    ):
-        """Constructor.
-
-        Arguments:
-            path: Path / fsspec protocol URL to the file
-            fmt: Config file format. If None, try to auto-infer from file extension
-        """
-        self.path = str(path)
-        text = utils.fsspec_get(path)
-        if fmt == "toml" or (not fmt and self.path.endswith(".toml")):
-            import tomllib
-
-            mapping = tomllib.loads(text)
-        elif fmt == "json" or (not fmt and self.path.endswith(".json")):
-            import json
-
-            mapping = json.loads(text)
-        else:
-            msg = f"Could not deserialize file {self.path!r}"
-            raise RuntimeError(msg)
-        super().__init__(mapping=mapping)
-        self._data = mapping
-
-    def __repr__(self):
-        return utils.get_repr(self, path=self.path)
-
-
 def from_json(dct_or_list) -> jinja2.BaseLoader | None:
     from jinjarope import fsspecloaders
 
@@ -356,6 +246,6 @@ if __name__ == "__main__":
     from jinjarope import Environment
 
     env = Environment()
-    env.loader = NestedDictLoader({"a": {"b": "c"}})
-    text = env.render_template("a/b")
+    env.loader = FileSystemLoader("")
+    text = env.render_template(".pre-commit-config.yaml")
     print(text)
