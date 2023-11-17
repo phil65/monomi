@@ -24,8 +24,6 @@ dependencies = [
 
     # Docs
     "mkdocs-material",
-    "mkdocstrings[python]",
-    "mkdocs >=1.5",
     "mkdocs-mknodes",
 
     # used for formatting signature
@@ -232,23 +230,7 @@ combine-as-imports = true
 [tool.black]
 line-length = 90
 target-version = ['py311']
-include = '\.pyi?$'
 preview = true
-extend-exclude = '''
-/(
-    \.hatch
-    \.eggs
-  | \.git
-  | \.hg
-  | \.mypy_cache
-  | \.venv
-  | _build
-  | buck-out
-  | build
-  | dist
-  | tests/.*/setup.py
-)/
-'''
 
 [tool.mknodes]
 allowed-commit-types = [
