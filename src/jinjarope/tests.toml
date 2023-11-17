@@ -158,3 +158,13 @@ True!
 {% endif %}
 """
 
+[tests.template]
+fn = "jinjarope.Environment.__contains__"
+group = "environment"
+
+[tests.template.examples.basic]
+template = """
+{% if "filters.md" is template %}
+True!
+{% endif %}
+"""
