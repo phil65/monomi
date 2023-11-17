@@ -1,5 +1,5 @@
 [filters.abs]
-fn = "jinja2.filters.abs"
+fn = "builtins.abs"  # "jinja2.filters.abs"
 group = "builtin"
 [filters.abs.examples.basic]
 template = """
@@ -11,7 +11,7 @@ fn = "jinja2.filters.do_attr"
 group = "builtin"
 [filters.attr.examples.basic]
 template = """
-{{ "sth" | attr }}
+{{ "abc" | attr("removesuffix") }}
 """
 
 [filters.batch]
@@ -19,7 +19,7 @@ fn = "jinja2.filters.do_batch"
 group = "builtin"
 [filters.batch.examples.basic]
 template = """
-{{ "sth" | batch }}
+{{ ["a", "b", "c", "d", "e"] | batch(2) }}
 """
 
 [filters.capitalize]
@@ -27,7 +27,7 @@ fn = "jinja2.filters.do_capitalize"
 group = "builtin"
 [filters.capitalize.examples.basic]
 template = """
-{{ "sth" | capitalize }}
+{{ "abc" | capitalize }}
 """
 
 [filters.center]
@@ -35,15 +35,7 @@ fn = "jinja2.filters.do_center"
 group = "builtin"
 [filters.center.examples.basic]
 template = """
-{{ "sth" | center }}
-"""
-
-[filters.count]
-fn = "jinja2.filters.len"
-group = "builtin"
-[filters.count.examples.basic]
-template = """
-{{ "sth" | count }}
+{{ "sth" | center(20) }}
 """
 
 [filters.default]
@@ -52,7 +44,7 @@ group = "builtin"
 aliases = "d"
 [filters.default.examples.basic]
 template = """
-{{ "sth" | default }}
+{{ variable | default("some fallback") }}
 """
 
 [filters.dictsort]
@@ -60,24 +52,24 @@ fn = "jinja2.filters.do_dictsort"
 group = "builtin"
 [filters.dictsort.examples.basic]
 template = """
-{{ "sth" | dictsort }}
+{{ {"b": 1, "a": 2} | dictsort }}
 """
 
-[filters.escape]
-fn = "jinja2.filters.escape"
-group = "builtin"
-aliases = ["e"]
-[filters.escape.examples.basic]
-template = """
-{{ "sth" | escape }}
-"""
+# [filters.escape]
+# fn = "jinja2.filters.escape"
+# group = "builtin"
+# aliases = ["e"]
+# [filters.escape.examples.basic]
+# template = """
+# {{ "<[]>" | escape }}
+# """
 
 [filters.filesizeformat]
 fn = "jinja2.filters.do_filesizeformat"
 group = "builtin"
 [filters.filesizeformat.examples.basic]
 template = """
-{{ "sth" | filesizeformat }}
+{{ 134324324234 | filesizeformat }}
 """
 
 [filters.first]
@@ -85,7 +77,7 @@ fn = "jinja2.filters.do_first"
 group = "builtin"
 [filters.first.examples.basic]
 template = """
-{{ "sth" | first }}
+{{ [1, 2, 3] | first }}
 """
 
 [filters.float]
@@ -93,7 +85,7 @@ fn = "jinja2.filters.do_float"
 group = "builtin"
 [filters.float.examples.basic]
 template = """
-{{ "sth" | float }}
+{{ "0.4" | float }}
 """
 
 [filters.forceescape]
@@ -101,7 +93,7 @@ fn = "jinja2.filters.do_forceescape"
 group = "builtin"
 [filters.forceescape.examples.basic]
 template = """
-{{ "sth" | forceescape }}
+{{ "<>" | forceescape }}
 """
 
 [filters.format]
@@ -109,7 +101,7 @@ fn = "jinja2.filters.do_format"
 group = "builtin"
 [filters.format.examples.basic]
 template = """
-{{ "sth" | format }}
+{{ "{test}" | format(test="abc") }}
 """
 
 [filters.groupby]
@@ -117,7 +109,7 @@ fn = "jinja2.filters.do_groupby"
 group = "builtin"
 [filters.groupby.examples.basic]
 template = """
-{{ "sth" | groupby }}
+{{ [JinjaFile] | groupby("__module__") }}
 """
 
 [filters.indent]
@@ -125,7 +117,7 @@ fn = "jinja2.filters.do_indent"
 group = "builtin"
 [filters.indent.examples.basic]
 template = """
-{{ "sth" | indent }}
+{{ "abc\fdef" | indent }}
 """
 
 [filters.int]
@@ -133,7 +125,7 @@ fn = "jinja2.filters.do_int"
 group = "builtin"
 [filters.int.examples.basic]
 template = """
-{{ "sth" | int }}
+{{ "3" | int }}
 """
 
 [filters.join]
@@ -141,7 +133,7 @@ fn = "jinja2.filters.do_join"
 group = "builtin"
 [filters.join.examples.basic]
 template = """
-{{ "sth" | join }}
+{{ ["a", "b", "c"] | join }}
 """
 
 [filters.last]
@@ -149,15 +141,16 @@ fn = "jinja2.filters.do_last"
 group = "builtin"
 [filters.last.examples.basic]
 template = """
-{{ "sth" | last }}
+{{ ["a", "b", "c"] | last }}
 """
 
 [filters.length]
-fn = "jinja2.filters.len"
+fn = "builtins.len"  # "jinja2.filters.len"
 group = "builtin"
+aliases = "count"
 [filters.length.examples.basic]
 template = """
-{{ "sth" | length }}
+{{ ["a", "b", "c"] | length }}
 """
 
 [filters.list]
@@ -165,7 +158,7 @@ fn = "jinja2.filters.do_list"
 group = "builtin"
 [filters.list.examples.basic]
 template = """
-{{ "sth" | list }}
+{{ ("a", "b") | list }}
 """
 
 [filters.lower]
@@ -173,7 +166,7 @@ fn = "jinja2.filters.do_lower"
 group = "builtin"
 [filters.lower.examples.basic]
 template = """
-{{ "sth" | lower }}
+{{ "ABC" | lower }}
 """
 
 [filters.items]
@@ -181,7 +174,7 @@ fn = "jinja2.filters.do_items"
 group = "builtin"
 [filters.items.examples.basic]
 template = """
-{{ "sth" | items }}
+{{ {"a": "b"} | items }}
 """
 
 [filters.map]
@@ -189,7 +182,7 @@ fn = "jinja2.filters.do_map"
 group = "builtin"
 [filters.map.examples.basic]
 template = """
-{{ "sth" | map }}
+{{ [1, JinjaFile] | map(attribute="__doc__") }}
 """
 
 [filters.min]
@@ -197,7 +190,7 @@ fn = "jinja2.filters.do_min"
 group = "builtin"
 [filters.min.examples.basic]
 template = """
-{{ "sth" | min }}
+{{ [1, 2, 3] | min }}
 """
 
 [filters.max]
@@ -205,7 +198,7 @@ fn = "jinja2.filters.do_max"
 group = "builtin"
 [filters.max.examples.basic]
 template = """
-{{ "sth" | max }}
+{{ [1, 2, 3] | max }}
 """
 
 [filters.pprint]
@@ -213,7 +206,7 @@ fn = "jinja2.filters.do_pprint"
 group = "builtin"
 [filters.pprint.examples.basic]
 template = """
-{{ "sth" | pprint }}
+{{ ([10000] * 10) | pprint }}
 """
 
 [filters.random]
@@ -221,31 +214,31 @@ fn = "jinja2.filters.do_random"
 group = "builtin"
 [filters.random.examples.basic]
 template = """
-{{ "sth" | random }}
+{{ [1, 2, 3] | random }}
 """
 
-[filters.reject]
-fn = "jinja2.filters.do_reject"
-group = "builtin"
-[filters.reject.examples.basic]
-template = """
-{{ "sth" | reject }}
-"""
+# [filters.reject]
+# fn = "jinja2.filters.do_reject"
+# group = "builtin"
+# [filters.reject.examples.basic]
+# template = """
+# {{ "sth" | reject }}
+# """
 
-[filters.rejectattr]
-fn = "jinja2.filters.do_rejectattr"
-group = "builtin"
-[filters.rejectattr.examples.basic]
-template = """
-{{ "sth" | rejectattr }}
-"""
+# [filters.rejectattr]
+# fn = "jinja2.filters.do_rejectattr"
+# group = "builtin"
+# [filters.rejectattr.examples.basic]
+# template = """
+# {{ "sth" | rejectattr }}
+# """
 
 [filters.replace]
 fn = "jinja2.filters.do_replace"
 group = "builtin"
 [filters.replace.examples.basic]
 template = """
-{{ "sth" | replace }}
+{{ "abc" | replace("a", "x") }}
 """
 
 [filters.reverse]
@@ -253,7 +246,7 @@ fn = "jinja2.filters.do_reverse"
 group = "builtin"
 [filters.reverse.examples.basic]
 template = """
-{{ "sth" | reverse }}
+{{ [1, 2, 3] | reverse }}
 """
 
 [filters.round]
@@ -261,7 +254,7 @@ fn = "jinja2.filters.do_round"
 group = "builtin"
 [filters.round.examples.basic]
 template = """
-{{ "sth" | round }}
+{{ 1.6 | round }}
 """
 
 [filters.safe]
@@ -269,55 +262,55 @@ fn = "jinja2.filters.do_mark_safe"
 group = "builtin"
 [filters.safe.examples.basic]
 template = """
-{{ "sth" | safe }}
+{{ "abc" | safe }}
 """
 
-[filters.select]
-fn = "jinja2.filters.do_select"
-group = "builtin"
-[filters.select.examples.basic]
-template = """
-{{ "sth" | select }}
-"""
+# [filters.select]
+# fn = "jinja2.filters.do_select"
+# group = "builtin"
+# [filters.select.examples.basic]
+# template = """
+# {{ "sth" | select }}
+# """
 
-[filters.selectattr]
-fn = "jinja2.filters.do_selectattr"
-group = "builtin"
-[filters.selectattr.examples.basic]
-template = """
-{{ "sth" | selectattr }}
-"""
+# [filters.selectattr]
+# fn = "jinja2.filters.do_selectattr"
+# group = "builtin"
+# [filters.selectattr.examples.basic]
+# template = """
+# {{ "sth" | selectattr }}
+# """
 
-[filters.slice]
-fn = "jinja2.filters.do_slice"
-group = "builtin"
-[filters.slice.examples.basic]
-template = """
-{{ "sth" | slice }}
-"""
+# [filters.slice]
+# fn = "jinja2.filters.do_slice"
+# group = "builtin"
+# [filters.slice.examples.basic]
+# template = """
+# {{ "sth" | slice }}
+# """
 
 [filters.sort]
 fn = "jinja2.filters.do_sort"
 group = "builtin"
 [filters.sort.examples.basic]
 template = """
-{{ "sth" | sort }}
+{{ ["c", "b", "a"] | sort }}
 """
 
-[filters.string]
-fn = "jinja2.filters.soft_str"
-group = "builtin"
-[filters.string.examples.basic]
-template = """
-{{ "sth" | string }}
-"""
+# [filters.string]
+# fn = "jinja2.filters.soft_str"
+# group = "builtin"
+# [filters.string.examples.basic]
+# template = """
+# {{ "abc" | string }}
+# """
 
 [filters.striptags]
 fn = "jinja2.filters.do_striptags"
 group = "builtin"
 [filters.striptags.examples.basic]
 template = """
-{{ "sth" | striptags }}
+{{ "<p>text</p>" | striptags }}
 """
 
 [filters.sum]
@@ -325,7 +318,7 @@ fn = "jinja2.filters.do_sum"
 group = "builtin"
 [filters.sum.examples.basic]
 template = """
-{{ "sth" | sum }}
+{{ [1, 2, 3] | sum }}
 """
 
 [filters.title]
@@ -333,7 +326,7 @@ fn = "jinja2.filters.do_title"
 group = "builtin"
 [filters.title.examples.basic]
 template = """
-{{ "sth" | title }}
+{{ "abc" | title }}
 """
 
 [filters.trim]
@@ -341,23 +334,23 @@ fn = "jinja2.filters.do_trim"
 group = "builtin"
 [filters.trim.examples.basic]
 template = """
-{{ "sth" | trim }}
+{{ "  abc  " | trim }}
 """
 
-[filters.truncate]
-fn = "jinja2.filters.do_truncate"
-group = "builtin"
-[filters.truncate.examples.basic]
-template = """
-{{ "sth" | truncate }}
-"""
+# [filters.truncate]
+# fn = "jinja2.filters.do_truncate"
+# group = "builtin"
+# [filters.truncate.examples.basic]
+# template = """
+# {{ "sth" | truncate }}
+# """
 
 [filters.unique]
 fn = "jinja2.filters.do_unique"
 group = "builtin"
 [filters.unique.examples.basic]
 template = """
-{{ "sth" | unique }}
+{{ [1, 2, 1] | unique }}
 """
 
 [filters.upper]
@@ -373,7 +366,7 @@ fn = "jinja2.filters.do_urlencode"
 group = "builtin"
 [filters.urlencode.examples.basic]
 template = """
-{{ "sth" | urlencode }}
+{{ "Some text" | urlencode }}
 """
 
 [filters.urlize]
@@ -381,7 +374,7 @@ fn = "jinja2.filters.do_urlize"
 group = "builtin"
 [filters.urlize.examples.basic]
 template = """
-{{ "sth" | urlize }}
+{{ "some text" | urlize }}
 """
 
 [filters.wordcount]
@@ -389,7 +382,7 @@ fn = "jinja2.filters.do_wordcount"
 group = "builtin"
 [filters.wordcount.examples.basic]
 template = """
-{{ "sth" | wordcount }}
+{{ "Some longer text" | wordcount }}
 """
 
 [filters.wordwrap]
@@ -400,19 +393,19 @@ template = """
 {{ "sth" | wordwrap }}
 """
 
-[filters.xmlattr]
-fn = "jinja2.filters.do_xmlattr"
-group = "builtin"
-[filters.xmlattr.examples.basic]
-template = """
-{{ "sth" | xmlattr }}
-"""
+# [filters.xmlattr]
+# fn = "jinja2.filters.do_xmlattr"
+# group = "builtin"
+# [filters.xmlattr.examples.basic]
+# template = """
+# {{ "sth" | xmlattr }}
+# """
 
 [filters.tojson]
 fn = "jinja2.filters.do_tojson"
 group = "builtin"
 [filters.tojson.examples.basic]
 template = """
-{{ "sth" | tojson }}
+{{ "[1, 2]" | tojson }}
 """
 
