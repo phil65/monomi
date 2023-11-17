@@ -161,7 +161,7 @@ def resolve(name: str, module: str | None = None) -> types.ModuleType | Callable
 
 @functools.cache
 def get_doc(
-    obj,
+    obj: Any,
     *,
     escape: bool = False,
     fallback: str = "",
