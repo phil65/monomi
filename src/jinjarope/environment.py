@@ -67,10 +67,11 @@ class Environment(jinja2.Environment):
         self._extra_files: set[str] = set()
         self._extra_paths: set[str] = set()
         super().__init__(**kwargs)
-        file = jinjafile.JinjaFile("src/jinjarope/filters.toml")
+        folder = pathlib.Path(__file__).parent
+        file = jinjafile.JinjaFile(folder / "filters.toml")
         dct = file.get_filters_dict()
         self.filters.update(dct)
-        file = jinjafile.JinjaFile("src/jinjarope/tests.toml")
+        file = jinjafile.JinjaFile(folder / "tests.toml")
         dct = file.get_tests_dict()
         self.tests.update(dct)
         self.globals.update(envglobals.ENV_GLOBALS)
