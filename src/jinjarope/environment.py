@@ -103,6 +103,15 @@ class Environment(jinja2.Environment):
         """
         return self.get_template(val)
 
+    def set_undefined(self, value: undefined_.UndefinedStr | type[jinja2.Undefined]):
+        """Set the undefined behaviour for the environment.
+
+        Arguments:
+            value: The new undefined behaviour
+        """
+        new = undefined_.UNDEFINED_BEHAVIOR[value] if isinstance(value, str) else value
+        self.undefined = new
+
     def load_jinja_file(self, path: str | os.PathLike):
         """Load the content of a jinja file and add it to the environment.
 
