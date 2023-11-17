@@ -3,9 +3,6 @@ from __future__ import annotations
 import jinjarope
 
 
-dct = {"home.html": "Home", "about.html": "About", "subfolder/sub.html": "Sub"}
-
-
 def test_loading_filters():
     file = jinjarope.JinjaFile("src/jinjarope/filters.toml")
     assert isinstance(file.filters[0], jinjarope.JinjaItem)
