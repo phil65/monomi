@@ -45,6 +45,7 @@ class JinjaFilter:
     group: str
     examples: dict = dataclasses.field(default_factory=dict)
     description: str | None = None
+    aliases: list[str] | None = dataclasses.field(default_factory=list)
 
     @property
     def filter_fn(self):
