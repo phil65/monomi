@@ -1,0 +1,425 @@
+[filters.abs]
+fn = "jinja2.filters.abs"
+group = "builtin"
+[filters.abs.example.basic]
+template = """
+{{ "sth" | abs }}
+"""
+
+[filters.attr]
+fn = "jinja2.filters.do_attr"
+group = "builtin"
+[filters.attr.example.basic]
+template = """
+{{ "sth" | attr }}
+"""
+
+[filters.batch]
+fn = "jinja2.filters.do_batch"
+group = "builtin"
+[filters.batch.example.basic]
+template = """
+{{ "sth" | batch }}
+"""
+
+[filters.capitalize]
+fn = "jinja2.filters.do_capitalize"
+group = "builtin"
+[filters.capitalize.example.basic]
+template = """
+{{ "sth" | capitalize }}
+"""
+
+[filters.center]
+fn = "jinja2.filters.do_center"
+group = "builtin"
+[filters.center.example.basic]
+template = """
+{{ "sth" | center }}
+"""
+
+[filters.count]
+fn = "jinja2.filters.len"
+group = "builtin"
+[filters.count.example.basic]
+template = """
+{{ "sth" | count }}
+"""
+
+[filters.d]
+fn = "jinja2.filters.do_default"
+group = "builtin"
+[filters.d.example.basic]
+template = """
+{{ "sth" | d }}
+"""
+
+[filters.default]
+fn = "jinja2.filters.do_default"
+group = "builtin"
+[filters.default.example.basic]
+template = """
+{{ "sth" | default }}
+"""
+
+[filters.dictsort]
+fn = "jinja2.filters.do_dictsort"
+group = "builtin"
+[filters.dictsort.example.basic]
+template = """
+{{ "sth" | dictsort }}
+"""
+
+[filters.escape]
+fn = "jinja2.filters.escape"
+group = "builtin"
+aliases = ["e"]
+[filters.escape.example.basic]
+template = """
+{{ "sth" | escape }}
+"""
+
+[filters.filesizeformat]
+fn = "jinja2.filters.do_filesizeformat"
+group = "builtin"
+[filters.filesizeformat.example.basic]
+template = """
+{{ "sth" | filesizeformat }}
+"""
+
+[filters.first]
+fn = "jinja2.filters.do_first"
+group = "builtin"
+[filters.first.example.basic]
+template = """
+{{ "sth" | first }}
+"""
+
+[filters.float]
+fn = "jinja2.filters.do_float"
+group = "builtin"
+[filters.float.example.basic]
+template = """
+{{ "sth" | float }}
+"""
+
+[filters.forceescape]
+fn = "jinja2.filters.do_forceescape"
+group = "builtin"
+[filters.forceescape.example.basic]
+template = """
+{{ "sth" | forceescape }}
+"""
+
+[filters.format]
+fn = "jinja2.filters.do_format"
+group = "builtin"
+[filters.format.example.basic]
+template = """
+{{ "sth" | format }}
+"""
+
+[filters.groupby]
+fn = "jinja2.filters.do_groupby"
+group = "builtin"
+[filters.groupby.example.basic]
+template = """
+{{ "sth" | groupby }}
+"""
+
+[filters.indent]
+fn = "jinja2.filters.do_indent"
+group = "builtin"
+[filters.indent.example.basic]
+template = """
+{{ "sth" | indent }}
+"""
+
+[filters.int]
+fn = "jinja2.filters.do_int"
+group = "builtin"
+[filters.int.example.basic]
+template = """
+{{ "sth" | int }}
+"""
+
+[filters.join]
+fn = "jinja2.filters.do_join"
+group = "builtin"
+[filters.join.example.basic]
+template = """
+{{ "sth" | join }}
+"""
+
+[filters.last]
+fn = "jinja2.filters.do_last"
+group = "builtin"
+[filters.last.example.basic]
+template = """
+{{ "sth" | last }}
+"""
+
+[filters.length]
+fn = "jinja2.filters.len"
+group = "builtin"
+[filters.length.example.basic]
+template = """
+{{ "sth" | length }}
+"""
+
+[filters.list]
+fn = "jinja2.filters.do_list"
+group = "builtin"
+[filters.list.example.basic]
+template = """
+{{ "sth" | list }}
+"""
+
+[filters.lower]
+fn = "jinja2.filters.do_lower"
+group = "builtin"
+[filters.lower.example.basic]
+template = """
+{{ "sth" | lower }}
+"""
+
+[filters.items]
+fn = "jinja2.filters.do_items"
+group = "builtin"
+[filters.items.example.basic]
+template = """
+{{ "sth" | items }}
+"""
+
+[filters.map]
+fn = "jinja2.filters.do_map"
+group = "builtin"
+[filters.map.example.basic]
+template = """
+{{ "sth" | map }}
+"""
+
+[filters.min]
+fn = "jinja2.filters.do_min"
+group = "builtin"
+[filters.min.example.basic]
+template = """
+{{ "sth" | min }}
+"""
+
+[filters.max]
+fn = "jinja2.filters.do_max"
+group = "builtin"
+[filters.max.example.basic]
+template = """
+{{ "sth" | max }}
+"""
+
+[filters.pprint]
+fn = "jinja2.filters.do_pprint"
+group = "builtin"
+[filters.pprint.example.basic]
+template = """
+{{ "sth" | pprint }}
+"""
+
+[filters.random]
+fn = "jinja2.filters.do_random"
+group = "builtin"
+[filters.random.example.basic]
+template = """
+{{ "sth" | random }}
+"""
+
+[filters.reject]
+fn = "jinja2.filters.do_reject"
+group = "builtin"
+[filters.reject.example.basic]
+template = """
+{{ "sth" | reject }}
+"""
+
+[filters.rejectattr]
+fn = "jinja2.filters.do_rejectattr"
+group = "builtin"
+[filters.rejectattr.example.basic]
+template = """
+{{ "sth" | rejectattr }}
+"""
+
+[filters.replace]
+fn = "jinja2.filters.do_replace"
+group = "builtin"
+[filters.replace.example.basic]
+template = """
+{{ "sth" | replace }}
+"""
+
+[filters.reverse]
+fn = "jinja2.filters.do_reverse"
+group = "builtin"
+[filters.reverse.example.basic]
+template = """
+{{ "sth" | reverse }}
+"""
+
+[filters.round]
+fn = "jinja2.filters.do_round"
+group = "builtin"
+[filters.round.example.basic]
+template = """
+{{ "sth" | round }}
+"""
+
+[filters.safe]
+fn = "jinja2.filters.do_mark_safe"
+group = "builtin"
+[filters.safe.example.basic]
+template = """
+{{ "sth" | safe }}
+"""
+
+[filters.select]
+fn = "jinja2.filters.do_select"
+group = "builtin"
+[filters.select.example.basic]
+template = """
+{{ "sth" | select }}
+"""
+
+[filters.selectattr]
+fn = "jinja2.filters.do_selectattr"
+group = "builtin"
+[filters.selectattr.example.basic]
+template = """
+{{ "sth" | selectattr }}
+"""
+
+[filters.slice]
+fn = "jinja2.filters.do_slice"
+group = "builtin"
+[filters.slice.example.basic]
+template = """
+{{ "sth" | slice }}
+"""
+
+[filters.sort]
+fn = "jinja2.filters.do_sort"
+group = "builtin"
+[filters.sort.example.basic]
+template = """
+{{ "sth" | sort }}
+"""
+
+[filters.string]
+fn = "jinja2.filters.soft_str"
+group = "builtin"
+[filters.string.example.basic]
+template = """
+{{ "sth" | string }}
+"""
+
+[filters.striptags]
+fn = "jinja2.filters.do_striptags"
+group = "builtin"
+[filters.striptags.example.basic]
+template = """
+{{ "sth" | striptags }}
+"""
+
+[filters.sum]
+fn = "jinja2.filters.do_sum"
+group = "builtin"
+[filters.sum.example.basic]
+template = """
+{{ "sth" | sum }}
+"""
+
+[filters.title]
+fn = "jinja2.filters.do_title"
+group = "builtin"
+[filters.title.example.basic]
+template = """
+{{ "sth" | title }}
+"""
+
+[filters.trim]
+fn = "jinja2.filters.do_trim"
+group = "builtin"
+[filters.trim.example.basic]
+template = """
+{{ "sth" | trim }}
+"""
+
+[filters.truncate]
+fn = "jinja2.filters.do_truncate"
+group = "builtin"
+[filters.truncate.example.basic]
+template = """
+{{ "sth" | truncate }}
+"""
+
+[filters.unique]
+fn = "jinja2.filters.do_unique"
+group = "builtin"
+[filters.unique.example.basic]
+template = """
+{{ "sth" | unique }}
+"""
+
+[filters.upper]
+fn = "jinja2.filters.do_upper"
+group = "builtin"
+[filters.upper.example.basic]
+template = """
+{{ "sth" | upper }}
+"""
+
+[filters.urlencode]
+fn = "jinja2.filters.do_urlencode"
+group = "builtin"
+[filters.urlencode.example.basic]
+template = """
+{{ "sth" | urlencode }}
+"""
+
+[filters.urlize]
+fn = "jinja2.filters.do_urlize"
+group = "builtin"
+[filters.urlize.example.basic]
+template = """
+{{ "sth" | urlize }}
+"""
+
+[filters.wordcount]
+fn = "jinja2.filters.do_wordcount"
+group = "builtin"
+[filters.wordcount.example.basic]
+template = """
+{{ "sth" | wordcount }}
+"""
+
+[filters.wordwrap]
+fn = "jinja2.filters.do_wordwrap"
+group = "builtin"
+[filters.wordwrap.example.basic]
+template = """
+{{ "sth" | wordwrap }}
+"""
+
+[filters.xmlattr]
+fn = "jinja2.filters.do_xmlattr"
+group = "builtin"
+[filters.xmlattr.example.basic]
+template = """
+{{ "sth" | xmlattr }}
+"""
+
+[filters.tojson]
+fn = "jinja2.filters.do_tojson"
+group = "builtin"
+[filters.tojson.example.basic]
+template = """
+{{ "sth" | tojson }}
+"""
+
