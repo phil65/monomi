@@ -83,7 +83,7 @@ fn = "jinjarope.envglobals.is_subclass"
 group = "type"
 [tests.subclass.examples.basic]
 template = """
-{% if JinjaFile is subclass("dict") %}
+{% if cycler is subclass("dict") %}
 True!
 {% endif %}
 """

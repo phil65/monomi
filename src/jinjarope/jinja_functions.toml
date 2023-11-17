@@ -45,7 +45,7 @@ template = """
 {{ row_class.next() }}
 {{ row_class.next() }}
 {{ row_class.next() }}
-{{ row_class.current() }}
+{{ row_class.current }}
 """
 
 [functions.namespace]
