@@ -13,3 +13,7 @@ that method will get called and can extend the filters / tests namespace, add ex
 !!! note
     Since **JinjaRope** already provides a lot of filters etc out-of-the-box, it is recommended
     to assign a custom prefix to additional filters / tests.
+
+
+As an example, [MkNodes](https://phil65.github.io/mknodes) provides an entry point to add a large amount of Markdown filters
+to the environment.
