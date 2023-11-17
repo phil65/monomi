@@ -127,16 +127,18 @@ class Environment(jinja2.Environment):
         load_tests: bool = True,
         load_functions: bool = True,
         load_config: bool = True,
+        load_loader: bool = True,
     ):
-        """Load the content of a jinja file and add it to the environment.
+        """Load the content of a JinjaFile and add it to the environment.
 
         Arguments:
-            path: The path to the jinja file
+            path: The path to the JinjaFile
             scope_prefix: Optional prefix to add to all tests / filters / functions
-            load_filters: Whether to load filters from the file
-            load_tests: Whether to load tests from the file
-            load_functions: Whether to load functions from the file
-            load_config: Whether to load the environment config from the file
+            load_filters: Whether to load filters from the JinjaFile
+            load_tests: Whether to load tests from the JinjaFile
+            load_functions: Whether to load functions from the JinjaFile
+            load_config: Whether to load the environment config from the JinjaFile
+            load_loader: Whether to load the Loader from the JinjaFile
         """
         file = jinjafile.JinjaFile(path)
         if load_filters:
@@ -150,6 +152,8 @@ class Environment(jinja2.Environment):
             self.globals.update(dct)
         if load_config:
             self.__dict__.update(file.envconfig.as_dict())
+        if load_loader and (loader := file.loader):
+            self._add_loader(loader)
 
     @overload
     def compile(  # type: ignore[misc]  # noqa: A003

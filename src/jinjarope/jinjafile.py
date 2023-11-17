@@ -5,9 +5,11 @@ import dataclasses
 import os
 import tomllib
 
+import jinja2
+
 import jinjarope
 
-from jinjarope import envconfig, envglobals, envtests, utils
+from jinjarope import envconfig, envglobals, envtests, loaders, utils
 
 
 class JinjaFile(dict):
@@ -94,6 +96,10 @@ class JinjaFile(dict):
     def envconfig(self):
         cfg = self.get("config", {})
         return envconfig.EnvConfig(**cfg)
+
+    @property
+    def loader(self) -> jinja2.BaseLoader | None:
+        return loaders.from_json(self.get("loaders", []))
 
 
 @dataclasses.dataclass(frozen=True)
