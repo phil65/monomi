@@ -38,7 +38,7 @@ class JinjaFile(dict):
         return {f.identifier: f.filter_fn for f in self.tests}
 
 
-@dataclasses.dataclass
+@dataclasses.dataclass(frozen=True)
 class JinjaFilter:
     identifier: str
     fn: str
