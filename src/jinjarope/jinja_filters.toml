@@ -41,7 +41,7 @@ template = """
 [filters.default]
 fn = "jinja2.filters.do_default"
 group = "builtin"
-aliases = "d"
+aliases = ["d"]
 [filters.default.examples.basic]
 template = """
 {{ variable | default("some fallback") }}
@@ -147,7 +147,7 @@ template = """
 [filters.length]
 fn = "builtins.len"  # "jinja2.filters.len"
 group = "builtin"
-aliases = "count"
+aliases = ["count"]
 [filters.length.examples.basic]
 template = """
 {{ ["a", "b", "c"] | length }}
