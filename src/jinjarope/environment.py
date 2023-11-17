@@ -122,6 +122,7 @@ class Environment(jinja2.Environment):
     def load_jinja_file(
         self,
         path: str | os.PathLike,
+        scope_prefix: str = "",
         load_filters: bool = True,
         load_tests: bool = True,
         load_functions: bool = True,
@@ -131,6 +132,7 @@ class Environment(jinja2.Environment):
 
         Arguments:
             path: The path to the jinja file
+            scope_prefix: Optional prefix to add to all tests / filters / functions
             load_filters: Whether to load filters from the file
             load_tests: Whether to load tests from the file
             load_functions: Whether to load functions from the file
@@ -138,11 +140,14 @@ class Environment(jinja2.Environment):
         """
         file = jinjafile.JinjaFile(path)
         if load_filters:
-            self.filters.update(file.filters_dict)
+            dct = {f"{scope_prefix}{k}": v for k, v in file.filters_dict.items()}
+            self.filters.update(dct)
         if load_tests:
-            self.tests.update(file.tests_dict)
+            dct = {f"{scope_prefix}{k}": v for k, v in file.tests_dict.items()}
+            self.tests.update(dct)
         if load_functions:
-            self.globals.update(file.functions_dict)
+            dct = {f"{scope_prefix}{k}": v for k, v in file.functions_dict.items()}
+            self.globals.update(dct)
         if load_config:
             self.__dict__.update(file.envconfig.as_dict())
 
