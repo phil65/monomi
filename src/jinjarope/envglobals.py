@@ -158,6 +158,20 @@ def has_internet() -> bool:
         conn.close()
 
 
+def now(tz: datetime.tzinfo | None = None) -> datetime.datetime:
+    """Get current Datetime.
+
+    Arguments:
+        tz: timezone for retuned datetime
+    """
+    return datetime.datetime.now(tz)
+
+
+def utcnow() -> datetime.datetime:
+    """Get UTC datetime."""
+    return datetime.datetime.utcnow()
+
+
 ENV_GLOBALS = {
     "online": has_internet,
     "now": datetime.datetime.now,

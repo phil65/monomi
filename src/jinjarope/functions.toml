@@ -1,0 +1,31 @@
+[functions.online]
+fn = "jinjarope.envglobals.has_internet"
+group = "misc"
+[functions.online.examples.basic]
+template = """
+{{ online() }}
+"""
+
+[functions.now]
+fn = "jinjarope.envglobals.now"
+group = "misc"
+[functions.now.examples.basic]
+template = """
+{{ now() }}
+"""
+
+[functions.utcnow]
+fn = "jinjarope.envglobals.utcnow"
+group = "misc"
+[functions.utcnow.examples.basic]
+template = """
+{{ utcnow() }}
+"""
+
+[functions.cwd]
+fn = "pathlib.Path.cwd"
+group = "misc"
+[functions.cwd.examples.basic]
+template = """
+{{ cwd() }}
+"""

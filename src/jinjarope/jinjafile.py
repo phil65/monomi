@@ -43,6 +43,15 @@ class JinjaFile(dict):
         ]
 
     @property
+    def functions(self) -> list[JinjaItem]:
+        """Return list of functions defined in the file."""
+        return [
+            JinjaItem(filter_name, **dct)
+            for filter_name, dct in self.get("functions", {}).items()
+            if all(envtests.is_installed(i) for i in dct.get("required_packages", []))
+        ]
+
+    @property
     def filters_dict(self) -> dict[str, Callable]:
         """Return a dictionary with all filters.
 
@@ -63,6 +72,19 @@ class JinjaFile(dict):
         """
         dct = {}
         for f in self.tests:
+            dct[f.identifier] = f.filter_fn
+            for alias in f.aliases:
+                dct[alias] = f.filter_fn
+        return dct
+
+    @property
+    def functions_dict(self) -> dict[str, Callable]:
+        """Return a dictionary with all filters.
+
+        Can directly get merged into env filters.
+        """
+        dct = {}
+        for f in self.functions:
             dct[f.identifier] = f.filter_fn
             for alias in f.aliases:
                 dct[alias] = f.filter_fn

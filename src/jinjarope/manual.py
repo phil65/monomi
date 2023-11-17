@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import itertools
 
+from typing import Literal
+
 import mknodes as mk
 
 from mknodes.manual import dev_section
@@ -17,6 +19,7 @@ class Build:
         page += mk.MkText(page.ctx.metadata.description)
         self.add_section("Filters")
         self.add_section("Tests")
+        self.add_section("Functions")
         extending_nav = mk.MkNav("Extensions")
         nav += extending_nav
         page = extending_nav.add_page("Entry points", hide="toc")
@@ -27,23 +30,25 @@ class Build:
         nav += dev_section.nav
         return nav
 
-    def add_section(self, title: str):
+    def add_section(self, title: Literal["Filters", "Tests", "Functions"]):
         filters_nav = self.nav.add_nav(title)
         filters_index = filters_nav.add_page(title, is_index=True)
         slug = title.lower()
         rope_file = jinjafile.JinjaFile(f"src/jinjarope/{slug}.toml")
         jinja_file = jinjafile.JinjaFile(f"src/jinjarope/jinja_{slug}.toml")
-        if slug == "filters":
-            jinja_filters = jinja_file.filters
-            rope_filters = rope_file.filters
-        else:
-            jinja_filters = jinja_file.tests
-            rope_filters = rope_file.tests
-        all_filters = rope_filters + jinja_filters
-        filters_index += mk.MkTemplate(f"{slug}.md", variables=dict(items=all_filters))
-        # print(all_filters)
-        for group, filters in itertools.groupby(all_filters, key=lambda x: x.group):
-            # print(group)
+        match slug:
+            case "filters":
+                jinja_items = jinja_file.filters
+                rope_items = rope_file.filters
+            case "tests":
+                jinja_items = jinja_file.tests
+                rope_items = rope_file.tests
+            case "functions":
+                jinja_items = jinja_file.functions
+                rope_items = rope_file.functions
+        all_items = rope_items + jinja_items
+        filters_index += mk.MkTemplate(f"{slug}.md", variables=dict(items=all_items))
+        for group, filters in itertools.groupby(all_items, key=lambda x: x.group):
             p = mk.MkPage(group)
             filters_nav += p
             p += mk.MkTemplate(f"{slug}.md", variables=dict(items=list(filters)))
