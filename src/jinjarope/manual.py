@@ -47,6 +47,8 @@ class Build:
                 jinja_items = jinja_file.functions
                 rope_items = rope_file.functions
         all_items = rope_items + jinja_items
+        if slug == "functions":
+            slug = "filters"
         filters_index += mk.MkTemplate(f"{slug}.md", variables=dict(items=all_items))
         for group, filters in itertools.groupby(all_items, key=lambda x: x.group):
             p = mk.MkPage(group)
