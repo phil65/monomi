@@ -7,7 +7,7 @@ import tomllib
 
 import jinjarope
 
-from jinjarope import envglobals, envtests, utils
+from jinjarope import envconfig, envglobals, envtests, utils
 
 
 class JinjaFile(dict):
@@ -89,6 +89,11 @@ class JinjaFile(dict):
             for alias in f.aliases:
                 dct[alias] = f.filter_fn
         return dct
+
+    @property
+    def envconfig(self):
+        cfg = self.get("config", {})
+        return envconfig.EnvConfig(**cfg)
 
 
 @dataclasses.dataclass(frozen=True)

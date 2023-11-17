@@ -155,4 +155,4 @@ def test_evaluate():
 def test_get_config():
     env = jinjarope.Environment(trim_blocks=True)
     config = env.get_config()
-    assert config["trim_blocks"] is True
+    assert config.trim_blocks is True

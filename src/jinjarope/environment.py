@@ -17,7 +17,14 @@ import jinja2.nodes
 
 import jinjarope
 
-from jinjarope import envglobals, jinjafile, loaders, undefined as undefined_, utils
+from jinjarope import (
+    envconfig,
+    envglobals,
+    jinjafile,
+    loaders,
+    undefined as undefined_,
+    utils,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -371,9 +378,9 @@ class Environment(jinja2.Environment):
         # result = mk.MkContainer([buffer.getvalue(), val])
         return val or ""
 
-    def get_config(self) -> dict[str, str | bool | None]:
+    def get_config(self) -> envconfig.EnvConfig:
         """All environment settings as a dict (not included: undefined and loaders)."""
-        return dict(
+        return envconfig.EnvConfig(
             block_start_string=self.block_start_string,
             block_end_string=self.block_end_string,
             variable_start_string=self.variable_start_string,
