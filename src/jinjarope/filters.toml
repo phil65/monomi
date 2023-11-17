@@ -398,6 +398,15 @@ template = """
 {{ "github://phil65:mknodes@main/docs/icons.jinja" | load_file }}
 """
 
+[filters.get_doc]
+fn = "jinjarope.utils.get_doc"
+group = "misc"
+
+[filters.get_doc.examples.basic]
+template = """
+{{ filters.get_doc | get_doc }}
+"""
+
 [filters.get_hash]
 fn = "jinjarope.utils.get_hash"
 group = "misc"
