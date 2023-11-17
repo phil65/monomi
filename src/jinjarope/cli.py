@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-import pathlib
-
 import typer as t
 
 import jinjarope
@@ -32,16 +30,36 @@ cli = t.Typer(
 
 @cli.command()
 def render(
-    template_path: str = t.Option(None, *IN_CMDS, help=IN_HELP, show_default=False),
-    cfg_files: list[str] = t.Option(None, *CFG_CMDS, help=CFG_HELP, show_default=False),  # noqa: B008
-    output: str = t.Option(None, *OUT_CMDS, help=OUT_HELP, show_default=False),
+    template_path: str = t.Option(
+        None,
+        *IN_CMDS,
+        help=IN_HELP,
+        show_default=False,
+    ),
+    cfg_files: list[str] = t.Option(  # noqa: B008
+        None,
+        *CFG_CMDS,
+        help=CFG_HELP,
+        show_default=False,
+    ),
+    output: str = t.Option(
+        None,
+        *OUT_CMDS,
+        help=OUT_HELP,
+        show_default=False,
+    ),
     undefined: str = t.Option(
         "strict",
         *UNDEF_CMDS,
         help=UNDEF_HELP,
         show_default=False,
     ),
-    trim_blocks: bool = t.Option(None, *TRIM_CMDS, help=TRIM_HELP, show_default=False),
+    trim_blocks: bool = t.Option(
+        None,
+        *TRIM_CMDS,
+        help=TRIM_HELP,
+        show_default=False,
+    ),
 ):
     env = jinjarope.Environment()
     for path in cfg_files:
@@ -54,9 +72,9 @@ def render(
     if output is None:
         print(text)
     else:
-        output_p = pathlib.Path(output)
-        output_p.parent.mkdir(parents=True, exist_ok=True)
-        with output_p.open(mode="w", encoding="utf-8") as f:
+        import fsspec
+
+        with fsspec.open(output, mode="w", encoding="utf-8") as f:
             f.write(text)
 
 
@@ -70,6 +88,6 @@ if __name__ == "__main__":
             "-j",
             "src/jinjarope/filters.toml",
             "-o",
-            "output.file",
+            "out.test",
         ],
     )
