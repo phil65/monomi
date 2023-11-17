@@ -109,7 +109,7 @@ def get_output_from_call(
         return None
 
 
-def add(text, prefix: str = "", suffix: str = ""):
+def add(text, prefix: str = "", suffix: str = "") -> str:
     if not text:
         return ""
     return f"{prefix}{text}{suffix}"
@@ -172,11 +172,4 @@ def utcnow() -> datetime.datetime:
     return datetime.datetime.utcnow()
 
 
-ENV_GLOBALS = {
-    "online": has_internet,
-    "now": datetime.datetime.now,
-    "cwd": pathlib.Path.cwd,
-    "utcnow": datetime.datetime.utcnow,
-    "environment": version_info,
-    "JinjaFile": jinjafile.JinjaFile,
-}
+ENV_GLOBALS = {"environment": version_info, "JinjaFile": jinjafile.JinjaFile}
