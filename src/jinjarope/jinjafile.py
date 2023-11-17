@@ -32,10 +32,20 @@ class JinjaFile(dict):
         ]
 
     def get_filters_dict(self) -> dict[str, Callable]:
-        return {f.identifier: f.filter_fn for f in self.filters}
+        dct = {}
+        for f in self.filters:
+            dct[f.identifier] = f.filter_fn
+            for alias in f.aliases:
+                dct[alias] = f.filter_fn
+        return dct
 
     def get_tests_dict(self) -> dict[str, Callable]:
-        return {f.identifier: f.filter_fn for f in self.tests}
+        dct = {}
+        for f in self.tests:
+            dct[f.identifier] = f.filter_fn
+            for alias in f.aliases:
+                dct[alias] = f.filter_fn
+        return dct
 
 
 @dataclasses.dataclass(frozen=True)
@@ -45,7 +55,7 @@ class JinjaFilter:
     group: str
     examples: dict = dataclasses.field(default_factory=dict)
     description: str | None = None
-    aliases: list[str] | None = dataclasses.field(default_factory=list)
+    aliases: list[str] = dataclasses.field(default_factory=list)
 
     @property
     def filter_fn(self):
