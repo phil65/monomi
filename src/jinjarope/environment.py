@@ -1,16 +1,15 @@
 from __future__ import annotations
 
 import ast
-
-from collections.abc import Callable
 import contextlib
 import io
 import logging
 import os
 import pathlib
 import time
+
 from types import CodeType
-from typing import Any, ClassVar, Literal, overload
+from typing import Any, Literal, overload
 import weakref
 
 import jinja2
@@ -26,9 +25,6 @@ logger = logging.getLogger(__name__)
 
 class Environment(jinja2.Environment):
     """An enhanced Jinja environment."""
-
-    _decorator_globals: ClassVar[list[Callable]] = []
-    _decorator_filters: ClassVar[list[Callable]] = []
 
     def __init__(
         self,
@@ -75,13 +71,6 @@ class Environment(jinja2.Environment):
         file = jinjafile.JinjaFile(folder / "tests.toml")
         self.tests.update(file.tests_dict)
         self.globals.update(envglobals.ENV_GLOBALS)
-
-        # deprecated
-        for fn in self._decorator_filters:
-            self.filters.update(fn())
-        for fn in self._decorator_globals:
-            self.globals.update(fn())
-
         for fn in utils._entry_points("jinjarope.environment").values():
             fn(self)
         self.filters["render_template"] = self.render_template
@@ -121,34 +110,6 @@ class Environment(jinja2.Environment):
         file = jinjafile.JinjaFile(path)
         self.filters.update(file.filters_dict)
         self.tests.update(file.tests_dict)
-
-    @classmethod
-    def register_globals(cls, fn: Callable) -> Callable:
-        """Decorator for collecting globals.
-
-        The decorated method will get executed everytime an environment gets
-        instanciated and should return a dictionary with additional globals for
-        the environment.
-
-        Arguments:
-            fn: The function to decorate
-        """
-        cls._decorator_globals.append(fn)
-        return fn
-
-    @classmethod
-    def register_filters(cls, fn: Callable) -> Callable:
-        """Decorator for collecting filters.
-
-        The decorated method will get executed everytime an environment gets
-        instanciated and should return a dictionary with additional filters for
-        the environment.
-
-        Arguments:
-            fn: The function to decorate
-        """
-        cls._decorator_filters.append(fn)
-        return fn
 
     @overload
     def compile(  # type: ignore[misc]  # noqa: A003

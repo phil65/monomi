@@ -45,26 +45,6 @@ def test_getitem():
         env["nonexistent.html"]
 
 
-def test_register_globals():
-    @jinjarope.Environment.register_globals
-    def add_globals():
-        return {"global_var": "Global Variable"}
-
-    env = jinjarope.Environment()
-    assert "global_var" in env.globals
-    assert env.globals["global_var"] == "Global Variable"
-
-
-def test_register_filters():
-    @jinjarope.Environment.register_filters
-    def add_filters():
-        return {"uppercase": str.upper}
-
-    env = jinjarope.Environment()
-    assert "uppercase" in env.filters
-    assert env.filters["uppercase"]("hello") == "HELLO"
-
-
 def test_compile():
     env = jinjarope.Environment()
     source = "Hello, {{ name }}!"
