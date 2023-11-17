@@ -6,7 +6,7 @@
 {{ f.filter_fn | get_doc(only_summary=True) }}
 
 {% if f.aliases %}
-**Aliases:** {% for alias in f.aliases %} `alias` {% endfor %}
+**Aliases:** {% for alias in f.aliases %} `{{ alias }}` {% endfor %}
 {% endif %}
 !!! jinja "Example"
     Jinja call:

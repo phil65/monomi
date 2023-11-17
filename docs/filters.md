@@ -5,6 +5,10 @@
 
 {{ f.filter_fn | get_doc(only_summary=True) }}
 
+{% if f.aliases %}
+**Aliases:** {% for alias in f.aliases %} `{{ alias }}` {% endfor %}
+{% endif %}
+
 !!! jinja "Example"
     Jinja call:
     {{ v.template | MkCode(language="jinja") | string | indent }}
