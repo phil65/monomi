@@ -138,9 +138,14 @@ def resolve(name: str, module: str | None = None) -> types.ModuleType | Callable
         try:
             found = getattr(found, n)
         except AttributeError:
-            importlib.import_module(used)
-            found = getattr(found, n)
-
+            try:
+                importlib.import_module(used)
+                found = getattr(found, n)
+            except ModuleNotFoundError:
+                mod = ".".join(used.split(".")[:-1])
+                importlib.import_module(mod)
+                found = getattr(found, n)
+    print("XXX", found)
     return found
 
 

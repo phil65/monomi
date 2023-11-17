@@ -8,7 +8,7 @@ hide:
 **These filters are available for `jinjarope.Environment`:**
 
 
-{% for f in JinjaFile("src/jinjarope/filters.toml").filters %}
+{% for f in JinjaFile("src/jinjarope/filters.toml").filters + JinjaFile("src/jinjarope/jinja_filters.toml").filters %}
 {{ f.identifier | md_style(bold=True) | MkHeader }}
 {{ (f.identifier ~ f.filter_fn | format_signature) | md_style(code=True) }}
 {% for k, v in f.examples.items() %}
