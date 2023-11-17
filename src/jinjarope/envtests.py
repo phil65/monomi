@@ -117,3 +117,23 @@ def is_fsspec_url(string: str | os.PathLike[str]) -> bool:
         and bool(_RFC_3986_PATTERN.match(string))
         and not string.startswith(("http://", "https://"))
     )
+
+
+def is_installed(package_name: str) -> bool:
+    """Returns true if a package with given name is found.
+
+    Arguments:
+        package_name: The package name to check
+    """
+    import importlib.util
+
+    return bool(importlib.util.find_spec(package_name))
+
+
+def is_env_var(env_var: str):
+    """Returns true if an environment variable with given name has a value.
+
+    Arguments:
+        env_var: The environment variable name to check
+    """
+    return bool(os.getenv(env_var))

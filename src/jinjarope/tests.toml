@@ -158,3 +158,26 @@ template = """
 True!
 {% endif %}
 """
+
+
+[tests.installed]
+fn = "jinjarope.envtests.is_installed"
+group = "system"
+
+[tests.installed.examples.basic]
+template = """
+{% if "jinja2" is installed %}
+True!
+{% endif %}
+"""
+
+[tests.env_var]
+fn = "jinjarope.envtests.is_env_var"
+group = "system"
+
+[tests.env_var.examples.basic]
+template = """
+{% if "CI" is env_var %}
+True!
+{% endif %}
+"""
