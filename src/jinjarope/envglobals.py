@@ -158,6 +158,7 @@ def is_subclass(obj: type, typ: str | type) -> bool:
 
 ENV_GLOBALS = {
     "now": datetime.datetime.now,
+    "cwd": pathlib.Path.cwd,
     "utcnow": datetime.datetime.utcnow,
     "importlib": importlib,
     "environment": version_info,
