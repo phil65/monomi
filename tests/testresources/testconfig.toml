@@ -1,0 +1,6 @@
+[config]
+trim_blocks = true
+
+[[loaders]]
+type = "fsspec"
+fs = "dir::file://tests/testresources"
