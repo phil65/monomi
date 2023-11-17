@@ -145,7 +145,6 @@ def resolve(name: str, module: str | None = None) -> types.ModuleType | Callable
                 mod = ".".join(used.split(".")[:-1])
                 importlib.import_module(mod)
                 found = getattr(found, n)
-    print("XXX", found)
     return found
 
 
