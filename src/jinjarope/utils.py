@@ -17,6 +17,17 @@ logger = logging.getLogger(__name__)
 ClassType = TypeVar("ClassType", bound=type)
 
 
+def partial(fn: Callable, *args: Any, **kwargs: Any):
+    """Create new function with partial application of given arguments / keywords.
+
+    Arguments:
+        fn: The function to generate a partial from
+        args: patially applied arguments
+        kwargs: partially applied keywords
+    """
+    return functools.partial(*args, **kwargs)
+
+
 def iter_subclasses(klass: ClassType) -> Iterator[ClassType]:
     """(Recursively) iterate all subclasses of given klass.
 

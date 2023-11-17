@@ -371,14 +371,14 @@ template = """
 {{ "3" | hasattr("removeprefix") }}
 """
 
-# [filters.partial]
-# fn = "functools.partial"
-# group = "misc"
+[filters.partial]
+fn = "jinjarope.utils.partial"
+group = "misc"
 
-# [filters.partial.examples.basic]
-# template = """
-# {{ print | partial("abc") }}
-# """
+[filters.partial.examples.basic]
+template = """
+{{ filters.path_join | partial("abc") }}
+"""
 
 [filters.load_file]
 fn = "jinjarope.envglobals.load_file_cached"
