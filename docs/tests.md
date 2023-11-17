@@ -1,20 +1,13 @@
----
-render_jinja: true
-render_macros: true
-hide:
-  - navigation
----
-
-**These tests are available for `jinjarope.Environment`:**
-
-
-{% for f in JinjaFile("src/jinjarope/tests.toml").tests %}
+{% for f in items %}
 {{ f.identifier | md_style(bold=True) | MkHeader }}
 {{ (f.identifier ~ f.filter_fn | format_signature) | md_style(code=True) }}
 {% for k, v in f.examples.items() %}
 
 {{ f.filter_fn | get_doc(only_summary=True) }}
 
+{% if f.aliases %}
+**Aliases:** {% for alias in f.aliases %} `alias` {% endfor %}
+{% endif %}
 !!! jinja "Example"
     Jinja call:
     {{ v.template | MkCode(language="jinja") | string | indent }}

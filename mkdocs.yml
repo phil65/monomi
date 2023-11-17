@@ -51,13 +51,9 @@ theme:
 plugins:
 - search
 - mknodes:
-    build_fn: mknodes:MkDefaultWebsite.for_project
+    build_fn: jinjarope.manual:build
     global_resources: false
     render_by_default: false
-    kwargs:
-      static_pages:
-        Filters: docs/filters.md
-        Tests: docs/tests.md
 - mkdocstrings:
     default_handler: python
     handlers:
