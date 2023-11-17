@@ -17,6 +17,8 @@ class Build:
         page += mk.MkText(page.ctx.metadata.description)
         self.add_section("Filters")
         self.add_section("Tests")
+        page = nav.add_page("Extensions", hide="toc,nav")
+        page += mk.MkTemplate("extensions.md")
         nav.add_doc(section_name="API", flatten_nav=True, recursive=True)
         nav += dev_section.nav
         return nav
