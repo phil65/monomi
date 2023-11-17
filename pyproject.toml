@@ -84,6 +84,12 @@ dependencies = [
 ]
 license = "MIT"
 
+[project.optional-dependencies]
+cli = ["rich", "typer"]
+
+[project.scripts]
+jinjarope = "jinjarope.cli:cli"
+
 [project.urls]
 Documentation = "https://phil65.github.io/jinjarope/"
 Source = "https://github.com/phil65/jinjarope"
