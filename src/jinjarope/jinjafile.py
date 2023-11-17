@@ -11,7 +11,14 @@ from jinjarope import envglobals, utils
 
 
 class JinjaFile(dict):
+    """A file defining filters / tests."""
+
     def __init__(self, path: str | os.PathLike):
+        """Instanciate the file.
+
+        Arguments:
+            path: Path to the jinja file
+        """
         super().__init__()
         text = envglobals.load_file_cached(os.fspath(path))
         data = tomllib.loads(text)
@@ -19,6 +26,7 @@ class JinjaFile(dict):
 
     @property
     def filters(self) -> list[JinjaItem]:
+        """Return list of filters defined in the file."""
         return [
             JinjaItem(filter_name, **dct)
             for filter_name, dct in self.get("filters", {}).items()
@@ -26,12 +34,18 @@ class JinjaFile(dict):
 
     @property
     def tests(self) -> list[JinjaItem]:
+        """Return list of tests defined in the file."""
         return [
             JinjaItem(filter_name, **dct)
             for filter_name, dct in self.get("tests", {}).items()
         ]
 
-    def get_filters_dict(self) -> dict[str, Callable]:
+    @property
+    def filters_dict(self) -> dict[str, Callable]:
+        """Return a dictionary with all filters.
+
+        Can directly get merged into env filters.
+        """
         dct = {}
         for f in self.filters:
             dct[f.identifier] = f.filter_fn
@@ -39,7 +53,12 @@ class JinjaFile(dict):
                 dct[alias] = f.filter_fn
         return dct
 
-    def get_tests_dict(self) -> dict[str, Callable]:
+    @property
+    def tests_dict(self) -> dict[str, Callable]:
+        """Return a dictionary with all filters.
+
+        Can directly get merged into env filters.
+        """
         dct = {}
         for f in self.tests:
             dct[f.identifier] = f.filter_fn
@@ -50,6 +69,8 @@ class JinjaFile(dict):
 
 @dataclasses.dataclass(frozen=True)
 class JinjaItem:
+    """An item representing a filter / test."""
+
     identifier: str
     fn: str
     group: str

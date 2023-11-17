@@ -18,6 +18,7 @@ from .fsspecloaders import (
     FsSpecProtocolPathLoader,
 )
 from .loaderregistry import LoaderRegistry
+from .jinjafile import JinjaFile, JinjaItem
 from . import utils
 
 registry = LoaderRegistry()
@@ -46,4 +47,6 @@ __all__ = [
     "DictLoader",
     "get_loader",
     "get_loader_cls_by_id",
+    "JinjaFile",
+    "JinjaItem",
 ]

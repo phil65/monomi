@@ -67,18 +67,21 @@ class Environment(jinja2.Environment):
         self._extra_files: set[str] = set()
         self._extra_paths: set[str] = set()
         super().__init__(**kwargs)
+
+        # Update namespaces
         folder = pathlib.Path(__file__).parent
         file = jinjafile.JinjaFile(folder / "filters.toml")
-        dct = file.get_filters_dict()
-        self.filters.update(dct)
+        self.filters.update(file.filters_dict)
         file = jinjafile.JinjaFile(folder / "tests.toml")
-        dct = file.get_tests_dict()
-        self.tests.update(dct)
+        self.tests.update(file.tests_dict)
         self.globals.update(envglobals.ENV_GLOBALS)
+
+        # deprecated
         for fn in self._decorator_filters:
             self.filters.update(fn())
         for fn in self._decorator_globals:
             self.globals.update(fn())
+
         for ep in utils._entry_points("jinjarope.environment").values():
             ep.load()(self)
         self.filters["render_template"] = self.render_template
@@ -108,6 +111,16 @@ class Environment(jinja2.Environment):
         val: The template path
         """
         return self.get_template(val)
+
+    def load_jinja_file(self, path: str | os.PathLike):
+        """Load the content of a jinja file and add it to the environment.
+
+        Arguments:
+            path: The path to the jinja file
+        """
+        file = jinjafile.JinjaFile(path)
+        self.filters.update(file.filters_dict)
+        self.tests.update(file.tests_dict)
 
     @classmethod
     def register_globals(cls, fn: Callable) -> Callable:
