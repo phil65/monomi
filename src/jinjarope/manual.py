@@ -17,8 +17,12 @@ class Build:
         page += mk.MkText(page.ctx.metadata.description)
         self.add_section("Filters")
         self.add_section("Tests")
-        page = nav.add_page("Extensions", hide="toc,nav")
+        extending_nav = mk.MkNav("Extensions")
+        nav += extending_nav
+        page = extending_nav.add_page("Entry points", hide="toc")
         page += mk.MkTemplate("extensions.md")
+        page = extending_nav.add_page("JinjaFiles", hide="toc")
+        page += mk.MkTemplate("jinjafiles.md")
         nav.add_doc(section_name="API", flatten_nav=True, recursive=True)
         nav += dev_section.nav
         return nav
