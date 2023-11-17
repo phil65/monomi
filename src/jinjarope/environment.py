@@ -82,8 +82,8 @@ class Environment(jinja2.Environment):
         for fn in self._decorator_globals:
             self.globals.update(fn())
 
-        for ep in utils._entry_points("jinjarope.environment").values():
-            ep.load()(self)
+        for fn in utils._entry_points("jinjarope.environment").values():
+            fn(self)
         self.filters["render_template"] = self.render_template
         self.filters["render_string"] = self.render_string
         self.filters["render_file"] = self.render_file
