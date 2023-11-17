@@ -13,7 +13,7 @@ class Build:
     def on_root(self, nav: mk.MkNav):
         self.nav = nav
         nav.page_template.announcement_bar = mk.MkMetadataBadges("websites")
-        page = nav.add_page(is_index=True, hide="toc")
+        page = nav.add_page(is_index=True, hide="nav,toc")
         page += mk.MkText(page.ctx.metadata.description)
         self.add_section("Filters")
         self.add_section("Tests")

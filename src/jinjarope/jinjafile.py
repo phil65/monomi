@@ -7,7 +7,7 @@ import tomllib
 
 import jinjarope
 
-from jinjarope import envglobals, utils
+from jinjarope import envglobals, envtests, utils
 
 
 class JinjaFile(dict):
@@ -30,6 +30,7 @@ class JinjaFile(dict):
         return [
             JinjaItem(filter_name, **dct)
             for filter_name, dct in self.get("filters", {}).items()
+            if all(envtests.is_installed(i) for i in dct.get("required_packages", []))
         ]
 
     @property
@@ -38,6 +39,7 @@ class JinjaFile(dict):
         return [
             JinjaItem(filter_name, **dct)
             for filter_name, dct in self.get("tests", {}).items()
+            if all(envtests.is_installed(i) for i in dct.get("required_packages", []))
         ]
 
     @property

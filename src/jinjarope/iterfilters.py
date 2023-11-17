@@ -20,7 +20,7 @@ def pairwise(items: Iterable[T]) -> itertools.pairwise[tuple[T, T]]:
     return itertools.pairwise(items)
 
 
-def do_zip(*items: Iterable[T]):
+def do_zip(*items: Iterable[T]) -> zip:
     """Zip iterables into a single one.
 
     Arguments:
@@ -79,13 +79,20 @@ def batched(iterable: Iterable[T], n: int) -> Generator[tuple[T, ...], None, Non
 
 def natsort(
     val: Iterable[T],
-    key: str | Callable,
+    key: str | Callable | None = None,
     reverse: bool = False,
     ignore_case: bool = True,
 ) -> Iterable[T]:
     """Using the natsort package, sort a list naturally.
 
     i.e. A1, B1, A2, A10 will sort A1, A2, A10, B1.
+
+    Arguments:
+        val: the iterable to sort
+        key: If str, sort by attribute with given name. If callable, use it as keygetter.
+             If None, sort by objects itself
+        reverse: Whether to reverse the sort order
+        ignore_case: Whether to ignore case for sorting
     """
     from operator import attrgetter
 

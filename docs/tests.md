@@ -8,6 +8,10 @@
 {% if f.aliases %}
 **Aliases:** {% for alias in f.aliases %} `{{ alias }}` {% endfor %}
 {% endif %}
+{% if f.required_packages %}
+**Required packages:** {% for required_package in f.required_packages %} `{{ required_package}}` {% endfor %}
+{% endif %}
+
 !!! jinja "Example"
     Jinja call:
     {{ v.template | MkCode(language="jinja") | string | indent }}

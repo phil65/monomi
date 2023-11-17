@@ -192,6 +192,15 @@ template = """
 {% endfor %}
 """
 
+[filters.natsort]
+fn = "jinjarope.iterfilters.natsort"
+group = "iter"
+required_packages = ["natsort"]
+[filters.natsort.examples.basic]
+template = """
+{{ ["A1", "B1", "A2", "A10"] | natsort }}
+"""
+
 [filters.any]
 fn = "jinjarope.iterfilters.do_any"
 group = "iter"
