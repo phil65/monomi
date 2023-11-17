@@ -25,7 +25,7 @@ def partial(fn: Callable, *args: Any, **kwargs: Any):
         args: patially applied arguments
         kwargs: partially applied keywords
     """
-    return functools.partial(*args, **kwargs)
+    return functools.partial(fn, *args, **kwargs)
 
 
 def iter_subclasses(klass: ClassType) -> Iterator[ClassType]:
