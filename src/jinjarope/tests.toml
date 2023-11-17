@@ -48,16 +48,6 @@ True!
 {% endif %}
 """
 
-[tests.callable]
-fn = "jinjarope.envtests._is_callable"
-group = "type"
-[tests.callable.examples.basic]
-template = """
-{% if zip is callable %}
-True!
-{% endif %}
-"""
-
 [tests.type]
 fn = "jinjarope.envtests._is_type"
 group = "type"

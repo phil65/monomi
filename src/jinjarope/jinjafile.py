@@ -18,16 +18,16 @@ class JinjaFile(dict):
         self.update(data)
 
     @property
-    def filters(self) -> list[JinjaFilter]:
+    def filters(self) -> list[JinjaItem]:
         return [
-            JinjaFilter(filter_name, **dct)
+            JinjaItem(filter_name, **dct)
             for filter_name, dct in self.get("filters", {}).items()
         ]
 
     @property
-    def tests(self) -> list[JinjaFilter]:
+    def tests(self) -> list[JinjaItem]:
         return [
-            JinjaFilter(filter_name, **dct)
+            JinjaItem(filter_name, **dct)
             for filter_name, dct in self.get("tests", {}).items()
         ]
 
@@ -49,13 +49,14 @@ class JinjaFile(dict):
 
 
 @dataclasses.dataclass(frozen=True)
-class JinjaFilter:
+class JinjaItem:
     identifier: str
     fn: str
     group: str
     examples: dict = dataclasses.field(default_factory=dict)
     description: str | None = None
     aliases: list[str] = dataclasses.field(default_factory=list)
+    required_packages: list[str] = dataclasses.field(default_factory=list)
 
     @property
     def filter_fn(self):
