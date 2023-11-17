@@ -156,11 +156,24 @@ def is_subclass(obj: type, typ: str | type) -> bool:
     return issubclass(obj, kls)
 
 
+def has_internet() -> bool:
+    import http.client as httplib
+
+    conn = httplib.HTTPSConnection("8.8.8.8", timeout=2)
+    try:
+        conn.request("HEAD", "/")
+        return True  # noqa: TRY300
+    except Exception:  # noqa: BLE001
+        return False
+    finally:
+        conn.close()
+
+
 ENV_GLOBALS = {
+    "online": has_internet,
     "now": datetime.datetime.now,
     "cwd": pathlib.Path.cwd,
     "utcnow": datetime.datetime.utcnow,
-    "importlib": importlib,
     "environment": version_info,
     "JinjaFile": jinjafile.JinjaFile,
 }
