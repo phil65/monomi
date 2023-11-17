@@ -1,0 +1,59 @@
+# [functions.range]
+# fn = "range"
+# group = "builtin"
+# [functions.range.examples.basic]
+# template = """
+# {{ range(0,5) }}
+# """
+
+# [functions.dict]
+# fn = "dict"
+# group = "builtin"
+# [functions.dict.examples.basic]
+# template = """
+# {{ dict(a="b") }}
+# """
+
+[functions.lipsum]
+fn = "jinja2.utils.generate_lorem_ipsum"
+group = "builtin"
+[functions.lipsum.examples.basic]
+template = """
+{{ lipsum() }}
+"""
+
+[functions.joiner]
+fn = "jinja2.utils.Joiner"
+group = "builtin"
+[functions.joiner.examples.basic]
+template = """
+{% set pipe = joiner("|") %}
+"AB"
+{{ pipe() }}
+"AB"
+{{ pipe() }}
+"AB"
+{{ pipe() }}
+"""
+
+[functions.cycler]
+fn = "jinja2.utils.Cycler"
+group = "builtin"
+[functions.cycler.examples.basic]
+template = """
+{% set row_class = cycler("odd", "even") %}
+{{ row_class.next() }}
+{{ row_class.next() }}
+{{ row_class.next() }}
+{{ row_class.current() }}
+"""
+
+[functions.namespace]
+fn = "jinja2.utils.Namespace"
+group = "builtin"
+[functions.namespace.examples.basic]
+template = """
+{% set ns = namespace() %}
+{% set ns.foo = 'bar' %}
+{{ ns.foo }}
+"""

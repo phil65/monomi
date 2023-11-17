@@ -15,7 +15,7 @@ import platform
 import sys
 from typing import Any, Literal
 
-from jinjarope import jinjafile, utils
+from jinjarope import utils
 
 
 logger = logging.getLogger(__name__)
@@ -172,4 +172,11 @@ def utcnow() -> datetime.datetime:
     return datetime.datetime.utcnow()
 
 
-ENV_GLOBALS = {"environment": version_info, "JinjaFile": jinjafile.JinjaFile}
+ENV_GLOBALS = {
+    "environment": version_info,
+    "range": range,
+    "zip": zip,
+    "set": set,
+    "tuple": tuple,
+    "list": list,
+}

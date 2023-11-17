@@ -109,7 +109,7 @@ fn = "jinja2.filters.do_groupby"
 group = "builtin"
 [filters.groupby.examples.basic]
 template = """
-{{ [JinjaFile] | groupby("__module__") }}
+{{ [cycler] | groupby("__module__") }}
 """
 
 [filters.indent]
@@ -182,7 +182,7 @@ fn = "jinja2.filters.do_map"
 group = "builtin"
 [filters.map.examples.basic]
 template = """
-{{ [1, JinjaFile] | map(attribute="__doc__") }}
+{{ [1, cycler] | map(attribute="__doc__") }}
 """
 
 [filters.min]
