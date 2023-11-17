@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import dataclasses
 
+from jinjarope import utils
+
 
 @dataclasses.dataclass(unsafe_hash=True)
 class EnvConfig:
@@ -39,6 +41,17 @@ class EnvConfig:
     to be stripped from the end of the template.
     """
 
+    def __repr__(self):
+        return utils.get_repr(self, **self.as_dict())
+
+    def as_dict(self):
+        return {
+            field.name: v
+            for field in dataclasses.fields(self)
+            if (v := getattr(self, field.name)) is not None
+        }
+
 
 if __name__ == "__main__":
-    cfg = EnvConfig()
+    cfg = EnvConfig(newline_sequence="abc")
+    print(repr(cfg))

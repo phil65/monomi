@@ -119,15 +119,32 @@ class Environment(jinja2.Environment):
         new = undefined_.UNDEFINED_BEHAVIOR[value] if isinstance(value, str) else value
         self.undefined = new
 
-    def load_jinja_file(self, path: str | os.PathLike):
+    def load_jinja_file(
+        self,
+        path: str | os.PathLike,
+        load_filters: bool = True,
+        load_tests: bool = True,
+        load_functions: bool = True,
+        load_config: bool = True,
+    ):
         """Load the content of a jinja file and add it to the environment.
 
         Arguments:
             path: The path to the jinja file
+            load_filters: Whether to load filters from the file
+            load_tests: Whether to load tests from the file
+            load_functions: Whether to load functions from the file
+            load_config: Whether to load the environment config from the file
         """
         file = jinjafile.JinjaFile(path)
-        self.filters.update(file.filters_dict)
-        self.tests.update(file.tests_dict)
+        if load_filters:
+            self.filters.update(file.filters_dict)
+        if load_tests:
+            self.tests.update(file.tests_dict)
+        if load_functions:
+            self.globals.update(file.functions_dict)
+        if load_config:
+            self.__dict__.update(file.envconfig.as_dict())
 
     @overload
     def compile(  # type: ignore[misc]  # noqa: A003
