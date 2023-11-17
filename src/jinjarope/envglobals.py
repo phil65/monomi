@@ -4,7 +4,6 @@ from collections.abc import Sequence
 import configparser
 import datetime
 import functools
-import importlib
 
 from importlib import metadata
 import io
@@ -13,20 +12,10 @@ import logging
 import os
 import pathlib
 import platform
-import pprint
 import sys
-import tomllib
 from typing import Any, Literal
 
-from jinjarope import (
-    htmlfilters,
-    iterfilters,
-    jinjafile,
-    mdfilters,
-    regexfilters,
-    textfilters,
-    utils,
-)
+from jinjarope import jinjafile, utils
 
 
 logger = logging.getLogger(__name__)
@@ -176,59 +165,4 @@ ENV_GLOBALS = {
     "utcnow": datetime.datetime.utcnow,
     "environment": version_info,
     "JinjaFile": jinjafile.JinjaFile,
-}
-ENV_FILTERS = {
-    # Format filters
-    "repr": repr,
-    "slugify": textfilters.slugify,
-    "pformat": pprint.pformat,
-    "format_code": textfilters.format_code,
-    # Text modification filters
-    "rstrip": textfilters.rstrip,
-    "lstrip": textfilters.lstrip,
-    "removesuffix": textfilters.removesuffix,
-    "removeprefix": textfilters.removeprefix,
-    # Markdown filters
-    "md_link": mdfilters.md_link,
-    "md_escape": mdfilters.md_escape,
-    "md_style": mdfilters.md_style,
-    "extract_header_section": mdfilters.extract_header_section,
-    # HTML filters
-    "html_link": htmlfilters.html_link,
-    "wrap_in_elem": htmlfilters.wrap_in_elem,
-    "format_js_map": htmlfilters.format_js_map,
-    "format_css_rule": htmlfilters.format_css_rule,
-    "svg_to_data_uri": htmlfilters.svg_to_data_uri,
-    "clean_svg": htmlfilters.clean_svg,
-    # Iter filters
-    "batched": iterfilters.batched,
-    "reduce_list": iterfilters.reduce_list,
-    "flatten_dict": iterfilters.flatten_dict,
-    "pairwise": iterfilters.pairwise,
-    "zip": iterfilters.do_zip,
-    "any": iterfilters.do_any,
-    # Regex filters
-    "re_replace": regexfilters.re_replace,
-    "re_findall": regexfilters.re_findall,
-    "re_search": regexfilters.re_search,
-    "re_escape": regexfilters.re_escape,
-    # serialization filters
-    "dump_json": json.dumps,
-    "load_json": json.loads,
-    "load_toml": tomllib.loads,
-    "serialize": serialize,
-    # misc
-    "add": add,
-    "ternary": ternary,
-    "get_doc": utils.get_doc,
-    "issubclass": is_subclass,
-    "isinstance": is_instance,
-    "import_module": importlib.import_module,
-    "hasattr": hasattr,
-    "partial": functools.partial,
-    "load_file": load_file_cached,
-    "get_hash": utils.get_hash,
-    "path_join": os.path.join,
-    "check_output": get_output_from_call,
-    "getenv": os.getenv,
 }
