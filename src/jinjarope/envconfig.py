@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import dataclasses
 
+from typing import Any
+
 from jinjarope import utils
 
 
@@ -44,7 +46,8 @@ class EnvConfig:
     def __repr__(self):
         return utils.get_repr(self, **self.as_dict())
 
-    def as_dict(self):
+    def as_dict(self) -> dict[str, Any]:
+        """Return dataclass as a dict, filtering all None-values."""
         return {
             field.name: v
             for field in dataclasses.fields(self)
