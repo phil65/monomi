@@ -5,6 +5,8 @@ import dataclasses
 import os
 import tomllib
 
+from typing import Any, Self
+
 import jinja2
 
 import jinjarope
@@ -93,12 +95,14 @@ class JinjaFile(dict):
         return dct
 
     @property
-    def envconfig(self):
+    def envconfig(self) -> envconfig.EnvConfig:
+        """Return the config object defined in this Jinja file."""
         cfg = self.get("config", {})
         return envconfig.EnvConfig(**cfg)
 
     @property
     def loader(self) -> jinja2.BaseLoader | None:
+        """Return a (composed Choice-) loader defined in this Jinja file."""
         return loaders.from_json(self.get("loaders", []))
 
 
@@ -115,17 +119,40 @@ class JinjaItem:
     required_packages: list[str] = dataclasses.field(default_factory=list)
 
     @property
-    def filter_fn(self):
+    def filter_fn(self) -> Callable:
+        """Return the callable to use as filter / test / function."""
         obj = utils.resolve(self.fn)
         if not callable(obj):
             msg = "Filter needs correct, importable Path for callable"
             raise TypeError(msg)
         return obj
 
-    def apply(self, *args, **kwargs):
-        self.filter_fn(*args, **kwargs)
+    @classmethod
+    def for_function(cls, fn: Callable, group: str = "imported", **kwargs: Any) -> Self:
+        """Alternative ctor to construct a JinjaItem based on a callable.
 
-    def resolve_example(self, example_name):
+        Arguments:
+            fn: Callable to get a JinjaItem for
+            group: Group for metadata
+            kwargs: Additional keyword arguments for JinjaItem ctor
+        """
+        return cls(fn.__name__, f"{fn.__module__}.{fn.__name__}", group=group, **kwargs)
+
+    def apply(self, *args: Any, **kwargs: Any) -> Any:
+        """Apply the filter function using given arguments and keywords.
+
+        Arguments:
+            args: The arguments for the call
+            kwargs: They keyword arguments for the call
+        """
+        return self.filter_fn(*args, **kwargs)
+
+    def resolve_example(self, example_name: str) -> str:
+        """Render example with given name and return the result.
+
+        Arguments:
+            example_name: The example identifier
+        """
         example = self.examples[example_name]
         env = jinjarope.Environment()
         return env.render_string(example["template"])
