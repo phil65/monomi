@@ -1,19 +1,16 @@
 from __future__ import annotations
 
 from collections.abc import Sequence
-import configparser
 import datetime
 import functools
 
 from importlib import metadata
-import io
-import json
 import logging
 import os
 import pathlib
 import platform
 import sys
-from typing import Any, Literal
+from typing import Any
 
 from jinjarope import utils
 
@@ -29,35 +26,6 @@ version_info = dict(
     architecture=platform.architecture(),
     python_implementation=platform.python_implementation(),
 )
-
-
-def serialize(data: Any, mode: Literal["yaml", "json", "ini", "toml"] | None) -> str:  # type: ignore[return]
-    """Serialize given json-like object to given format.
-
-    Arguments:
-        data: The data to serialize
-        mode: The serialization mode
-    """
-    match mode:
-        case None | "yaml":
-            import yaml
-
-            return yaml.dump(data)
-        case "json":
-            return json.dumps(data, indent=4)
-        case "ini":
-            config = configparser.ConfigParser()
-            config.read_dict(data)
-            file = io.StringIO()
-            with file as fp:
-                config.write(fp)
-                return file.getvalue()
-        case "toml" if isinstance(data, dict):
-            import tomli_w
-
-            return tomli_w.dumps(data)
-        case _:
-            raise TypeError(mode)
 
 
 @functools.cache

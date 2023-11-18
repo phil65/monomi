@@ -316,12 +316,21 @@ template = """
 """
 
 [filters.serialize]
-fn = "jinjarope.envglobals.serialize"
+fn = "jinjarope.serializefilters.serialize"
 group = "serialize"
 
 [filters.serialize.examples.basic]
 template = """
 {{ {"a": "b"} | serialize("toml") }}
+"""
+
+[filters.deserialize]
+fn = "jinjarope.serializefilters.deserialize"
+group = "serialize"
+
+[filters.deserialize.examples.basic]
+template = """
+{{ "[abc.def]\nvalue = 1" | deserialize("toml") }}
 """
 
 # Misc
