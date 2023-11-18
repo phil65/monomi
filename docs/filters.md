@@ -20,9 +20,9 @@
 
     {{ v.template | render_string | MkCode(language="") | string | indent }}
 
+{% endfor %}
 
 {{ f.filter_fn | MkDocStrings(show_docstring_description=False, heading_level=4) | MkAdmonition(collapsible=True, title="DocStrings") }}
 
 
-{% endfor %}
 {% endfor %}

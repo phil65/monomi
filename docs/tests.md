@@ -18,9 +18,9 @@
 
     Result: {{ v.template | render_string | md_style(code=True) | string | indent }}
 
+{% endfor %}
 
 {{ f.filter_fn | MkDocStrings(show_docstring_description=False) | MkAdmonition(collapsible=True, title="DocStrings", typ="quote") }}
 
 
-{% endfor %}
 {% endfor %}
