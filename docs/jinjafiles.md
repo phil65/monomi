@@ -77,8 +77,8 @@ Every loader defined in TOML requires a  `type` (either "filesystem", "package",
 
 ```toml
 [[loaders]]
-type: "fsspec"
-fs: "dir::file://tests/testresources"
+type: "filesystem"
+searchpath: "path/to/template/folder"
 
 # we can define multiple loaders, this will result in a combined ChoiceLoader.
 
