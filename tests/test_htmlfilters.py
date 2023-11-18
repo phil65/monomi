@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from xml.etree import ElementTree as Et
+
 from jinjarope import htmlfilters
 import pytest
 
@@ -80,3 +82,34 @@ def test_format_css_rule():
         htmlfilters.format_css_rule({".a": {"b": {"c": "d"}}}) == ".a b {\n\tc: d;\n}\n\n"
     )
     assert htmlfilters.format_css_rule({}) == ""
+
+
+def test_format_xml_with_str():
+    xml_str = "<root><child>text</child></root>"
+    formatted_xml = htmlfilters.format_xml(xml_str)
+    expected_xml = "<root>\n  <child>text</child>\n</root>"
+    assert formatted_xml == expected_xml
+
+
+def test_format_xml_with_element():
+    xml_elem = Et.Element("root")
+    child = Et.SubElement(xml_elem, "child")
+    child.text = "text"
+    formatted_xml = htmlfilters.format_xml(xml_elem)
+    expected_xml = "<root>\n  <child>text</child>\n</root>"
+    assert formatted_xml == expected_xml
+
+
+def test_format_xml_with_indent():
+    xml_str = "<root><child>text</child></root>"
+    formatted_xml = htmlfilters.format_xml(xml_str, indent=4)
+    expected_xml = "<root>\n    <child>text</child>\n</root>"
+    assert formatted_xml == expected_xml
+
+
+def test_format_xml_with_level():
+    xml_str = "<root><child>text</child></root>"
+    formatted_xml = htmlfilters.format_xml(xml_str, level=1)
+    # IMO missing indent at beginning this is unexpected, but thats what ET returns..
+    expected_xml = "<root>\n    <child>text</child>\n  </root>"
+    assert formatted_xml == expected_xml

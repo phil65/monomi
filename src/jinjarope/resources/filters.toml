@@ -139,6 +139,30 @@ template = """
 {{ '<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>\n<body></body>' | clean_svg }}
 """
 
+[filters.format_xml]
+fn = "jinjarope.htmlfilters.format_xml"
+group = "html"
+
+[filters.format_xml.examples.basic]
+template = """
+{{ '<a><b><c>Hello!</c></b></a>' | format_xml }}
+"""
+
+[filters.format_xml.examples.with_declaration]
+template = """
+{{ '<a><b><c>Hello!</c></b></a>' | format_xml(indent=4) }}
+"""
+
+[filters.format_xml.examples.short_form]
+template = """
+{{ '<br></br>' | format_xml(short_empty_elements=True, method="xml") }}
+"""
+
+[filters.format_xml.examples.declaration]
+template = """
+{{ '<br></br>' | format_xml(short_empty_elements=True, add_declaration=True, method="xml") }}
+"""
+
 # Itertools
 
 [filters.batched]

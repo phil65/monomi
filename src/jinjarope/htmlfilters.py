@@ -4,7 +4,8 @@ from collections.abc import Mapping
 import json
 import re
 
-from typing import Any
+from typing import Any, Literal
+from xml.etree import ElementTree as Et
 
 
 def wrap_in_elem(
@@ -126,6 +127,39 @@ def format_css_rule(dct: Mapping) -> str:
         if data[key]:
             string += key[1:] + " {\n" + "".join(value) + "}\n\n"
     return string
+
+
+def format_xml(
+    str_or_elem: str | Et.Element,
+    indent: str | int = "  ",
+    level: int = 0,
+    method: Literal["xml", "html", "text", "c14n"] = "html",
+    short_empty_elements: bool = True,
+    add_declaration: bool = False,
+) -> str:
+    """(Pretty)print given XML.
+
+    Arguments:
+        str_or_elem: XML to prettyprint
+        indent: Amount of spaces to use for indentation
+        level: Initial indentation level
+        method: Output method
+        short_empty_elements: Whether empty elements should get printed in short form
+                              (applies when mode is "xml")
+        add_declaration: whether a XML declaration should be printed
+                         (applies when mode is "xml")
+    """
+    if isinstance(str_or_elem, str):
+        str_or_elem = Et.fromstring(str_or_elem)
+    space = indent if isinstance(indent, str) else indent * " "
+    Et.indent(str_or_elem, space=space, level=level)
+    return Et.tostring(
+        str_or_elem,
+        encoding="unicode",
+        method=method,
+        xml_declaration=add_declaration,
+        short_empty_elements=short_empty_elements,
+    )
 
 
 if __name__ == "__main__":
