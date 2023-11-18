@@ -72,7 +72,7 @@ class Environment(jinja2.Environment):
         super().__init__(**kwargs)
 
         # Update namespaces
-        folder = pathlib.Path(__file__).parent
+        folder = pathlib.Path(__file__).parent / "resources"
         file = jinjafile.JinjaFile(folder / "filters.toml")
         self.filters.update(file.filters_dict)
         file = jinjafile.JinjaFile(folder / "tests.toml")

@@ -12,7 +12,7 @@ def test_render_with_cli():
             "-i",
             "file://tests/testresources/testfile.jinja",
             "-j",
-            "src/jinjarope/tests.toml",
+            "src/jinjarope/resources/tests.toml",
         ],
         catch_exceptions=False,
     )

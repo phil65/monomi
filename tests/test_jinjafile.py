@@ -4,19 +4,19 @@ import jinjarope
 
 
 def test_loading_filters():
-    file = jinjarope.JinjaFile("src/jinjarope/filters.toml")
+    file = jinjarope.JinjaFile("src/jinjarope/resources/filters.toml")
     assert isinstance(file.filters[0], jinjarope.JinjaItem)
     assert file.filters_dict
 
 
 def test_loading_functions():
-    file = jinjarope.JinjaFile("src/jinjarope/functions.toml")
+    file = jinjarope.JinjaFile("src/jinjarope/resources/functions.toml")
     assert isinstance(file.functions[0], jinjarope.JinjaItem)
     assert file.functions_dict
 
 
 def test_loading_tests():
-    file = jinjarope.JinjaFile("src/jinjarope/tests.toml")
+    file = jinjarope.JinjaFile("src/jinjarope/resources/tests.toml")
     assert isinstance(file.tests[0], jinjarope.JinjaItem)
     assert file.tests_dict
 

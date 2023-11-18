@@ -163,5 +163,5 @@ class JinjaItem:
 
 
 if __name__ == "__main__":
-    file = JinjaFile("src/jinjarope/filters.toml")
+    file = JinjaFile("src/jinjarope/resources/filters.toml")
     print(file.filters[5].resolve_example("basic"))

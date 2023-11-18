@@ -36,8 +36,8 @@ class Build:
         filters_nav = self.nav.add_nav(title)
         filters_index = filters_nav.add_page(title, is_index=True)
         slug = title.lower()
-        rope_file = jinjafile.JinjaFile(f"src/jinjarope/{slug}.toml")
-        jinja_file = jinjafile.JinjaFile(f"src/jinjarope/jinja_{slug}.toml")
+        rope_file = jinjafile.JinjaFile(f"src/jinjarope/resources/{slug}.toml")
+        jinja_file = jinjafile.JinjaFile(f"src/jinjarope/resources/jinja_{slug}.toml")
         match slug:
             case "filters":
                 jinja_items = jinja_file.filters
