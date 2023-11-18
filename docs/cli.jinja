@@ -1,0 +1,16 @@
+**JinjaRope** contains a simple CLI interface which allows rendering Jinja templates using the **JinjaRope** Environment.
+
+
+Very basic usage:
+``` bash
+jinjarope -i "input_file.jinja" [-o "output.md"] [-j "additional_jinja_files.toml"] [...]
+```
+
+Since **jinjarope** is using **fsspec** in the background, templates can be loaded from all filesystems **fsspec** understands.
+This allows to load templates from `http://` sources, `zip` files, specific `git` revisions and a lot more different sources. The same counts for the output path.
+
+``` bash
+jinjarope -i "github://phil65:mknodes@main/docs/icons.jinja" -o "output.md" -j "path_to_jinja_file.toml"
+```
+
+{{ mk.MkCliDoc(show_subcommands=True) }}
