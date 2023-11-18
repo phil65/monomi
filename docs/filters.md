@@ -1,7 +1,6 @@
 {% for f in items %}
 {{ f.identifier | md_style(bold=True) | MkHeader }}
 {{ (f.identifier ~ f.filter_fn | format_signature) | md_style(code=True) }}
-{% for k, v in f.examples.items() %}
 
 {{ f.filter_fn | get_doc(only_summary=True) }}
 
@@ -11,6 +10,8 @@
 {% if f.required_packages %}
 **Required packages:** {% for required_package in f.required_packages %} `{{ required_package}}` {% endfor %}
 {% endif %}
+
+{% for k, v in f.examples.items() %}
 
 !!! jinja "Example"
     Jinja call:
