@@ -5,7 +5,7 @@ import pathlib
 
 import jinja2
 
-from jinjarope import loaders as loaders_
+from jinjarope import loaders as loaders_, utils
 
 
 class RewriteLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
@@ -29,6 +29,19 @@ class RewriteLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
         """
         self.loader = loader
         self.rewrite_fn = rewrite_fn
+
+    def __repr__(self):
+        return utils.get_repr(self, self.loader, self.rewrite_fn)
+
+    def __eq__(self, other):
+        return (
+            type(self) == type(other)
+            and self.loader == other.loader
+            and self.rewrite_fn == other.rewrite_fn
+        )
+
+    def __hash__(self):
+        return hash(self.loader) + hash(self.rewrite_fn)
 
     def get_source(
         self,
