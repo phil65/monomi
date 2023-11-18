@@ -12,6 +12,7 @@ from .loaders import (
     PrefixLoader,
     DictLoader,
 )
+from .rewriteloader import RewriteLoader
 from .configloaders import NestedDictLoader, TemplateFileLoader
 from .fsspecloaders import (
     FsSpecFileSystemLoader,
@@ -40,6 +41,7 @@ __all__ = [
     "ChoiceLoader",
     "ModuleLoader",
     "NestedDictLoader",
+    "RewriteLoader",
     "TemplateFileLoader",
     "PackageLoader",
     "FunctionLoader",
