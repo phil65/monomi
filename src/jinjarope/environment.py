@@ -13,6 +13,8 @@ from typing import Any, Literal, overload
 import weakref
 
 import jinja2
+
+from jinja2.exceptions import TemplateSyntaxError
 import jinja2.nodes
 
 import jinjarope
@@ -299,7 +301,11 @@ class Environment(jinja2.Environment):
         """
         variables = (variables or {}) | kwargs
         cls = self.template_class
-        template = cls.from_code(self, self.compile(string), self.globals, None)
+        try:
+            template = cls.from_code(self, self.compile(string), self.globals, None)
+        except TemplateSyntaxError as e:
+            msg = f"Error when evaluating \n{string}\n (extra globals: {variables})"
+            raise SyntaxError(msg) from e
         return template.render(**variables)
 
     def render_file(
