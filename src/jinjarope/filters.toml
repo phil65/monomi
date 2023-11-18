@@ -333,6 +333,20 @@ template = """
 {{ "[abc.def]\nvalue = 1" | deserialize("toml") }}
 """
 
+[filters.dig]
+fn = "jinjarope.serializefilters.dig"
+group = "serialize"
+
+[filters.dig.examples.basic]
+template = """
+{{ {"section1": {"section2": {"section3": "Hello, World"} } } | dig("section1", "section2") }}
+"""
+
+[filters.dig.examples.keep_path]
+template = """
+{{ {"section1": {"section2": {"section3": "Hello, World"} } } | dig("section1", "section2", keep_path=True) }}
+"""
+
 # Misc
 
 [filters.add]
