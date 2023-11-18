@@ -10,6 +10,8 @@ def test_fsspec_protocol_loader():
     env = environment.Environment()
     env.loader = fsspecloaders.FsSpecProtocolPathLoader()
     assert env.get_template("file://tests/testresources/testfile.jinja").render()
+    assert "file://tests/testresources/testfile.jinja" in env.loader
+    assert "file://not_existing.jinja" not in env.loader
     with pytest.raises(jinja2.TemplateNotFound):
         env.get_template("file://tests/testresources/not-existing.jinja")
 
