@@ -52,7 +52,7 @@ class FsSpecProtocolPathLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
     def __contains__(self, path: str):
         try:
             self.get_source(None, path)
-        except FileNotFoundError:
+        except jinja2.TemplateNotFound:
             return False
         else:
             return True
