@@ -8,6 +8,8 @@ import re
 
 from typing import Any
 
+from jinjarope import utils
+
 
 _RFC_3986_PATTERN = re.compile(r"^[A-Za-z][A-Za-z0-9+\-+.]*://")
 
@@ -54,6 +56,32 @@ def _to_set(value: Any) -> set[Any]:
 def _to_tuple(value: Sequence):
     """Convert value to tuple."""
     return tuple(value)
+
+
+def is_instance(obj: object, typ: str | type) -> bool:
+    """Like the isinstance builtin, but also accepts strs as type.
+
+    Arguments:
+        obj: The object to check
+        typ: A type (name)
+    """
+    kls = utils.resolve(typ) if isinstance(typ, str) else typ
+    if not isinstance(kls, type):
+        raise TypeError(kls)
+    return isinstance(obj, kls)
+
+
+def is_subclass(obj: type, typ: str | type) -> bool:
+    """Like the issubclass builtin, but also accepts strs as type.
+
+    Arguments:
+        obj: The class to check
+        typ: A type (name)
+    """
+    kls = utils.resolve(typ) if isinstance(typ, str) else typ
+    if not isinstance(kls, type):
+        raise TypeError(kls)
+    return issubclass(obj, kls)
 
 
 def _is_datetime(value: Any) -> bool:

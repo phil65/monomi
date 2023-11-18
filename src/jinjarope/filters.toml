@@ -368,7 +368,7 @@ template = """
 """
 
 # [filters.issubclass]
-# fn = "jinjarope.envglobals.is_subclass"
+# fn = "jinjarope.envtests.is_subclass"
 # group = "misc"
 
 # [filters.issubclass.examples.basic]
@@ -377,7 +377,7 @@ template = """
 # """
 
 # [filters.isinstance]
-# fn = "jinjarope.envglobals.is_instance"
+# fn = "jinjarope.envtests.is_instance"
 # group = "misc"
 
 # [filters.isinstance.examples.basic]

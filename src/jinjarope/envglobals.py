@@ -3,29 +3,16 @@ from __future__ import annotations
 from collections.abc import Sequence
 import datetime
 import functools
-
-from importlib import metadata
 import logging
 import os
 import pathlib
-import platform
-import sys
+
 from typing import Any
 
 from jinjarope import utils
 
 
 logger = logging.getLogger(__name__)
-
-
-version_info = dict(
-    python_version=sys.version.split("(")[0].strip(),
-    jinja_version=metadata.version("jinja2"),
-    jinjarope_version=metadata.version("jinjarope"),
-    system=platform.system(),
-    architecture=platform.architecture(),
-    python_implementation=platform.python_implementation(),
-)
 
 
 @functools.cache
@@ -99,20 +86,6 @@ def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     return false_val
 
 
-def is_instance(obj: object, typ: str | type) -> bool:
-    kls = utils.resolve(typ) if isinstance(typ, str) else typ
-    if not isinstance(kls, type):
-        raise TypeError(kls)
-    return isinstance(obj, kls)
-
-
-def is_subclass(obj: type, typ: str | type) -> bool:
-    kls = utils.resolve(typ) if isinstance(typ, str) else typ
-    if not isinstance(kls, type):
-        raise TypeError(kls)
-    return issubclass(obj, kls)
-
-
 def has_internet() -> bool:
     import http.client as httplib
 
@@ -140,11 +113,4 @@ def utcnow() -> datetime.datetime:
     return datetime.datetime.utcnow()
 
 
-ENV_GLOBALS = {
-    "environment": version_info,
-    "range": range,
-    "zip": zip,
-    "set": set,
-    "tuple": tuple,
-    "list": list,
-}
+ENV_GLOBALS = {"range": range, "zip": zip, "set": set, "tuple": tuple, "list": list}

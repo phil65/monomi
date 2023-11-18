@@ -121,7 +121,11 @@ class JinjaItem:
     @property
     def filter_fn(self) -> Callable:
         """Return the callable to use as filter / test / function."""
-        obj = utils.resolve(self.fn)
+        try:
+            obj = utils.resolve(self.fn)
+        except AttributeError:
+            msg = f"Could not import jinja item {self.identifier!r} from {self.fn!r}"
+            raise ImportError(msg) from AttributeError
         if not callable(obj):
             msg = "Filter needs correct, importable Path for callable"
             raise TypeError(msg)

@@ -79,7 +79,7 @@ True!
 """
 
 [tests.subclass]
-fn = "jinjarope.envglobals.is_subclass"
+fn = "jinjarope.envtests.is_subclass"
 group = "type"
 [tests.subclass.examples.basic]
 template = """
@@ -89,7 +89,7 @@ True!
 """
 
 [tests.instance]
-fn = "jinjarope.envglobals.is_instance"
+fn = "jinjarope.envtests.is_instance"
 group = "type"
 [tests.instance.examples.basic]
 template = """
