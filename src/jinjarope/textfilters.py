@@ -65,6 +65,7 @@ def format_signature(
     fn: Callable,
     follow_wrapped: bool = True,
     eval_str: bool = False,
+    remove_jinja_arg: bool = False,
 ) -> str:
     """Format signature of a callable.
 
@@ -72,8 +73,14 @@ def format_signature(
         fn: The callable to format the signature from
         follow_wrapped: Whether to unwrap the callable
         eval_str: Un-stringize annotations using eval
+        remove_jinja_arg: If true, remove the first argument for pass_xyz decorated fns.
     """
     sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=eval_str)
+    if hasattr(fn, "jinja_pass_arg"):
+        # for @pass_xyz decorated functions
+        params = dict(sig._parameters)  # type: ignore[attr-defined]
+        params.pop(next(iter(params)))
+        sig._parameters = params  # type: ignore[attr-defined]
     return str(sig)
 
 
@@ -96,6 +103,9 @@ def format_filter_signature(
     """
     sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=eval_str)
     params = dict(sig._parameters)  # type: ignore[attr-defined]
+    if hasattr(fn, "jinja_pass_arg"):
+        # for @pass_xyz decorated functions
+        params.pop(next(iter(params)))
     first_val = params.pop(next(iter(params)))
     sig._parameters = params  # type: ignore[attr-defined]
     return f"{first_val} | {filter_name}{sig}"
