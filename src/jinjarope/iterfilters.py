@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable, Generator, Iterable, Mapping
 import itertools
 
-from typing import TypeVar
+from typing import Any, TypeVar
 
 
 T = TypeVar("T")
@@ -18,6 +18,116 @@ def pairwise(items: Iterable[T]) -> itertools.pairwise[tuple[T, T]]:
         items: The items to iter pair-wise
     """
     return itertools.pairwise(items)
+
+
+def chain(*iterables: Iterable[T]) -> itertools.chain[T]:
+    """Chain all given iterators.
+
+    Make an iterator that returns elements from the first iterable until it is
+    exhausted, then proceeds to the next iterable, until all of the iterables
+    are exhausted. Used for treating consecutive sequences as a single sequence.
+
+    Examples:
+        ``` py
+        chain('ABC', 'DEF') --> A B C D E F
+        ```
+    Arguments:
+        iterables: The iterables to chain
+    """
+    return itertools.chain(*iterables)
+
+
+def product(*iterables: Iterable, repeat: int = 1) -> itertools.product[tuple]:
+    """Cartesian product of input iterables.
+
+    Roughly equivalent to nested for-loops in a generator expression.
+    For example, product(A, B) returns the same as ((x,y) for x in A for y in B).
+
+    The nested loops cycle like an odometer with the rightmost element advancing
+    on every iteration. This pattern creates a lexicographic ordering so that if
+    the input's iterables are sorted, the product tuples are emitted in sorted order.
+
+    To compute the product of an iterable with itself, specify the number of repetitions
+    with the optional repeat keyword argument. For example, product(A, repeat=4)
+    means the same as product(A, A, A, A).
+
+    Examples:
+        ``` py
+        product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
+        product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
+        ```
+    Arguments:
+        iterables: The iterables to create a cartesian product from
+    """
+    return itertools.product(*iterables, repeat=repeat)
+
+
+def repeat(obj: T, times: int | None = None) -> Iterable[T]:
+    """Make an iterator that returns object over and over again.
+
+    Runs indefinitely unless the times argument is specified.
+
+    Examples:
+        ``` py
+        repeat(10, 3) --> 10 10 10
+        ```
+    Arguments:
+        obj: The object to return over and over again
+        times: The amount of times to return the object (None means infinite)
+    """
+    if times:
+        return itertools.repeat(obj, times=times)
+    return itertools.repeat(obj)
+
+
+def zip_longest(*iterables: Iterable, fillvalue: Any = None) -> Iterable:
+    """Make an iterator that aggregates elements from each of the iterables.
+
+    If the iterables are of uneven length, missing values are filled-in with fillvalue.
+    Iteration continues until the longest iterable is exhausted.
+
+    Examples:
+        ``` py
+        zip_longest('ABCD', 'xy', fillvalue='-') --> Ax By C- D-
+        ```
+    Arguments:
+        iterables: The iterables to zip
+        fillvalue: value to use for filling in case the iterables are of uneven length
+    """
+    return itertools.zip_longest(*iterables, fillvalue)
+
+
+def islice(iterable: Iterable, *args, **kwargs) -> itertools.islice:
+    """Make an iterator that returns selected elements from the iterable.
+
+    If start is non-zero, then elements from the iterable are skipped until start
+    is reached. Afterward, elements are returned consecutively unless step is set
+    higher than one which results in items being skipped. If stop is None,
+    then iteration continues until the iterator is exhausted, if at all;
+    otherwise, it stops at the specified position.
+
+    If start is None, then iteration starts at zero. If step is None,
+    then the step defaults to one.
+
+    Unlike regular slicing, islice() does not support negative values
+    for start, stop, or step. Can be used to extract related fields from data
+    where the internal structure has been flattened (for example, a multi-line report
+    may list a name field on every third line).
+
+    Examples:
+        ``` py
+        islice('ABCDEFG', 2) --> A B
+        islice('ABCDEFG', 2, 4) --> C D
+        islice('ABCDEFG', 2, None) --> C D E F G
+        islice('ABCDEFG', 0, None, 2) --> A C E G
+        ```
+
+    Arguments:
+        iterable: Iterable to slice
+        args: Arguments passed to itertools.islice
+        kwargs: Keyword arguments passed to itertools.islice
+    """
+    return itertools.islice(iterable, *args, **kwargs)
 
 
 def do_zip(*items: Iterable[T]) -> zip:
@@ -59,6 +169,8 @@ def flatten_dict(dct: Mapping, sep: str = "/", _parent_key: str = "") -> Mapping
 
 def batched(iterable: Iterable[T], n: int) -> Generator[tuple[T, ...], None, None]:
     """Batch data into tuples of length n. The last batch may be shorter.
+
+    Note: this function was added to Py3.12 itertools
 
     Examples:
         ``` py

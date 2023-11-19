@@ -186,6 +186,65 @@ template = """
 {% endfor %}
 """
 
+[filters.chain]
+fn = "jinjarope.iterfilters.chain"
+group = "iter"
+
+[filters.chain.examples.basic]
+template = """
+{% for val in range(3) | chain(range(5)) %}
+{{ val }}
+{% endfor %}
+"""
+
+[filters.combinations]
+fn = "itertools.combinations"
+group = "iter"
+
+[filters.combinations.examples.basic]
+template = """
+{% for val in "ABCD" | combinations(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.combinations_with_replacement]
+fn = "itertools.combinations_with_replacement"
+group = "iter"
+
+[filters.combinations_with_replacement.examples.basic]
+template = """
+{% for val in "ABC" | combinations_with_replacement(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.compress]
+fn = "itertools.compress"
+group = "iter"
+
+[filters.compress.examples.basic]
+template = """
+{% for val in "ABCDEF" | compress([1,0,1,0,1,1]) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.islice]
+fn = "jinjarope.iterfilters.islice"
+group = "iter"
+
+[filters.islice.examples.basic]
+template = """
+{% for val in "ABCDEFG" | islice(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
 [filters.groupby_first_letter]
 fn = "jinjarope.iterfilters.groupby_first_letter"
 group = "iter"
@@ -223,6 +282,43 @@ template = """
 {% endfor %}
 """
 
+
+[filters.permutations]
+fn = "itertools.permutations"
+group = "iter"
+
+[filters.permutations.examples.basic]
+template = """
+{% for val in "ABCD" | permutations(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.product]
+fn = "jinjarope.iterfilters.product"
+group = "iter"
+
+[filters.product.examples.basic]
+template = """
+{% for val in "ABCD" | product("xy") %}
+{{ val }}
+{% endfor %}
+"""
+
+
+[filters.repeat]
+fn = "jinjarope.iterfilters.repeat"
+group = "iter"
+
+[filters.repeat.examples.basic]
+template = """
+{% for val in "ABCD" | repeat(2) %}
+{{ val }}
+{% endfor %}
+"""
+
+
 [filters.zip]
 fn = "jinjarope.iterfilters.do_zip"
 group = "iter"
@@ -233,6 +329,19 @@ template = """
 {{ a }}: {{ b }}
 {% endfor %}
 """
+
+
+[filters.zip_longest]
+fn = "jinjarope.iterfilters.zip_longest"
+group = "iter"
+
+[filters.zip_longest.examples.basic]
+template = """
+{% for val in "ABCD" | zip_longest("xy", fillvalue="-") %}
+{{ val }}
+{% endfor %}
+"""
+
 
 [filters.natsort]
 fn = "jinjarope.iterfilters.natsort"
