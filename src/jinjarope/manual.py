@@ -58,6 +58,6 @@ class Build:
             p += mk.MkTemplate(f"{slug}.md", variables=dict(items=list(filters)))
 
 
-def build(project: mk.Project[mk.MaterialTheme]) -> mk.MkNav:
+def build(project) -> mk.MkNav:
     build = Build()
     return build.on_root(project.root) or project.root
