@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import types
 
 from typing import Literal
 
@@ -120,5 +121,27 @@ def shift_header_levels(text: str, level_shift: int):
     return re.sub(HEADER_REGEX, lambda x: mod_header(x, level_shift), text)
 
 
+def autoref_link(
+    text: str | None = None,
+    link: str | type | types.ModuleType | None = None,
+) -> str:
+    """Create a markdown autorefs-style link (used by MkDocs / MkDocStrings).
+
+    If link is empty string or None, just the text will get returned.
+
+    Arguments:
+        text: Text to show for the link
+        link: Target url
+    """
+    if not link:
+        return text or ""
+    match link:
+        case type():
+            link = f"{link.__module__}.{link.__qualname__}"
+        case types.ModuleType():
+            link = link.__name__
+    return f"[{text or link}][{link}]"
+
+
 if __name__ == "__main__":
-    print(md_link("a", "b"))
+    print(autoref_link("a", type))

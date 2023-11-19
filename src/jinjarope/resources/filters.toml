@@ -66,6 +66,15 @@ template = """
 {{ "Test" | md_link("https://google.com") }}
 """
 
+[filters.autoref_link]
+fn = "jinjarope.mdfilters.autoref_link"
+group = "markdown"
+
+[filters.autoref_link.examples.basic]
+template = """
+{{ "Test" | autoref_link(cycler) }}
+"""
+
 [filters.md_escape]
 fn = "jinjarope.mdfilters.md_escape"
 group = "markdown"
