@@ -23,7 +23,7 @@
 
 {% endfor %}
 
-{{ f.filter_fn | MkDocStrings(show_docstring_description=False, heading_level=4) | MkAdmonition(collapsible=True, title="DocStrings") }}
+{{ f.filter_fn | MkDocStrings(show_docstring_description=False, heading_level=4, filters=["!^_"]) | MkAdmonition(collapsible=True, title="DocStrings") }}
 
 
 {% endfor %}
