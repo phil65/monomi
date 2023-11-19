@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import dataclasses
+import functools
 import os
 import tomllib
 
@@ -12,6 +13,12 @@ import jinja2
 import jinjarope
 
 from jinjarope import envconfig, envglobals, envtests, loaders, utils
+
+
+@functools.cache
+def _load(txt: str) -> dict:
+    """Some dumb caching since this might be invoked on each env instanciation."""
+    return tomllib.loads(txt)
 
 
 class JinjaFile(dict):
@@ -25,7 +32,7 @@ class JinjaFile(dict):
         """
         super().__init__()
         text = envglobals.load_file_cached(os.fspath(path))
-        data = tomllib.loads(text)
+        data = _load(text)
         self.update(data)
 
     @property
