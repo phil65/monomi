@@ -186,6 +186,14 @@ template = """
 {% endfor %}
 """
 
+[filters.groupby_first_letter]
+fn = "jinjarope.iterfilters.groupby_first_letter"
+group = "iter"
+[filters.groupby_first_letter.examples.basic]
+template = """
+{{ ["apple", "banana", "cherry", "avocado", "carrot", "blueberry"] | groupby_first_letter }}
+"""
+
 [filters.reduce_list]
 fn = "jinjarope.iterfilters.reduce_list"
 group = "iter"

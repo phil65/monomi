@@ -109,6 +109,24 @@ def natsort(
     )
 
 
+def groupby_first_letter(
+    data: Iterable[T],
+    keyfunc: Callable | None = None,
+) -> dict[str, list[T]]:
+    """Group given iterable by first letter.
+
+    Arguments:
+        data: Iterable to group
+        keyfunc: Optional alternative sort function
+    """
+    data = sorted(data, key=keyfunc or (lambda x: x))
+
+    def first_letter(x):
+        return keyfunc(x)[0] if keyfunc else x[0]
+
+    return {k.upper(): list(g) for k, g in itertools.groupby(data, first_letter)}
+
+
 def do_any(seq: Iterable, attribute: str | None = None) -> bool:
     """Check if at least one of the item in the sequence evaluates to true.
 

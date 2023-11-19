@@ -44,3 +44,19 @@ def test_do_any():
     assert iterfilters.do_any([False, False, False]) is False
     assert iterfilters.do_any([]) is False
     assert iterfilters.do_any([0, 1, 2], attribute="real") is True
+
+
+def test_groupby_first_letter():
+    data = ["apple", "banana", "cherry", "avocado", "carrot", "blueberry"]
+    grouped = iterfilters.groupby_first_letter(data)
+    assert grouped == {
+        "A": ["apple", "avocado"],
+        "B": ["banana", "blueberry"],
+        "C": ["carrot", "cherry"],
+    }
+
+
+def test_groupby_first_letter_with_empty_data():
+    data = []
+    grouped = iterfilters.groupby_first_letter(data)
+    assert grouped == {}
