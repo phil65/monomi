@@ -1,4 +1,4 @@
-{% for f in items %}
+{% for f in items | natsort("identifier") %}
 {{ f.identifier | md_style(bold=True) | MkHeader }}
 {{ (f.identifier ~ f.filter_fn | format_signature) | md_style(code=True) }}
 

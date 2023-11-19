@@ -642,7 +642,7 @@ group = "environment"
 
 [filters.render_template.examples.basic]
 template = """
-{{ ".empty" | render_template }}
+{{ "docs/.empty" | render_template }}
 """
 
 [filters.render_string]

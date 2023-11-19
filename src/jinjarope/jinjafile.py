@@ -158,7 +158,7 @@ class JinjaItem:
             example_name: The example identifier
         """
         example = self.examples[example_name]
-        env = jinjarope.Environment()
+        env = jinjarope.Environment(loader=jinjarope.FileSystemLoader(""))
         return env.render_string(example["template"])
 
 
