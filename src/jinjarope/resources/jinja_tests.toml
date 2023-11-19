@@ -1,0 +1,361 @@
+[tests.odd]
+fn = "jinja2.tests.test_odd"
+group = "builtin"
+
+[tests.odd.examples.basic]
+template = """
+{% if 5 is odd %}
+True!
+{% endif %}
+"""
+
+[tests.even]
+fn = "jinja2.tests.test_even"
+group = "builtin"
+
+[tests.even.examples.basic]
+template = """
+{% if 5 is even %}
+True!
+{% endif %}
+"""
+
+[tests.divisibleby]
+fn = "jinja2.tests.test_divisibleby"
+group = "builtin"
+
+[tests.divisibleby.examples.basic]
+template = """
+{% if 4 is divisibleby(2) %}
+True!
+{% endif %}
+"""
+
+[tests.defined]
+fn = "jinja2.tests.test_defined"
+group = "builtin"
+
+[tests.defined.examples.basic]
+template = """
+{% if 5 is defined %}
+True!
+{% endif %}
+"""
+
+
+[tests.undefined]
+fn = "jinja2.tests.test_undefined"
+group = "builtin"
+
+[tests.undefined.examples.basic]
+template = """
+{% if 5 is undefined %}
+True!
+{% endif %}
+"""
+
+
+[tests.filter]
+fn = "jinja2.tests.test_filter"
+group = "builtin"
+
+[tests.filter.examples.basic]
+template = """
+{% if 5 is filter %}
+True!
+{% endif %}
+"""
+
+
+[tests.test]
+fn = "jinja2.tests.test_test"
+group = "builtin"
+
+[tests.test.examples.basic]
+template = """
+{% if 5 is test %}
+True!
+{% endif %}
+"""
+
+
+[tests.none]
+fn = "jinja2.tests.test_none"
+group = "builtin"
+
+[tests.none.examples.basic]
+template = """
+{% if 5 is none %}
+True!
+{% endif %}
+"""
+
+
+[tests.boolean]
+fn = "jinja2.tests.test_boolean"
+group = "builtin"
+
+[tests.boolean.examples.basic]
+template = """
+{% if 5 is boolean %}
+True!
+{% endif %}
+"""
+
+
+[tests.false]
+fn = "jinja2.tests.test_false"
+group = "builtin"
+
+[tests.false.examples.basic]
+template = """
+{% if 5 is false %}
+True!
+{% endif %}
+"""
+
+
+[tests.true]
+fn = "jinja2.tests.test_true"
+group = "builtin"
+
+[tests.true.examples.basic]
+template = """
+{% if 5 is true %}
+True!
+{% endif %}
+"""
+
+
+[tests.integer]
+fn = "jinja2.tests.test_integer"
+group = "builtin"
+
+[tests.integer.examples.basic]
+template = """
+{% if 5 is integer %}
+True!
+{% endif %}
+"""
+
+
+[tests.float]
+fn = "jinja2.tests.test_float"
+group = "builtin"
+
+[tests.float.examples.basic]
+template = """
+{% if 5 is float %}
+True!
+{% endif %}
+"""
+
+
+[tests.lower]
+fn = "jinja2.tests.test_lower"
+group = "builtin"
+
+[tests.lower.examples.basic]
+template = """
+{% if "a" is lower %}
+True!
+{% endif %}
+"""
+
+
+[tests.upper]
+fn = "jinja2.tests.test_upper"
+group = "builtin"
+
+[tests.upper.examples.basic]
+template = """
+{% if "a" is upper %}
+True!
+{% endif %}
+"""
+
+
+[tests.string]
+fn = "jinja2.tests.test_string"
+group = "builtin"
+
+[tests.string.examples.basic]
+template = """
+{% if "a" is string %}
+True!
+{% endif %}
+"""
+
+
+[tests.mapping]
+fn = "jinja2.tests.test_mapping"
+group = "builtin"
+
+[tests.mapping.examples.basic]
+template = """
+{% if {"a": "b"} is mapping %}
+True!
+{% endif %}
+"""
+
+
+[tests.number]
+fn = "jinja2.tests.test_number"
+group = "builtin"
+
+[tests.number.examples.basic]
+template = """
+{% if 4 is number %}
+True!
+{% endif %}
+"""
+
+
+[tests.sequence]
+fn = "jinja2.tests.test_sequence"
+group = "builtin"
+
+[tests.sequence.examples.basic]
+template = """
+{% if [1, 2, 3] is sequence %}
+True!
+{% endif %}
+"""
+
+
+[tests.iterable]
+fn = "jinja2.tests.test_iterable"
+group = "builtin"
+
+[tests.iterable.examples.basic]
+template = """
+{% if [1, 2, 3] is iterable %}
+True!
+{% endif %}
+"""
+
+
+[tests.callable]
+fn = "callable"
+group = "builtin"
+
+[tests.callable.examples.basic]
+template = """
+{% if filters.any is callable %}
+True!
+{% endif %}
+"""
+
+
+[tests.sameas]
+fn = "jinja2.tests.test_sameas"
+group = "builtin"
+
+[tests.sameas.examples.basic]
+template = """
+{% if "a" is sameas("a") %}
+True!
+{% endif %}
+"""
+
+
+[tests.escaped]
+fn = "jinja2.tests.test_escaped"
+group = "builtin"
+
+[tests.escaped.examples.basic]
+template = """
+{% if "a" is escaped %}
+True!
+{% endif %}
+"""
+
+
+[tests.in]
+fn = "jinja2.tests.test_in"
+group = "builtin"
+
+[tests.in.examples.basic]
+template = """
+{% if "a" is in(["a"]) %}
+True!
+{% endif %}
+"""
+
+
+[tests.eq]
+fn = "operator.eq"
+group = "builtin"
+aliases = ["equalto", "=="]
+
+[tests.eq.examples.basic]
+template = """
+{% if "a" is eq("a") %}
+True!
+{% endif %}
+"""
+
+
+[tests.ne]
+fn = "operator.ne"
+group = "builtin"
+aliases = ["!="]
+
+[tests.ne.examples.basic]
+template = """
+{% if "a" is ne("b") %}
+True!
+{% endif %}
+"""
+
+
+[tests.gt]
+fn = "operator.gt"
+group = "builtin"
+aliases = [">", "greaterthan"]
+
+[tests.gt.examples.basic]
+template = """
+{% if 2 is gt(1) %}
+True!
+{% endif %}
+"""
+
+
+[tests.ge]
+fn = "operator.ge"
+group = "builtin"
+aliases = [">="]
+
+[tests.ge.examples.basic]
+template = """
+{% if 2 is ge(2) %}
+True!
+{% endif %}
+"""
+
+
+[tests.lt]
+fn = "operator.lt"
+group = "builtin"
+aliases = ["<"]
+
+[tests.lt.examples.basic]
+template = """
+{% if 1 is lt(2) %}
+True!
+{% endif %}
+"""
+
+
+[tests.le]
+fn = "operator.le"
+group = "builtin"
+aliases = ["<="]
+
+[tests.le.examples.basic]
+template = """
+{% if 2 is le(2) %}
+True!
+{% endif %}
+"""
