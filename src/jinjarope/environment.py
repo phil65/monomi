@@ -75,12 +75,9 @@ class Environment(jinja2.Environment):
 
         # Update namespaces
         folder = pathlib.Path(__file__).parent / "resources"
-        file = jinjafile.JinjaFile(folder / "filters.toml")
-        self.filters.update(file.filters_dict)
-        file = jinjafile.JinjaFile(folder / "tests.toml")
-        self.tests.update(file.tests_dict)
-        file = jinjafile.JinjaFile(folder / "functions.toml")
-        self.globals.update(file.functions_dict)
+        self.load_jinja_file(folder / "filters.toml")
+        self.load_jinja_file(folder / "tests.toml")
+        self.load_jinja_file(folder / "functions.toml")
         self.globals.update(envglobals.ENV_GLOBALS)
         for fn in utils._entry_points("jinjarope.environment").values():
             fn(self)
