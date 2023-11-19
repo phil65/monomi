@@ -56,8 +56,10 @@ def product(*iterables: Iterable, repeat: int = 1) -> itertools.product[tuple]:
         product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
         product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
         ```
+
     Arguments:
         iterables: The iterables to create a cartesian product from
+        repeat: The amount of repititions
     """
     return itertools.product(*iterables, repeat=repeat)
 
@@ -71,6 +73,7 @@ def repeat(obj: T, times: int | None = None) -> Iterable[T]:
         ``` py
         repeat(10, 3) --> 10 10 10
         ```
+
     Arguments:
         obj: The object to return over and over again
         times: The amount of times to return the object (None means infinite)
@@ -90,6 +93,7 @@ def zip_longest(*iterables: Iterable, fillvalue: Any = None) -> Iterable:
         ``` py
         zip_longest('ABCD', 'xy', fillvalue='-') --> Ax By C- D-
         ```
+
     Arguments:
         iterables: The iterables to zip
         fillvalue: value to use for filling in case the iterables are of uneven length
@@ -220,6 +224,46 @@ def natsort(
     )
 
 
+def groupby(
+    data: Iterable[T],
+    key: Callable | str | None = None,
+    *,
+    sort_groups: bool = True,
+    natural_sort: bool = False,
+    reverse: bool = False,
+) -> dict[str, list[T]]:
+    """Group given iterable using given group function.
+
+    Arguments:
+        data: Iterable to group
+        key: Sort function or attribute name to use for sorting
+        sort_groups: Whether to sort the groups
+        natural_sort: Whether to use a natural sort algorithm
+        reverse: Whether to reverse the value list
+    """
+    if key is None:
+
+        def keyfunc(x):
+            return x
+
+    elif isinstance(key, str):
+        import operator
+
+        keyfunc = operator.attrgetter(key)
+    else:
+        keyfunc = key
+    if sort_groups or natural_sort:
+        if natural_sort:
+            import natsort
+
+            data = natsort.natsorted(data, key=keyfunc)
+        else:
+            data = sorted(data, key=keyfunc)
+    if reverse:
+        data = reversed(list(data))
+    return {k: list(g) for k, g in itertools.groupby(data, keyfunc)}
+
+
 def groupby_first_letter(
     data: Iterable[T],
     keyfunc: Callable | None = None,
@@ -233,7 +277,7 @@ def groupby_first_letter(
     data = sorted(data, key=keyfunc or (lambda x: x))
 
     def first_letter(x):
-        return keyfunc(x)[0] if keyfunc else x[0]
+        return keyfunc(x)[0].upper() if keyfunc else x[0].upper()
 
     return {k.upper(): list(g) for k, g in itertools.groupby(data, first_letter)}
 

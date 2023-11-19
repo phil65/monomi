@@ -205,6 +205,17 @@ template = """
 {% endfor %}
 """
 
+
+[filters.groupby_plus]
+fn = "jinjarope.iterfilters.groupby"
+group = "iter"
+
+[filters.groupby_plus.examples.basic]
+template = """
+{{ ["20", "20", "100", "0"] | groupby_plus(natural_sort=True) }}
+"""
+
+
 [filters.chain]
 fn = "jinjarope.iterfilters.chain"
 group = "iter"
