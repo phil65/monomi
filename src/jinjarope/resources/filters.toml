@@ -83,6 +83,16 @@ template = """
 {{ "# Section 1\nABC\n# Section 2\nDEF" | extract_header_section("Section 2") }}
 """
 
+
+[filters.shift_header_levels]
+fn = "jinjarope.mdfilters.shift_header_levels"
+group = "markdown"
+
+[filters.shift_header_levels.examples.basic]
+template = """
+{{ "# Section 1\nABC\n# Section 2\nDEF" | shift_header_levels(4) }}
+"""
+
 # HTML
 
 [filters.html_link]

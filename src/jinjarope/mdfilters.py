@@ -5,6 +5,9 @@ import re
 from typing import Literal
 
 
+HEADER_REGEX = re.compile(r"^(#{1,6}) (.*)", flags=re.MULTILINE)
+
+
 def md_link(
     text: str | None = None,
     link: str | None = None,
@@ -96,6 +99,25 @@ def md_style(
     if align:
         text = f"<p style='text-align: {align};'>{text}</p>"
     return text
+
+
+def shift_header_levels(text: str, level_shift: int):
+    """Shift the level of all headers of given text.
+
+    Arguments:
+        text: The Text to shift the header levels from
+        level_shift: Level delta. (1 means "increase level by 1")
+    """
+
+    def mod_header(match: re.Match, levels: int) -> str:
+        header_str = match[1]
+        if levels > 0:
+            header_str += levels * "#"
+        else:
+            header_str = header_str[:levels]
+        return f"{header_str} {match[2]}"
+
+    return re.sub(HEADER_REGEX, lambda x: mod_header(x, level_shift), text)
 
 
 if __name__ == "__main__":
