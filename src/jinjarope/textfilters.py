@@ -77,6 +77,30 @@ def format_signature(
     return str(sig)
 
 
+def format_filter_signature(
+    fn: Callable,
+    filter_name: str,
+    follow_wrapped: bool = True,
+    eval_str: bool = False,
+) -> str:
+    """Create a signature for a jinja filter based on filter name and callable.
+
+    Outputs text in shape of
+    "code: 'str' | test(line_length: 'int' = 100)"
+
+    Arguments:
+        fn: The callable to format the signature from
+        filter_name: Name of the jinja filter
+        follow_wrapped: Whether to unwrap the callable
+        eval_str: Un-stringize annotations using eval
+    """
+    sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=eval_str)
+    params = dict(sig._parameters)  # type: ignore[attr-defined]
+    first_val = params.pop(next(iter(params)))
+    sig._parameters = params  # type: ignore[attr-defined]
+    return f"{first_val} | {filter_name}{sig}"
+
+
 def slugify(text: str | os.PathLike) -> str:
     """Create a slug for given text.
 

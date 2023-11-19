@@ -45,6 +45,16 @@ template = """
 {{ "".removesuffix | format_signature }}
 """
 
+
+[filters.format_filter_signature]
+fn = "jinjarope.textfilters.format_filter_signature"
+group = "format"
+
+[filters.format_filter_signature.examples.basic]
+template = """
+{{ filters.format_filter_signature | format_filter_signature("ffs") }}
+"""
+
 # Markdown
 
 [filters.md_link]

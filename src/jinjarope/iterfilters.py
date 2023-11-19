@@ -97,7 +97,7 @@ def zip_longest(*iterables: Iterable, fillvalue: Any = None) -> Iterable:
     return itertools.zip_longest(*iterables, fillvalue)
 
 
-def islice(iterable: Iterable, *args, **kwargs) -> itertools.islice:
+def islice(iterable: Iterable, *args: int | None) -> itertools.islice:
     """Make an iterator that returns selected elements from the iterable.
 
     If start is non-zero, then elements from the iterable are skipped until start
@@ -125,9 +125,8 @@ def islice(iterable: Iterable, *args, **kwargs) -> itertools.islice:
     Arguments:
         iterable: Iterable to slice
         args: Arguments passed to itertools.islice
-        kwargs: Keyword arguments passed to itertools.islice
     """
-    return itertools.islice(iterable, *args, **kwargs)
+    return itertools.islice(iterable, *args)
 
 
 def do_zip(*items: Iterable[T]) -> zip:
