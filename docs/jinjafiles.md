@@ -77,18 +77,18 @@ Every loader defined in TOML requires a  `type` (either "filesystem", "package",
 
 ```toml
 [[loaders]]
-type: "filesystem"
-searchpath: "path/to/template/folder"
+type = "filesystem"
+searchpath = "path/to/template/folder"
 
 # we can define multiple loaders, this will result in a combined ChoiceLoader.
 
 [[loaders]]
-type: "fsspec"
-fs: "github://phil65:jinjarope@main"
+type = "fsspec"
+fs = "github://phil65:jinjarope@main"
 
 [[loaders]]
-type: "package"
-package: "jinjarope"
+type = "package"
+package = "jinjarope"
 ```
 *Pay attention to the double brackets, that´s how lists are defined in TOML!*
 
