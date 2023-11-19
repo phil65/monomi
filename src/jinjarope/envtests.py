@@ -165,3 +165,13 @@ def is_env_var(env_var: str):
         env_var: The environment variable name to check
     """
     return bool(os.getenv(env_var))
+
+
+def is_indented(text: str, indentation: str = "    ") -> bool:
+    """Check whether all lines of given text are indented.
+
+    Arguments:
+        text: The text to check
+        indentation: The indent each line must start with
+    """
+    return all(i.startswith(indentation) for i in text.split("\n"))

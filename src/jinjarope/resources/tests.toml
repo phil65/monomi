@@ -181,3 +181,15 @@ template = """
 True!
 {% endif %}
 """
+
+
+[tests.indented]
+fn = "jinjarope.envtests.is_indented"
+group = "text"
+
+[tests.indented.examples.basic]
+template = """
+{% if "    some text" is indented %}
+True!
+{% endif %}
+"""
