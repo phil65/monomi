@@ -8,7 +8,7 @@ from typing import Any, Literal
 
 import jinja2
 
-from jinjarope import iterfilters, loaders, utils
+from jinjarope import iterfilters, loaders, serializefilters, utils
 
 
 class NestedDictLoader(loaders.LoaderMixin, jinja2.BaseLoader):
@@ -91,7 +91,7 @@ class TemplateFileLoader(NestedDictLoader):
     def __init__(
         self,
         path: str | os.PathLike,
-        fmt: Literal["toml", "json"] | None = None,
+        fmt: Literal["toml", "json", "ini", "yaml"] | None = None,
     ):
         """Constructor.
 
@@ -101,17 +101,9 @@ class TemplateFileLoader(NestedDictLoader):
         """
         self.path = os.fspath(path)
         text = utils.fsspec_get(self.path)
-        if fmt == "toml" or (not fmt and self.path.endswith(".toml")):
-            import tomllib
-
-            mapping = tomllib.loads(text)
-        elif fmt == "json" or (not fmt and self.path.endswith(".json")):
-            import json
-
-            mapping = json.loads(text)
-        else:
-            msg = f"Could not deserialize file {self.path!r}"
-            raise RuntimeError(msg)
+        file_fmt = fmt if fmt else pathlib.Path(self.path).suffix.lstrip(".")
+        assert file_fmt in ["json", "toml", "yaml", "ini"]
+        mapping = serializefilters.deserialize(text, fmt=file_fmt)  # type: ignore[arg-type]
         super().__init__(mapping=mapping)
         self._data = mapping
 
