@@ -64,7 +64,7 @@ def format_code(code: str, line_length: int = 100):
 def format_signature(
     fn: Callable,
     follow_wrapped: bool = True,
-    eval_str: bool = False,
+    eval_str: bool = True,
     remove_jinja_arg: bool = False,
 ) -> str:
     """Format signature of a callable.
@@ -75,7 +75,13 @@ def format_signature(
         eval_str: Un-stringize annotations using eval
         remove_jinja_arg: If true, remove the first argument for pass_xyz decorated fns.
     """
-    sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=eval_str)
+    if eval_str:
+        try:
+            sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=True)
+        except (TypeError, NameError):
+            sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=False)
+    else:
+        sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=False)
     if hasattr(fn, "jinja_pass_arg"):
         # for @pass_xyz decorated functions
         params = dict(sig._parameters)  # type: ignore[attr-defined]
