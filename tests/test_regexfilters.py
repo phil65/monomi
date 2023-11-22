@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+from jinja2.exceptions import FilterArgumentError
 from jinjarope import regexfilters
+import pytest
 
 
 def test_re_replace():
@@ -43,9 +45,14 @@ def test_re_search():
         == "World"
     )
     assert regexfilters.re_search("Hello, World! Hello, Universe!", "Goodbye") is None
+    assert regexfilters.re_search("A\nB", "^B", multiline=True)
+    with pytest.raises(FilterArgumentError):
+        regexfilters.re_search("A\nB", "^B", "x")
 
 
 def test_re_escape():
     assert regexfilters.re_escape("Hello, World!") == "Hello,\\ World!"
     assert regexfilters.re_escape("Hello, World!", "posix_basic") == "Hello, World!"
     assert regexfilters.re_escape("[a]", "posix_basic") == "\\[a\\]"
+    with pytest.raises(NotImplementedError):
+        regexfilters.re_escape("Hello, World!", "unknown")
