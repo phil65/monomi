@@ -132,6 +132,17 @@ def slugify(text: str | os.PathLike) -> str:
     return re.sub("^[^0-9a-zA-Z_#]+", "", text)
 
 
+def escape(text: str) -> str:
+    """Escape text using Markupsafe library.
+
+    Arguments:
+        text: text to escape
+    """
+    import markupsafe
+
+    return markupsafe.escape(text)
+
+
 if __name__ == "__main__":
     code = "def test(sth, fsjkdalfjksdalfjsadk, fjskldjfkdsljf, fsdkjlafjkdsafj): pass"
     result = format_code(code, line_length=50)

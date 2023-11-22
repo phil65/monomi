@@ -55,14 +55,14 @@ template = """
 {{ {"b": 1, "a": 2} | dictsort }}
 """
 
-# [filters.escape]
-# fn = "jinja2.filters.escape"
-# group = "builtin"
-# aliases = ["e"]
-# [filters.escape.examples.basic]
-# template = """
-# {{ "<[]>" | escape }}
-# """
+[filters.escape]
+fn = "jinjarope.textfilters.escape"
+group = "builtin"
+aliases = ["e"]
+[filters.escape.examples.basic]
+template = """
+{{ "<[]>" | escape }}
+"""
 
 [filters.filesizeformat]
 fn = "jinja2.filters.do_filesizeformat"
