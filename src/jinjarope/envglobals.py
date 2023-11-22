@@ -147,4 +147,12 @@ def utcnow() -> datetime.datetime:
     return datetime.datetime.utcnow()
 
 
-ENV_GLOBALS = {"range": range, "zip": zip, "set": set, "tuple": tuple, "list": list}
+ENV_GLOBALS = {
+    "range": range,
+    "zip": zip,
+    "set": set,
+    "tuple": tuple,
+    "list": list,
+    "int": int,
+    "str": str,
+}

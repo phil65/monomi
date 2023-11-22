@@ -558,6 +558,11 @@ template = """
 {{ "a" | match(a="Hit", b="miss") }}
 """
 
+[filters.match.examples.types]
+template = """
+{{ 5 | match({int: "hit", str: "miss"}) }}
+"""
+
 # [filters.issubclass]
 # fn = "jinjarope.envtests.is_subclass"
 # group = "misc"
