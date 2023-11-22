@@ -86,6 +86,34 @@ def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     return false_val
 
 
+def match(obj, mapping: dict | None = None, **kwargs: Any) -> str:
+    """A filter trying to imitate a python match-case statement.
+
+    Arguments:
+        obj: match object
+        mapping: a mapping for the different cases. If key is type, an isinstance will
+                 be performed. If key is a str, check for equality.
+        kwargs: Same functionality as mapping, but provided as keyword arguments for
+                convenience.
+
+    Examples:
+        ``` jinja
+        {{ "a" | match(a="hit", b="miss")
+        {{ MyClass() | match({MyClass: "hit", OtherClass: "miss"}) }}
+    """
+    # kwargs can only contain strs as keys, so we can perform simply getitem.
+    if kwargs and obj in kwargs:
+        return kwargs[obj]
+
+    for k, v in (mapping or {}).items():
+        match k:
+            case type() if isinstance(obj, k):
+                return v
+            case _ if k == obj:
+                return v
+    return ""
+
+
 def has_internet() -> bool:
     import http.client as httplib
 

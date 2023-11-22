@@ -53,7 +53,7 @@ def _to_set(value: Any) -> set[Any]:
     return set(value)
 
 
-def _to_tuple(value: Sequence):
+def _to_tuple(value: Sequence) -> tuple:
     """Convert value to tuple."""
     return tuple(value)
 
@@ -158,7 +158,7 @@ def is_installed(package_name: str) -> bool:
     return bool(importlib.util.find_spec(package_name))
 
 
-def is_env_var(env_var: str):
+def is_env_var(env_var: str) -> bool:
     """Returns true if an environment variable with given name has a value.
 
     Arguments:

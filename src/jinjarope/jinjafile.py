@@ -120,7 +120,7 @@ class JinjaItem:
     identifier: str
     fn: str
     group: str
-    examples: dict = dataclasses.field(default_factory=dict)
+    examples: dict[str, dict] = dataclasses.field(default_factory=dict)
     description: str | None = None
     aliases: list[str] = dataclasses.field(default_factory=list)
     required_packages: list[str] = dataclasses.field(default_factory=list)

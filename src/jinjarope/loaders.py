@@ -16,14 +16,15 @@ class LoaderMixin:
     loader: jinja2.BaseLoader
     list_templates: Callable
     get_source: Callable
+    load: Callable
 
     def __or__(self, other: jinja2.BaseLoader):
         own = self.loaders if isinstance(self, jinja2.ChoiceLoader) else [self]  # type: ignore[list-item]
         others = other.loaders if isinstance(other, jinja2.ChoiceLoader) else [other]
         return ChoiceLoader([*own, *others])
 
-    def __getitem__(self, val: str) -> str:
-        return self.get_source(None, val)[0]
+    def __getitem__(self, val: str) -> jinja2.Template:
+        return self.load(None, val)
 
     def __contains__(self, path):
         return pathlib.Path(path).as_posix() in self.list_templates()
@@ -38,6 +39,9 @@ class LoaderMixin:
             prefix: The prefix to use
         """
         return PrefixLoader({prefix: self})  # type: ignore[dict-item]
+
+    def get_template_source(self, template_path: str):
+        return self.get_source(None, template_path)[0]
 
 
 class PrefixLoader(LoaderMixin, jinja2.PrefixLoader):

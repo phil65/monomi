@@ -548,6 +548,16 @@ template = """
 {{ True | ternary("A", "B") }}
 """
 
+
+[filters.match]
+fn = "jinjarope.envglobals.match"
+group = "misc"
+
+[filters.match.examples.basic]
+template = """
+{{ "a" | match(a="Hit", b="miss") }}
+"""
+
 # [filters.issubclass]
 # fn = "jinjarope.envtests.is_subclass"
 # group = "misc"

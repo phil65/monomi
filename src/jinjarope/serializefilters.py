@@ -7,7 +7,7 @@ import json
 from typing import Any, Literal
 
 
-def serialize(data: Any, fmt: Literal["yaml", "json", "ini", "toml"] | None) -> str:  # type: ignore[return]
+def serialize(data: Any, fmt: Literal["yaml", "json", "ini", "toml"]) -> str:  # type: ignore[return]
     """Serialize given json-like object to given format.
 
     Arguments:
@@ -15,7 +15,7 @@ def serialize(data: Any, fmt: Literal["yaml", "json", "ini", "toml"] | None) -> 
         fmt: The serialization format
     """
     match fmt:
-        case None | "yaml":
+        case "yaml":
             import yaml
 
             return yaml.dump(data)
@@ -36,7 +36,13 @@ def serialize(data: Any, fmt: Literal["yaml", "json", "ini", "toml"] | None) -> 
             raise TypeError(fmt)
 
 
-def deserialize(data: str, fmt: Literal["yaml", "json", "ini", "toml"] | None) -> Any:  # type: ignore[return]
+def load_ini(data: str) -> dict[str, dict[str, str]]:
+    config = configparser.ConfigParser()
+    config.read_string(data)
+    return {s: dict(config.items(s)) for s in config.sections()}
+
+
+def deserialize(data: str, fmt: Literal["yaml", "json", "ini", "toml"]) -> Any:  # type: ignore[return]
     """Serialize given json-like object to given format.
 
     Arguments:
@@ -44,16 +50,14 @@ def deserialize(data: str, fmt: Literal["yaml", "json", "ini", "toml"] | None) -
         fmt: The serialization format
     """
     match fmt:
-        case None | "yaml":
+        case "yaml":
             import yaml
 
             return yaml.full_load(data)
         case "json":
             return json.loads(data)
         case "ini":
-            config = configparser.ConfigParser()
-            config.read_string(data)
-            return {s: dict(config.items(s)) for s in config.sections()}
+            return load_ini(data)
         case "toml":
             import tomllib
 

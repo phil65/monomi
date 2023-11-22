@@ -164,7 +164,8 @@ def flatten_dict(dct: Mapping, sep: str = "/", _parent_key: str = "") -> Mapping
     for k, v in dct.items():
         new_key = _parent_key + sep + k if _parent_key else k
         if isinstance(v, Mapping):
-            items.extend(flatten_dict(v, _parent_key=new_key, sep=sep).items())
+            flattened = flatten_dict(v, _parent_key=new_key, sep=sep)
+            items.extend(flattened.items())
         else:
             items.append((new_key, v))
     return dict(items)
