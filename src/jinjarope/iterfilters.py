@@ -217,12 +217,8 @@ def natsort(
     alg = ns.IGNORECASE
     if not ignore_case:
         alg = ns.LOWERCASEFIRST
-    return natsorted(
-        val,
-        key=attrgetter(key) if isinstance(key, str) else key,
-        reverse=reverse,
-        alg=alg,
-    )
+    key_fn = attrgetter(key) if isinstance(key, str) else key
+    return natsorted(val, key=key_fn, reverse=reverse, alg=alg)
 
 
 def groupby(
@@ -291,9 +287,6 @@ def do_any(seq: Iterable, attribute: str | None = None) -> bool:
     Arguments:
         seq: An iterable object.
         attribute: The attribute name to use on each object of the iterable.
-
-    Returns:
-        A boolean telling if any object of the iterable evaluated to True.
     """
     if attribute is None:
         return any(seq)

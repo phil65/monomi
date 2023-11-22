@@ -42,7 +42,6 @@ def get_output_from_call(
         cwd: The working directory for the call
         use_cache: Whether to cache the output of calls
     """
-    import pathlib
     import subprocess
 
     if not call:
@@ -64,10 +63,15 @@ def get_output_from_call(
         return None
 
 
-def add(text, prefix: str = "", suffix: str = "") -> str:
-    if not text:
-        return ""
-    return f"{prefix}{text}{suffix}"
+def add(text: str | None, prefix: str = "", suffix: str = "") -> str:
+    """Add a pre- or suffix to a value if the value is true-ish.
+
+    Arguments:
+        text: The text to check
+        prefix: Prefix to add if text is true-ish
+        suffix: Suffix to add if text is true-ish
+    """
+    return f"{prefix}{text}{suffix}" if text else ""
 
 
 def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
@@ -81,9 +85,7 @@ def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     """
     if value is None and none_val is not None:
         return none_val
-    if bool(value):
-        return true_val
-    return false_val
+    return true_val if bool(value) else false_val
 
 
 def match(obj, mapping: dict | None = None, **kwargs: Any) -> str:
@@ -115,6 +117,10 @@ def match(obj, mapping: dict | None = None, **kwargs: Any) -> str:
 
 
 def has_internet() -> bool:
+    """Return true if machine is connected to internet.
+
+    Checks connection with a HEAD request to the Google DNS server.
+    """
     import http.client as httplib
 
     conn = httplib.HTTPSConnection("8.8.8.8", timeout=2)

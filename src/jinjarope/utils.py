@@ -42,16 +42,14 @@ def iter_subclasses(klass: ClassType) -> Iterator[ClassType]:
 def get_repr(_obj: Any, *args: Any, **kwargs: Any) -> str:
     """Get a suitable __repr__ string for an object.
 
-    Args:
+    Arguments:
         _obj: The object to get a repr for.
-        *args: Arguments for the repr
-        **kwargs: Keyword arguments for the repr
+        args: Arguments for the repr
+        kwargs: Keyword arguments for the repr
     """
     classname = type(_obj).__name__
     parts = [repr(v) for v in args]
-    kw_parts = []
-    for k, v in kwargs.items():
-        kw_parts.append(f"{k}={v!r}")
+    kw_parts = [f"{k}={v!r}" for k, v in kwargs.items()]
     sig = ", ".join(parts + kw_parts)
     return f"{classname}({sig})"
 

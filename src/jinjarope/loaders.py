@@ -24,12 +24,14 @@ class LoaderMixin:
         return ChoiceLoader([*own, *others])
 
     def __getitem__(self, val: str) -> jinja2.Template:
+        """Return the template object for given template path."""
         return self.load(None, val)
 
-    def __contains__(self, path):
+    def __contains__(self, path: str):
+        """Check whether given path is loadable by this loader."""
         return pathlib.Path(path).as_posix() in self.list_templates()
 
-    def __rtruediv__(self, path):
+    def __rtruediv__(self, path: str):
         return self.prefixed_with(path)
 
     def prefixed_with(self, prefix: str):
@@ -41,6 +43,7 @@ class LoaderMixin:
         return PrefixLoader({prefix: self})  # type: ignore[dict-item]
 
     def get_template_source(self, template_path: str):
+        """Return the source for given template path."""
         return self.get_source(None, template_path)[0]
 
 
@@ -156,11 +159,8 @@ class FileSystemLoader(LoaderMixin, jinja2.FileSystemLoader):
         return utils.get_repr(self, searchpath=self.searchpath)
 
     def __add__(self, other):
-        if isinstance(other, jinja2.FileSystemLoader):
-            paths = other.searchpath
-        else:
-            paths = [other]
-        return FileSystemLoader([*self.searchpath, *paths])
+        ls = [other] if isinstance(other, jinja2.FileSystemLoader) else other.serchpath
+        return FileSystemLoader([*self.searchpath, *ls])
 
     def __eq__(self, other):
         return type(self) == type(other) and self.searchpath == other.searchpath
@@ -206,7 +206,14 @@ class DictLoader(LoaderMixin, jinja2.DictLoader):
         return hash(tuple(sorted(self.mapping.items())))
 
 
-def from_json(dct_or_list) -> jinja2.BaseLoader | None:
+def from_json(
+    dct_or_list: dict | list | None | jinja2.BaseLoader,
+) -> jinja2.BaseLoader | None:
+    """Create a loader based on a json representation.
+
+    Arguments:
+        dct_or_list: A dictionary or list describing loaders.
+    """
     from jinjarope import fsspecloaders
 
     if not dct_or_list:
