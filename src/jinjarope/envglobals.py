@@ -88,7 +88,7 @@ def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     return true_val if bool(value) else false_val
 
 
-def match(obj, mapping: dict | None = None, **kwargs: Any) -> str:
+def match(obj: Any, mapping: dict | None = None, **kwargs: Any) -> str:
     """A filter trying to imitate a python match-case statement.
 
     Arguments:
