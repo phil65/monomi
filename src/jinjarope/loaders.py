@@ -184,7 +184,7 @@ class ChoiceLoader(LoaderMixin, jinja2.ChoiceLoader):
     ID = "choice"
 
     def __repr__(self):
-        return utils.get_repr(self, loaders=self.loaders, _shorten=False)
+        return utils.get_repr(self, loaders=self.loaders)
 
     def __bool__(self):
         return len(self.loaders) > 0
