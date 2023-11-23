@@ -12,6 +12,7 @@ from .loaders import (
     FunctionLoader,
     PrefixLoader,
     DictLoader,
+    from_json as get_loader_from_json,
 )
 from .rewriteloader import RewriteLoader
 from .configloaders import NestedDictLoader, TemplateFileLoader
@@ -51,6 +52,7 @@ __all__ = [
     "DictLoader",
     "get_loader",
     "get_loader_cls_by_id",
+    "get_loader_from_json",
     "JinjaFile",
     "JinjaItem",
 ]

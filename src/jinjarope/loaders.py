@@ -246,19 +246,21 @@ def from_json(
             case types.ModuleType():
                 loaders.append(PackageLoader(item))
             case dict():
-                for kls in jinja2.BaseLoader.__subclasses__():
-                    if not issubclass(kls, LoaderMixin):
+                dct_copy = item.copy()
+                typ = dct_copy.pop("type")
+                mapping = dct_copy.pop("mapping", None)
+                for kls in utils.iter_subclasses(jinja2.BaseLoader):
+                    if not hasattr(kls, "ID"):
                         continue
-                    dct_copy = item.copy()
-                    if dct_copy.pop("type") == kls.ID:  # type: ignore[attr-defined]
+                    if typ == kls.ID:  # type: ignore[attr-defined]
                         if kls.ID == "prefix":  # type: ignore[attr-defined]
-                            mapping = dct_copy.pop("mapping")
+                            mapping = mapping
                             mapping = {k: from_json(v) for k, v in mapping.items()}
                             instance = kls(mapping)  # type: ignore[call-arg]
                         else:
                             instance = kls(**dct_copy)
-
                         loaders.append(instance)
+                        break
     match len(loaders):
         case 1:
             return loaders[0]
