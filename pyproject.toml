@@ -25,6 +25,7 @@ dependencies = [
     # Docs
     "mkdocs-material",
     "mkdocs-mknodes",
+    "humanize",
 
     # used for formatting signature
     "black",

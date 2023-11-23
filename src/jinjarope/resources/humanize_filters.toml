@@ -1,0 +1,144 @@
+[filters.naturaldate]
+fn = "humanize.time.naturaldate"
+group = "time"
+required_packages = ["humanize"]
+
+[filters.naturaldate.examples.basic]
+template = """
+{{ now() | naturaldate }}
+"""
+
+[filters.naturalday]
+fn = "humanize.time.naturalday"
+group = "time"
+required_packages = ["humanize"]
+
+[filters.naturalday.examples.basic]
+template = """
+{{ now() | naturalday }}
+"""
+
+[filters.naturaldelta]
+fn = "humanize.time.naturaldelta"
+group = "time"
+required_packages = ["humanize"]
+
+[filters.naturaldelta.examples.basic]
+template = """
+{{ 22 | naturaldelta }}
+"""
+
+[filters.naturaltime]
+fn = "humanize.time.naturaltime"
+group = "time"
+required_packages = ["humanize"]
+
+[filters.naturaltime.examples.basic]
+template = """
+{{ now() | naturaltime }}
+"""
+
+[filters.precisedelta]
+fn = "humanize.time.precisedelta"
+group = "time"
+required_packages = ["humanize"]
+
+[filters.precisedelta.examples.basic]
+template = """
+{{ 22 | precisedelta }}
+"""
+
+
+[filters.ordinal]
+fn = "humanize.number.ordinal"
+group = "text"
+required_packages = ["humanize"]
+
+[filters.ordinal.examples.basic]
+template = """
+{{ 3 | ordinal }}
+"""
+
+[filters.intcomma]
+fn = "humanize.number.intcomma"
+group = "text"
+required_packages = ["humanize"]
+
+[filters.intcomma.examples.basic]
+template = """
+{{ 10000000 | intcomma }}
+"""
+
+[filters.intword]
+fn = "humanize.number.intword"
+group = "text"
+required_packages = ["humanize"]
+
+[filters.intword.examples.basic]
+template = """
+{{ 10000000 | intword }}
+"""
+
+[filters.apnumber]
+fn = "humanize.number.apnumber"
+group = "text"
+required_packages = ["humanize"]
+
+[filters.apnumber.examples.basic]
+template = """
+{{ 7 | apnumber }}
+"""
+
+
+[filters.fractional]
+fn = "humanize.number.fractional"
+group = "text"
+required_packages = ["humanize"]
+
+[filters.fractional.examples.basic]
+template = """
+{{ 1.3 | fractional }}
+"""
+
+
+[filters.scientific]
+fn = "humanize.number.scientific"
+group = "text"
+required_packages = ["humanize"]
+
+[filters.scientific.examples.basic]
+template = """
+{{ 0.3 | scientific }}
+"""
+
+
+[filters.clamp]
+fn = "humanize.number.clamp"
+group = "text"
+required_packages = ["humanize"]
+
+[filters.clamp.examples.basic]
+template = """
+{{ 0.0001 | clamp(floor=0.01) }}
+"""
+
+
+# [filters.metric]
+# fn = "humanize.time.metric"
+# group = "text"
+# required_packages = ["humanize"]
+
+# [filters.metric.examples.basic]
+# template = """
+# {{ 22 | metric }}
+# """
+
+[filters.naturalsize]
+fn = "humanize.filesize.naturalsize"
+group = "text"
+required_packages = ["humanize"]
+
+[filters.naturalsize.examples.basic]
+template = """
+{{ 22 | naturalsize }}
+"""
