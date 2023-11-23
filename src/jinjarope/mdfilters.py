@@ -109,6 +109,8 @@ def shift_header_levels(text: str, level_shift: int):
         text: The Text to shift the header levels from
         level_shift: Level delta. (1 means "increase level by 1")
     """
+    if not level_shift:
+        return text
 
     def mod_header(match: re.Match, levels: int) -> str:
         header_str = match[1]
