@@ -2,6 +2,7 @@ __version__ = "0.8.3"
 
 
 from .environment import BlockNotFoundError, Environment
+from .envconfig import EnvConfig
 from .loaders import (
     LoaderMixin,
     FileSystemLoader,
@@ -35,6 +36,7 @@ def get_loader_cls_by_id(loader_id: str):
 __all__ = [
     "BlockNotFoundError",
     "Environment",
+    "EnvConfig",
     "FsSpecFileSystemLoader",
     "FsSpecProtocolPathLoader",
     "FileSystemLoader",
