@@ -92,18 +92,23 @@ class TemplateFileLoader(NestedDictLoader):
         self,
         path: str | os.PathLike,
         fmt: Literal["toml", "json", "ini", "yaml"] | None = None,
+        sub_path: tuple[str, ...] | None = None,
     ):
         """Constructor.
 
         Arguments:
             path: Path / fsspec protocol URL to the file
             fmt: Config file format. If None, try to auto-infer from file extension
+            sub_path: An optional tuple of keys describing the "dictionary path" inside
+                      the file
         """
         self.path = os.fspath(path)
         text = utils.fsspec_get(self.path)
         file_fmt = fmt if fmt else pathlib.Path(self.path).suffix.lstrip(".")
         assert file_fmt in ["json", "toml", "yaml", "ini"]
         mapping = serializefilters.deserialize(text, fmt=file_fmt)  # type: ignore[arg-type]
+        for part in sub_path or []:
+            mapping = mapping[part]
         super().__init__(mapping=mapping)
         self._data = mapping
 
