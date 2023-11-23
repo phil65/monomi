@@ -637,11 +637,50 @@ template = """
 
 [filters.path_join]
 fn = "os.path.join"
-group = "misc"
+group = "path"
 
 [filters.path_join.examples.basic]
 template = """
 {{ "a" | path_join("b") }}
+"""
+
+[filters.fnmatch]
+fn = "fnmatch.fnmatch"
+group = "path"
+aliases = ["fnmatch_fnmatch"]
+
+[filters.fnmatch.examples.basic]
+template = """
+{{ "test.txt" | fnmatch("*.txt") }}
+"""
+
+[filters.fnmatchcase]
+fn = "fnmatch.fnmatchcase"
+group = "path"
+aliases = ["fnmatch_fnmatchcase"]
+
+[filters.fnmatchcase.examples.basic]
+template = """
+{{ "test.txt" | fnmatchcase("*.txt") }}
+{{ "test.txt" | fnmatchcase("*.TXT") }}
+"""
+
+[filters.fnmatch_filter]
+fn = "fnmatch.filter"
+group = "path"
+
+[filters.fnmatch_filter.examples.basic]
+template = """
+{{ ["test.txt", "test.xyz"] | fnmatch_filter("*.txt") }}
+"""
+
+[filters.glob]
+fn = "glob.glob"
+group = "path"
+
+[filters.glob.examples.basic]
+template = """
+{{ ".*" | glob }}
 """
 
 [filters.check_output]
@@ -677,7 +716,7 @@ group = "environment"
 
 [filters.render_string.examples.basic]
 template = """
-{{ "{{ 1 + 2 }} = 3" | render_string }}
+{{ "{{ a + 2 }} = 3" | render_string(a=1) }}
 """
 
 [filters.render_file]
