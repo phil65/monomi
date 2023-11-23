@@ -61,6 +61,9 @@ class PrefixLoader(LoaderMixin, jinja2.PrefixLoader):
     def __hash__(self):
         return hash(tuple(sorted(self.mapping.items())))
 
+    def __bool__(self):
+        return bool(self.mapping)
+
 
 class ModuleLoader(LoaderMixin, jinja2.ModuleLoader):
     """This loader loads templates from precompiled templates.
@@ -162,6 +165,9 @@ class FileSystemLoader(LoaderMixin, jinja2.FileSystemLoader):
         ls = [other] if isinstance(other, jinja2.FileSystemLoader) else other.serchpath
         return FileSystemLoader([*self.searchpath, *ls])
 
+    def __bool__(self):
+        return len(self.searchpath) > 0
+
     def __eq__(self, other):
         return type(self) == type(other) and self.searchpath == other.searchpath
 
@@ -176,6 +182,9 @@ class ChoiceLoader(LoaderMixin, jinja2.ChoiceLoader):
 
     def __repr__(self):
         return utils.get_repr(self, loaders=self.loaders, _shorten=False)
+
+    def __bool__(self):
+        return len(self.loaders) > 0
 
     def __eq__(self, other):
         return type(self) == type(other) and self.loaders == other.loaders
