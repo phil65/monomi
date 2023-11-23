@@ -97,6 +97,10 @@ class Environment(jinja2.Environment):
         self.add_extension("jinja2.ext.loopcontrols")
         self.add_extension("jinja2.ext.do")
 
+    def __repr__(self):
+        cfg = self.get_config()
+        return utils.get_repr(self, **utils.get_dataclass_nondefault_values(cfg))
+
     def __contains__(self, template: str | os.PathLike) -> bool:
         """Check whether given template path exists.
 
@@ -153,7 +157,20 @@ class Environment(jinja2.Environment):
             dct = {f"{scope_prefix}{k}": v for k, v in file.functions_dict.items()}
             self.globals.update(dct)
         if load_config:
-            self.__dict__.update(file.envconfig.as_dict())
+            self.block_start_string = file.envconfig.block_start_string
+            self.block_end_string = file.envconfig.block_end_string
+            self.variable_start_string = file.envconfig.variable_start_string
+            self.variable_end_string = file.envconfig.variable_end_string
+            self.comment_start_string = file.envconfig.comment_start_string
+            self.comment_end_string = file.envconfig.comment_end_string
+            self.line_statement_prefix = file.envconfig.line_statement_prefix
+            self.line_comment_prefix = file.envconfig.line_comment_prefix
+            self.trim_blocks = file.envconfig.trim_blocks
+            self.lstrip_blocks = file.envconfig.lstrip_blocks
+            self.newline_sequence = file.envconfig.newline_sequence
+            self.keep_trailing_newline = file.envconfig.keep_trailing_newline
+            for ext in file.envconfig.extensions or []:
+                self.add_extension(ext)
         if load_loader and (loader := file.loader):
             self._add_loader(loader)
 
@@ -412,6 +429,12 @@ class Environment(jinja2.Environment):
 
     def get_config(self) -> envconfig.EnvConfig:
         """All environment settings as a dict (not included: undefined and loaders)."""
+        exts = [
+            k
+            for k in self.extensions
+            if k
+            not in ["jinja2.ext.LoopControlExtension", "jinja2.ext.ExprStmtExtension"]
+        ]
         return envconfig.EnvConfig(
             block_start_string=self.block_start_string,
             block_end_string=self.block_end_string,
@@ -427,7 +450,7 @@ class Environment(jinja2.Environment):
             keep_trailing_newline=self.keep_trailing_newline,
             loader=self.loader,
             undefined=self.undefined,
-            extensions=list(self.extensions.keys()),
+            extensions=exts,
         )
 
     def make_globals(

@@ -12,6 +12,12 @@ from jinjarope import jinjafile
 
 
 class Build:
+    @classmethod
+    def build(cls, root, theme):
+        b = cls()
+        # b.on_theme(theme)
+        return b.on_root(root)
+
     def on_root(self, nav: mk.MkNav):
         self.nav = nav
         nav.page_template.announcement_bar = mk.MkMetadataBadges("websites")

@@ -39,6 +39,34 @@ def iter_subclasses(klass: ClassType) -> Iterator[ClassType]:
         yield kls
 
 
+def get_dataclass_nondefault_values(instance) -> dict[str, Any]:
+    """Return dictionary with non-default key-value pairs of given dataclass.
+
+    Arguments:
+        instance: dataclass instance
+    """
+    import dataclasses
+
+    from operator import attrgetter
+
+    vals = []
+    for f in dataclasses.fields(instance):
+        no_default = isinstance(f.default, dataclasses._MISSING_TYPE)
+        no_default_factory = isinstance(f.default_factory, dataclasses._MISSING_TYPE)
+        if not no_default:
+            val = attrgetter(f.name)(instance)
+            if val != f.default:
+                vals.append((f.name, val))
+        if not no_default_factory:
+            val = attrgetter(f.name)(instance)
+            if val != f.default_factory():
+                vals.append((f.name, val))
+        if no_default and no_default_factory:
+            val = attrgetter(f.name)(instance)
+            vals.append((f.name, val))
+    return dict(vals)
+
+
 def get_repr(_obj: Any, *args: Any, **kwargs: Any) -> str:
     """Get a suitable __repr__ string for an object.
 
