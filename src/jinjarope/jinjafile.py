@@ -125,6 +125,9 @@ class JinjaItem:
     aliases: list[str] = dataclasses.field(default_factory=list)
     required_packages: list[str] = dataclasses.field(default_factory=list)
 
+    def __repr__(self):
+        return utils.get_repr(self, self.identifier)
+
     @property
     def filter_fn(self) -> Callable:
         """Return the callable to use as filter / test / function."""

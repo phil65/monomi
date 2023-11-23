@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import ast
+
+from collections.abc import MutableMapping
 import contextlib
 import io
 import logging
 import os
 import pathlib
 import time
-
 from types import CodeType
 from typing import Any, Literal, overload
 import weakref
@@ -428,6 +429,33 @@ class Environment(jinja2.Environment):
             undefined=self.undefined,
             extensions=list(self.extensions.keys()),
         )
+
+    def make_globals(
+        self,
+        d: MutableMapping[str, Any] | None,
+    ) -> MutableMapping[str, Any]:
+        """Make the globals map for a template.
+
+        Any given template
+        globals overlay the environment :attr:`globals`.
+
+        Returns a :class:`collections.ChainMap`. This allows any changes
+        to a template's globals to only affect that template, while
+        changes to the environment's globals are still reflected.
+        However, avoid modifying any globals after a template is loaded.
+
+        :param d: Dict of template-specific globals.
+        """
+        if d is None:
+            d = {}
+
+        import collections
+
+        class GlobalsMap(collections.ChainMap):
+            def __repr__(self):
+                return f"GlobalsMap<{len(self)} keys>"
+
+        return GlobalsMap(d, self.globals)
 
 
 class BlockNotFoundError(Exception):
