@@ -48,6 +48,8 @@ class EnvConfig:
     """The template loader."""
     undefined: type[jinja2.Undefined] | None = None
     """The undefined object determining the "Undefined" behavior."""
+    extensions: list[str] | None = None
+    """A list of jinja2 extentions."""
 
     def __repr__(self):
         return utils.get_repr(self, **self.as_dict())

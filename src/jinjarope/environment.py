@@ -426,6 +426,7 @@ class Environment(jinja2.Environment):
             keep_trailing_newline=self.keep_trailing_newline,
             loader=self.loader,
             undefined=self.undefined,
+            extensions=list(self.extensions.keys()),
         )
 
 
