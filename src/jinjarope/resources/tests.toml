@@ -193,3 +193,27 @@ template = """
 True!
 {% endif %}
 """
+
+
+[tests.file]
+fn = "os.path.isfile"
+group = "file"
+
+[tests.file.examples.basic]
+template = """
+{% if "README.md" is file %}
+True!
+{% endif %}
+"""
+
+
+[tests.dir]
+fn = "os.path.isdir"
+group = "file"
+
+[tests.dir.examples.basic]
+template = """
+{% if "src" is dir %}
+True!
+{% endif %}
+"""
