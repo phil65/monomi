@@ -4,6 +4,8 @@ import dataclasses
 
 from typing import Any
 
+import jinja2
+
 from jinjarope import utils
 
 
@@ -42,6 +44,10 @@ class EnvConfig:
     The default causes a single newline, if present,
     to be stripped from the end of the template.
     """
+    loader: jinja2.BaseLoader | None = None
+    """The template loader."""
+    undefined: type[jinja2.Undefined] | None = None
+    """The undefined object determining the "Undefined" behavior."""
 
     def __repr__(self):
         return utils.get_repr(self, **self.as_dict())

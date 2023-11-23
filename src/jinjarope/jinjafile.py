@@ -105,7 +105,7 @@ class JinjaFile(dict):
     def envconfig(self) -> envconfig.EnvConfig:
         """Return the config object defined in this Jinja file."""
         cfg = self.get("config", {})
-        return envconfig.EnvConfig(**cfg)
+        return envconfig.EnvConfig(**cfg, loader=self.loader)
 
     @property
     def loader(self) -> jinja2.BaseLoader | None:

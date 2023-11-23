@@ -424,6 +424,8 @@ class Environment(jinja2.Environment):
             lstrip_blocks=self.lstrip_blocks,
             newline_sequence=self.newline_sequence,
             keep_trailing_newline=self.keep_trailing_newline,
+            loader=self.loader,
+            undefined=self.undefined,
         )
 
 
