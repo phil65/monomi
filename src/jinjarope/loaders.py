@@ -64,6 +64,9 @@ class PrefixLoader(LoaderMixin, jinja2.PrefixLoader):
     def __bool__(self):
         return bool(self.mapping)
 
+    def __iter__(self):
+        return iter(self.mapping)
+
 
 class ModuleLoader(LoaderMixin, jinja2.ModuleLoader):
     """This loader loads templates from precompiled templates.
@@ -192,6 +195,9 @@ class ChoiceLoader(LoaderMixin, jinja2.ChoiceLoader):
     def __hash__(self):
         return hash(tuple(self.loaders))
 
+    def __iter__(self):
+        return iter(self.loaders)
+
 
 class DictLoader(LoaderMixin, jinja2.DictLoader):
     """A loader to load static content from a path->template-str mapping."""
@@ -268,4 +274,3 @@ if __name__ == "__main__":
     env = Environment()
     env.loader = FileSystemLoader("")
     text = env.render_template(".pre-commit-config.yaml")
-    print(text)
