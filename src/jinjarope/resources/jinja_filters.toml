@@ -393,13 +393,14 @@ template = """
 {{ "sth" | wordwrap }}
 """
 
-# [filters.xmlattr]
-# fn = "jinja2.filters.do_xmlattr"
-# group = "builtin"
-# [filters.xmlattr.examples.basic]
-# template = """
-# {{ "sth" | xmlattr }}
-# """
+[filters.xmlattr]
+fn = "jinja2.filters.do_xmlattr"
+group = "builtin"
+[filters.xmlattr.examples.basic]
+template = """
+<ul{{ {'class': 'my_list', 'missing': none,
+        'id': 'some-id'}|xmlattr }}>
+"""
 
 [filters.tojson]
 fn = "jinja2.filters.do_tojson"
