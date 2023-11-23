@@ -37,17 +37,18 @@ def extract_header_section(markdown: str, section_name: str) -> str | None:
         section_name: The header of the section to extract
     """
     header_pattern = re.compile(f"^(#+) {section_name}$", re.MULTILINE)
-    header_match = header_pattern.search(markdown)
+    md = str(markdown or "")
+    header_match = header_pattern.search(md)
     if header_match is None:
         return None
     section_level = len(header_match[1])
     start_index = header_match.span()[1] + 1
     end_pattern = re.compile(f"^#{{1,{section_level}}} ", re.MULTILINE)
-    end_match = end_pattern.search(markdown[start_index:])
+    end_match = end_pattern.search(md[start_index:])
     if end_match is None:
-        return markdown[start_index:]
+        return md[start_index:]
     end_index = end_match.span()[0]
-    return markdown[start_index : end_index + start_index]
+    return md[start_index : end_index + start_index]
 
 
 def md_escape(text: str, entity_type: str | None = None) -> str:
@@ -120,7 +121,7 @@ def shift_header_levels(text: str, level_shift: int) -> str:
             header_str = header_str[:levels]
         return f"{header_str} {match[2]}"
 
-    return re.sub(HEADER_REGEX, lambda x: mod_header(x, level_shift), text)
+    return re.sub(HEADER_REGEX, lambda x: mod_header(x, level_shift), str(text or ""))
 
 
 def autoref_link(

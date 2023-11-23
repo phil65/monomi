@@ -102,6 +102,7 @@ def match(obj: Any, mapping: dict | None = None, **kwargs: Any) -> str:
         ``` jinja
         {{ "a" | match(a="hit", b="miss")
         {{ MyClass() | match({MyClass: "hit", OtherClass: "miss"}) }}
+        ```
     """
     # kwargs can only contain strs as keys, so we can perform simply getitem.
     if kwargs and obj in kwargs:
