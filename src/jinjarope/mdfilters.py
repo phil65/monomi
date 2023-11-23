@@ -102,7 +102,7 @@ def md_style(
     return text
 
 
-def shift_header_levels(text: str, level_shift: int):
+def shift_header_levels(text: str, level_shift: int) -> str:
     """Shift the level of all headers of given text.
 
     Arguments:

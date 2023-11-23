@@ -108,7 +108,8 @@ class TemplateFileLoader(NestedDictLoader):
         self._data = mapping
 
     def __repr__(self):
-        return utils.get_repr(self, path=pathlib.Path(self.path).as_posix())
+        path = pathlib.Path(self.path).as_posix()
+        return utils.get_repr(self, path=path)
 
 
 if __name__ == "__main__":
