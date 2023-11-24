@@ -6,7 +6,7 @@ import functools
 import os
 import tomllib
 
-from typing import Any, Self
+from typing import Any, Literal, Self
 
 import jinja2
 
@@ -39,7 +39,7 @@ class JinjaFile(dict):
     def filters(self) -> list[JinjaItem]:
         """Return list of filters defined in the file."""
         return [
-            JinjaItem(filter_name, **dct)
+            JinjaItem(filter_name, typ="filter", **dct)
             for filter_name, dct in self.get("filters", {}).items()
             if all(envtests.is_installed(i) for i in dct.get("required_packages", []))
         ]
@@ -48,7 +48,7 @@ class JinjaFile(dict):
     def tests(self) -> list[JinjaItem]:
         """Return list of tests defined in the file."""
         return [
-            JinjaItem(filter_name, **dct)
+            JinjaItem(filter_name, typ="test", **dct)
             for filter_name, dct in self.get("tests", {}).items()
             if all(envtests.is_installed(i) for i in dct.get("required_packages", []))
         ]
@@ -57,7 +57,7 @@ class JinjaFile(dict):
     def functions(self) -> list[JinjaItem]:
         """Return list of functions defined in the file."""
         return [
-            JinjaItem(filter_name, **dct)
+            JinjaItem(filter_name, typ="function", **dct)
             for filter_name, dct in self.get("functions", {}).items()
             if all(envtests.is_installed(i) for i in dct.get("required_packages", []))
         ]
@@ -118,6 +118,7 @@ class JinjaItem:
     """An item representing a filter / test."""
 
     identifier: str
+    typ: Literal["filter", "test", "function"]
     fn: str
     group: str
     examples: dict[str, dict] = dataclasses.field(default_factory=dict)
@@ -142,15 +143,28 @@ class JinjaItem:
         return obj
 
     @classmethod
-    def for_function(cls, fn: Callable, group: str = "imported", **kwargs: Any) -> Self:
+    def for_function(
+        cls,
+        fn: Callable,
+        typ: Literal["filter", "test", "function"],
+        group: str = "imported",
+        **kwargs: Any,
+    ) -> Self:
         """Alternative ctor to construct a JinjaItem based on a callable.
 
         Arguments:
             fn: Callable to get a JinjaItem for
+            typ: The item type
             group: Group for metadata
             kwargs: Additional keyword arguments for JinjaItem ctor
         """
-        return cls(fn.__name__, f"{fn.__module__}.{fn.__name__}", group=group, **kwargs)
+        return cls(
+            fn.__name__,
+            typ=typ,
+            fn=f"{fn.__module__}.{fn.__name__}",
+            group=group,
+            **kwargs,
+        )
 
     def apply(self, *args: Any, **kwargs: Any) -> Any:
         """Apply the filter function using given arguments and keywords.
