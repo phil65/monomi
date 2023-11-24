@@ -33,6 +33,11 @@ from jinjarope import (
 logger = logging.getLogger(__name__)
 
 
+class Context(jinja2.runtime.Context):
+    def __repr__(self):
+        return "Context()"
+
+
 class Environment(jinja2.Environment):
     """An enhanced Jinja environment."""
 
@@ -60,6 +65,7 @@ class Environment(jinja2.Environment):
             kwargs: Keyword arguments passed to parent
         """
         self.cache_code = True
+        self.context_class = Context
         if isinstance(undefined, str):
             undefined = undefined_.UNDEFINED_BEHAVIOR[undefined]
         kwargs = dict(
