@@ -61,6 +61,8 @@ plugins:
         import:
         - url: https://docs.python.org/3/objects.inv
           domains: [std, py]
+        - url: https://jinja.palletsprojects.com/en/3.1.x/objects.inv
+          domains: [std, py]
         options:
           # https://mkdocstrings.github.io/python/usage/
           show_signature_annotations: true
