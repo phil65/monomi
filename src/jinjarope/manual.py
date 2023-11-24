@@ -62,11 +62,8 @@ class Build:
                 jinja_items = jinja_file.functions
                 rope_items = rope_file.functions
         all_items = rope_items + jinja_items
-        for group, filters in iterfilters.groupby(
-            all_items,
-            key="group",
-            natural_sort=True,
-        ).items():
+        grouped = iterfilters.groupby(all_items, key="group", natural_sort=True)
+        for group, filters in grouped.items():
             p = mk.MkPage(group)
             filters_nav += p
             variables = dict(mode=slug, items=list(filters))
