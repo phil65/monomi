@@ -635,6 +635,25 @@ template = """
 {{ "abc" | get_hash }}
 """
 
+
+[filters.expanduser]
+fn = "os.path.expanduser"
+group = "path"
+[filters.expanduser.examples.basic]
+template = """
+{{ "~\\a" | expanduser }}
+"""
+
+
+[filters.expandvars]
+fn = "os.path.expandvars"
+group = "path"
+[filters.expandvars.examples.basic]
+template = """
+{{ "%TEMP%" | expandvars }}
+"""
+
+
 [filters.path_join]
 fn = "os.path.join"
 group = "path"
