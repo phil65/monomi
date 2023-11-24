@@ -1,14 +1,21 @@
 from __future__ import annotations
 
-import itertools
-
 from typing import Literal
 
 import mknodes as mk
 
 from mknodes.manual import dev_section
 
-from jinjarope import jinjafile
+from jinjarope import iterfilters, jinjafile, mdfilters, utils
+
+
+def table_for_items(items):
+    t = mk.MkTable(columns=["Name", "Description"])
+    for item in items:
+        link = mdfilters.autoref_link(item.identifier, item.identifier)
+        doc = utils.get_doc(item.filter_fn, only_summary=True)
+        t.add_row((link, doc))
+    return t
 
 
 class Build:
@@ -40,7 +47,7 @@ class Build:
 
     def add_section(self, title: Literal["Filters", "Tests", "Functions"]):
         filters_nav = self.nav.add_nav(title)
-        filters_index = filters_nav.add_page(title, is_index=True)
+        filters_index = filters_nav.add_page(title, is_index=True, hide="toc")
         slug = title.lower()
         rope_file = jinjafile.JinjaFile(f"src/jinjarope/resources/{slug}.toml")
         jinja_file = jinjafile.JinjaFile(f"src/jinjarope/resources/jinja_{slug}.toml")
@@ -55,13 +62,17 @@ class Build:
                 jinja_items = jinja_file.functions
                 rope_items = rope_file.functions
         all_items = rope_items + jinja_items
-        if slug == "functions":
-            slug = "filters"
-        filters_index += mk.MkTemplate(f"{slug}.md", variables=dict(items=all_items))
-        for group, filters in itertools.groupby(all_items, key=lambda x: x.group):
+        for group, filters in iterfilters.groupby(
+            all_items,
+            key="group",
+            natural_sort=True,
+        ).items():
             p = mk.MkPage(group)
             filters_nav += p
-            p += mk.MkTemplate(f"{slug}.md", variables=dict(items=list(filters)))
+            variables = dict(mode=slug, items=list(filters))
+            p += mk.MkTemplate("filters.jinja", variables=variables)
+            filters_index += f"## {group}"
+            filters_index += table_for_items(filters)
 
 
 def build(project) -> mk.MkNav:
