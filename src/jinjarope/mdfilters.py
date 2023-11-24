@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 import re
 import types
 
@@ -126,7 +127,7 @@ def shift_header_levels(text: str, level_shift: int) -> str:
 
 def autoref_link(
     text: str | None = None,
-    link: str | type | types.ModuleType | None = None,
+    link: str | types.ModuleType | Callable | None = None,
 ) -> str:
     """Create a markdown autorefs-style link (used by MkDocs / MkDocStrings).
 
@@ -139,8 +140,11 @@ def autoref_link(
     if not link:
         return text or ""
     match link:
-        case type():
-            link = f"{link.__module__}.{link.__qualname__}"
+        case Callable():
+            if (mod := link.__module__) != "builtins":
+                link = f"{mod}.{link.__qualname__}"
+            else:
+                link = link.__qualname__
         case types.ModuleType():
             link = link.__name__
     return f"[{text or link}][{link}]"
