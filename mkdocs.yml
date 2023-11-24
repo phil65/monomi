@@ -51,7 +51,7 @@ theme:
 plugins:
 - search
 - mknodes:
-    build_fn: jinjarope.manual:build
+    build_fn: jinjarope.manual:Build.build
     global_resources: false
     render_by_default: false
 - mkdocstrings:
