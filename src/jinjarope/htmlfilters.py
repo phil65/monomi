@@ -8,6 +8,19 @@ from typing import Any, Literal
 from xml.etree import ElementTree as Et
 
 
+QueryStr = Literal[
+    "fragment",
+    "hostname",
+    "netloc",
+    "password",
+    "path",
+    "port",
+    "query",
+    "scheme",
+    "username",
+]
+
+
 def wrap_in_elem(
     text: str | None,
     tag: str,
@@ -160,6 +173,41 @@ def format_xml(
         xml_declaration=add_declaration,
         short_empty_elements=short_empty_elements,
     )
+
+
+def split_url(value: str, query: QueryStr | None = None) -> str | dict[str, str]:
+    """Split a URL into its parts (and optionally return a specific part).
+
+    Arguments:
+        value: The URL to split
+        query: Optional URL part to extract
+    """
+    from urllib.parse import urlsplit
+
+    def object_to_dict(obj: Any, exclude: list[str] | None = None) -> dict[str, Any]:
+        """Converts an object into a dict making the properties into keys.
+
+        Allows excluding certain keys.
+        """
+        if exclude is None or not isinstance(exclude, list):
+            exclude = []
+        return {
+            key: getattr(obj, key)
+            for key in dir(obj)
+            if not (key.startswith("_") or key in exclude)
+        }
+
+    to_exclude = ["count", "index", "geturl", "encode"]
+    results = object_to_dict(urlsplit(value), exclude=to_exclude)
+
+    # If a query is supplied, make sure it's valid then return the results.
+    # If no option is supplied, return the entire dictionary.
+    if not query:
+        return results
+    if query not in results:
+        msg = "split_url: unknown URL component: %s"
+        raise ValueError(msg, query)
+    return results[query]
 
 
 if __name__ == "__main__":

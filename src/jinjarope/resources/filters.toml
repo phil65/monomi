@@ -27,6 +27,16 @@ template = """
 {{ ([1, 2, 3] * 10) | pformat }}
 """
 
+[filters.split_url]
+fn = "jinjarope.htmlfilters.split_url"
+group = "format"
+
+[filters.split_url.examples.basic]
+template = """
+{{ "scheme://netloc/path;parameters?query#fragment" | split_url }}
+{{ "scheme://netloc/path;parameters?query#fragment" | split_url("path") }}
+"""
+
 [filters.format_code]
 fn = "jinjarope.textfilters.format_code"
 group = "format"
