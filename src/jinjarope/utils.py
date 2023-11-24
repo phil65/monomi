@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Iterator, Mapping
+from dataclasses import Field
 import functools
 import importlib
 
 from importlib.metadata import entry_points
 import logging
 import types
-from typing import Any, TypeVar
+from typing import Any, ClassVar, Protocol, TypeVar
 
 from jinjarope import envtests
 
@@ -15,6 +16,10 @@ from jinjarope import envtests
 logger = logging.getLogger(__name__)
 
 ClassType = TypeVar("ClassType", bound=type)
+
+
+class DataclassInstance(Protocol):
+    __dataclass_fields__: ClassVar[dict[str, Field[Any]]]
 
 
 def partial(fn: Callable, *args: Any, **kwargs: Any):
@@ -39,7 +44,7 @@ def iter_subclasses(klass: ClassType) -> Iterator[ClassType]:
         yield kls
 
 
-def get_dataclass_nondefault_values(instance) -> dict[str, Any]:
+def get_dataclass_nondefault_values(instance: DataclassInstance) -> dict[str, Any]:
     """Return dictionary with non-default key-value pairs of given dataclass.
 
     Arguments:
