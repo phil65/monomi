@@ -82,7 +82,7 @@ def format_signature(
             sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=False)
     else:
         sig = inspect.signature(fn, follow_wrapped=follow_wrapped, eval_str=False)
-    if hasattr(fn, "jinja_pass_arg"):
+    if remove_jinja_arg and hasattr(fn, "jinja_pass_arg"):
         # for @pass_xyz decorated functions
         params = dict(sig._parameters)  # type: ignore[attr-defined]
         params.pop(next(iter(params)))
