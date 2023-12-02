@@ -42,7 +42,10 @@ def load_ini(data: str) -> dict[str, dict[str, str]]:
     return {s: dict(config.items(s)) for s in config.sections()}
 
 
-def deserialize(data: str, fmt: Literal["yaml", "json", "ini", "toml"]) -> Any:  # type: ignore[return]
+def deserialize(
+    data: str,
+    fmt: Literal["yaml", "json", "ini", "toml"],
+) -> Any:
     """Serialize given json-like object to given format.
 
     Arguments:
@@ -71,7 +74,7 @@ def dig(
     *sections: str,
     keep_path: bool = False,
     dig_yaml_lists: bool = True,
-):
+) -> Any:
     """Try to get data with given section path from a dict-list structure.
 
     If a list is encountered and dig_yaml_lists is true, treat it like a list of
