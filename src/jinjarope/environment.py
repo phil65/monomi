@@ -87,7 +87,7 @@ class Environment(jinja2.Environment):
         self.load_jinja_file(folder / "functions.toml")
         self.load_jinja_file(folder / "humanize_filters.toml")
         self.globals.update(envglobals.ENV_GLOBALS)
-        for fn in utils._entry_points("jinjarope.environment").values():
+        for fn in utils._entry_points(group="jinjarope.environment").values():
             fn(self)
         self.filters["render_template"] = self.render_template
         self.filters["render_string"] = self.render_string
