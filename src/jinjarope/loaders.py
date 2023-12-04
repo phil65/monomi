@@ -249,6 +249,7 @@ def from_json(
                 dct_copy = item.copy()
                 typ = dct_copy.pop("type")
                 mapping = dct_copy.pop("mapping", None)
+                prefix = dct_copy.pop("prefix", None)
                 kls = next(
                     kls
                     for kls in utils.iter_subclasses(jinja2.BaseLoader)
@@ -257,6 +258,8 @@ def from_json(
                 if kls.ID == "prefix":  # type: ignore[attr-defined]
                     mapping = {k: from_json(v) for k, v in mapping.items()}
                     loader = kls(mapping)  # type: ignore[call-arg]
+                elif prefix:
+                    loader = prefix / kls(**dct_copy)
                 else:
                     loader = kls(**dct_copy)
             case _:
