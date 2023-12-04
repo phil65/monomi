@@ -238,29 +238,30 @@ def from_json(
     for item in ls:
         match item:
             case jinja2.BaseLoader():
-                loaders.append(item)
+                loader = item
             case str() if "://" in item:
-                loaders.append(fsspecloaders.FsSpecFileSystemLoader(item))
+                loader = fsspecloaders.FsSpecFileSystemLoader(item)
             case str():
-                loaders.append(FileSystemLoader(item))
+                loader = FileSystemLoader(item)
             case types.ModuleType():
-                loaders.append(PackageLoader(item))
+                loader = PackageLoader(item)
             case dict():
                 dct_copy = item.copy()
                 typ = dct_copy.pop("type")
                 mapping = dct_copy.pop("mapping", None)
-                for kls in utils.iter_subclasses(jinja2.BaseLoader):
-                    if not hasattr(kls, "ID"):
-                        continue
-                    if typ == kls.ID:  # type: ignore[attr-defined]
-                        if kls.ID == "prefix":  # type: ignore[attr-defined]
-                            mapping = mapping
-                            mapping = {k: from_json(v) for k, v in mapping.items()}
-                            instance = kls(mapping)  # type: ignore[call-arg]
-                        else:
-                            instance = kls(**dct_copy)
-                        loaders.append(instance)
-                        break
+                kls = next(
+                    kls
+                    for kls in utils.iter_subclasses(jinja2.BaseLoader)
+                    if getattr(kls, "ID", None) == typ
+                )
+                if kls.ID == "prefix":  # type: ignore[attr-defined]
+                    mapping = {k: from_json(v) for k, v in mapping.items()}
+                    loader = kls(mapping)  # type: ignore[call-arg]
+                else:
+                    loader = kls(**dct_copy)
+            case _:
+                raise TypeError(item)
+        loaders.append(loader)
     match len(loaders):
         case 1:
             return loaders[0]
