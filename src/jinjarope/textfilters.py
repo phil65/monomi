@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+import functools
 import inspect
+import itertools
 import os
 
 from jinjarope import utils
@@ -47,6 +49,7 @@ def rstrip(text: str, chars: str | None = None) -> str:
     return text.rstrip(chars)
 
 
+@functools.cache
 def format_code(code: str, line_length: int = 100):
     """Format code to given line length using `black`.
 
@@ -61,6 +64,30 @@ def format_code(code: str, line_length: int = 100):
     return formatter(code, line_length)
 
 
+@functools.cache
+def extract_body(src: str) -> str:
+    """Get body of source code of given function / class.
+
+    Strips off the signature / decorators.
+
+    Arguments:
+        src: Source code to extract the body from
+    """
+    # see https://stackoverflow.com/questions/38050649
+    src_lines = src.split("\n")
+    src_lines = itertools.dropwhile(lambda x: x.strip().startswith("@"), src_lines)
+    line = next(src_lines).strip()  # type: ignore
+    if not line.startswith(("def ", "class ")):
+        return line.rsplit(":")[-1].strip()
+    if not line.endswith(":"):
+        for line in src_lines:
+            line = line.strip()
+            if line.endswith(":"):
+                break
+    return "".join(src_lines)
+
+
+@functools.cache
 def format_signature(
     fn: Callable,
     follow_wrapped: bool = True,

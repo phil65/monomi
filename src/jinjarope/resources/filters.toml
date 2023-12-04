@@ -46,6 +46,21 @@ template = """
 {{ "AVeryLargeCodeBlock(a_parameter=3, another_parameter=4, abc=False)" | format_code }}
 """
 
+
+[filters.extract_body]
+fn = "jinjarope.textfilters.extract_body"
+group = "format"
+
+[filters.extract_body.examples.basic]
+template = """
+{{
+"@deprecated
+def test(a):
+    b = a
+" | extract_body }}
+"""
+
+
 [filters.format_signature]
 fn = "jinjarope.textfilters.format_signature"
 group = "format"
