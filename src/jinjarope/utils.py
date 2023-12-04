@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Iterator, Mapping
+from collections.abc import Callable, Mapping
 from dataclasses import Field
 import functools
 import importlib
@@ -31,17 +31,6 @@ def partial(fn: Callable, *args: Any, **kwargs: Any):
         kwargs: partially applied keywords
     """
     return functools.partial(fn, *args, **kwargs)
-
-
-def iter_subclasses(klass: ClassType) -> Iterator[ClassType]:
-    """(Recursively) iterate all subclasses of given klass.
-
-    Arguments:
-        klass: class to get subclasses from
-    """
-    for kls in klass.__subclasses__():
-        yield from iter_subclasses(kls)
-        yield kls
 
 
 def get_dataclass_nondefault_values(instance: DataclassInstance) -> dict[str, Any]:
@@ -190,45 +179,5 @@ def resolve(name: str, module: str | None = None) -> types.ModuleType | Callable
     return found
 
 
-@functools.cache
-def get_doc(
-    obj: Any,
-    *,
-    escape: bool = False,
-    fallback: str = "",
-    from_base_classes: bool = False,
-    only_summary: bool = False,
-    only_description: bool = False,
-) -> str:
-    """Get __doc__ for given object.
-
-    Arguments:
-        obj: Object to get docstrings from
-        escape: Whether docstrings should get escaped
-        fallback: Fallback in case docstrings dont exist
-        from_base_classes: Use base class docstrings if docstrings dont exist
-        only_summary: Only return first line of docstrings
-        only_description: Only return block after first line
-    """
-    import inspect
-
-    from jinjarope import mdfilters
-
-    match obj:
-        case _ if from_base_classes:
-            doc = inspect.getdoc(obj)
-        case _ if obj.__doc__:
-            doc = inspect.cleandoc(obj.__doc__)
-        case _:
-            doc = None
-    if not doc:
-        return fallback
-    if only_summary:
-        doc = doc.split("\n")[0]
-    if only_description:
-        doc = "\n".join(doc.split("\n")[1:])
-    return mdfilters.md_escape(doc) if doc and escape else doc
-
-
 if __name__ == "__main__":
-    doc = get_doc(str)
+    doc = resolve("jinjarope.inspectfilters")

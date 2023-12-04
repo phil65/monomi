@@ -22,7 +22,6 @@ from .fsspecloaders import (
 )
 from .loaderregistry import LoaderRegistry
 from .jinjafile import JinjaFile, JinjaItem
-from . import utils
 
 registry = LoaderRegistry()
 
@@ -30,7 +29,11 @@ get_loader = registry.get_loader
 
 
 def get_loader_cls_by_id(loader_id: str):
-    loaders = {i.ID: i for i in utils.iter_subclasses(LoaderMixin) if "ID" in i.__dict__}
+    from . import inspectfilters
+
+    loaders = {
+        i.ID: i for i in inspectfilters.list_subclasses(LoaderMixin) if "ID" in i.__dict__
+    }
     return loaders[loader_id]
 
 

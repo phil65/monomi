@@ -6,7 +6,7 @@ import types
 
 import jinja2
 
-from jinjarope import utils
+from jinjarope import inspectfilters, utils
 
 
 class LoaderMixin:
@@ -252,7 +252,7 @@ def from_json(
                 prefix = dct_copy.pop("prefix", None)
                 kls = next(
                     kls
-                    for kls in utils.iter_subclasses(jinja2.BaseLoader)
+                    for kls in inspectfilters.list_subclasses(jinja2.BaseLoader)
                     if getattr(kls, "ID", None) == typ
                 )
                 if kls.ID == "prefix":  # type: ignore[attr-defined]

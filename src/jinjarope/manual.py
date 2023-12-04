@@ -6,14 +6,14 @@ import mknodes as mk
 
 from mknodes.manual import dev_section
 
-from jinjarope import iterfilters, jinjafile, mdfilters, utils
+from jinjarope import inspectfilters, iterfilters, jinjafile, mdfilters
 
 
 def table_for_items(items):
     t = mk.MkTable(columns=["Name", "Description"])
     for item in items:
         link = mdfilters.autoref_link(item.identifier, item.identifier)
-        doc = utils.get_doc(item.filter_fn, only_summary=True)
+        doc = inspectfilters.get_doc(item.filter_fn, only_summary=True)
         t.add_row((link, doc))
     return t
 

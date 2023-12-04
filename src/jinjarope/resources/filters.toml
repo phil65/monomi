@@ -628,8 +628,8 @@ template = """
 """
 
 [filters.get_doc]
-fn = "jinjarope.utils.get_doc"
-group = "misc"
+fn = "jinjarope.inspectfilters.get_doc"
+group = "inspect"
 
 [filters.get_doc.examples.basic]
 template = """
@@ -783,4 +783,24 @@ group = "random"
 [filters.sample.examples.basic]
 template = """
 {{ [1, 2, 3] | sample(2) }}
+"""
+
+
+[filters.list_subclasses]
+fn = "jinjarope.inspectfilters.list_subclasses"
+group = "inspect"
+
+[filters.list_subclasses.examples.basic]
+template = """
+{{ list | list_subclasses }}
+"""
+
+
+[filters.list_baseclasses]
+fn = "jinjarope.inspectfilters.list_baseclasses"
+group = "inspect"
+
+[filters.list_baseclasses.examples.basic]
+template = """
+{{ zip | list_baseclasses }}
 """
