@@ -40,3 +40,11 @@ def test_filesystemloader():
     assert loader1 == loader2
     assert len({loader1, loader2}) == 1
     assert repr(loader1)
+
+
+def test_choiceloader():
+    ld = jinjarope.DictLoader({"path": "content"})
+    loader = jinjarope.ChoiceLoader({"a": ld})
+    assert repr(loader)
+    assert bool(loader)
+    assert list(loader) == ["a"]

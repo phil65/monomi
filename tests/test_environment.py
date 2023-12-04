@@ -8,17 +8,12 @@ import pytest
 
 
 def test_environment_init():
-    env = jinjarope.Environment(
-        undefined="strict",
-        trim_blocks=True,
-        cache_size=-1,
-        auto_reload=False,
-    )
-
+    env = jinjarope.Environment()
     assert isinstance(env, jinja2.Environment)
     assert env.undefined == jinja2.StrictUndefined
     assert env.trim_blocks is True
     assert env.auto_reload is False
+    assert repr(env) == "Environment()"
 
 
 def test_environment_contains():

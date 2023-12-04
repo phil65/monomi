@@ -33,6 +33,7 @@ def test_rstrip():
 
 def test_format_code():
     assert textfilters.format_code(GIVEN, line_length=50) == EXPECTED
+    assert textfilters.format_code("invalid code!", line_length=50) == "invalid code!"
 
 
 def test_format_signature():
