@@ -44,7 +44,7 @@ def test_filesystemloader():
 
 def test_choiceloader():
     ld = jinjarope.DictLoader({"path": "content"})
-    loader = jinjarope.ChoiceLoader({"a": ld})
+    loader = jinjarope.ChoiceLoader([ld])
     assert repr(loader)
     assert bool(loader)
-    assert list(loader) == ["a"]
+    assert list(loader) == [ld]
