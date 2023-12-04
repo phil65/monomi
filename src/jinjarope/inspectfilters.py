@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator
+import contextlib
 import functools
 import inspect
 import logging
+import pathlib
+import types
 
 from typing import Any, TypeVar
 
@@ -11,6 +14,17 @@ from typing import Any, TypeVar
 logger = logging.getLogger(__name__)
 
 ClassType = TypeVar("ClassType", bound=type)
+
+HasCodeType = (
+    types.ModuleType
+    | type
+    | types.MethodType
+    | types.FunctionType
+    | types.TracebackType
+    | types.FrameType
+    | types.CodeType
+    | Callable[..., Any]
+)
 
 
 @functools.cache
@@ -182,6 +196,89 @@ def get_doc(
     if only_description:
         doc = "\n".join(doc.split("\n")[1:])
     return mdfilters.md_escape(doc) if doc and escape else doc
+
+
+def get_argspec(obj: Any, remove_self: bool = True) -> inspect.FullArgSpec:
+    """Return a cleaned-up FullArgSpec for given callable.
+
+    ArgSpec is cleaned up by removing `self` from method callables.
+
+    Arguments:
+        obj: A callable python object
+        remove_self: Whether to remove "self" argument from method argspecs
+    """
+    if inspect.isfunction(obj):
+        argspec = inspect.getfullargspec(obj)
+    elif inspect.ismethod(obj):
+        argspec = inspect.getfullargspec(obj)
+        if remove_self:
+            del argspec.args[0]
+    elif inspect.isclass(obj):
+        if obj.__init__ is object.__init__:  # to avoid an error
+            argspec = inspect.getfullargspec(lambda self: None)
+        else:
+            argspec = inspect.getfullargspec(obj.__init__)
+        if remove_self:
+            del argspec.args[0]
+    elif callable(obj):
+        argspec = inspect.getfullargspec(obj.__call__)
+        if remove_self:
+            del argspec.args[0]
+    else:
+        msg = f"{obj} is not callable"
+        raise TypeError(msg)
+    return argspec
+
+
+def get_deprecated_message(obj: Any) -> str | None:
+    """Return deprecated message (created by deprecated decorator).
+
+    Arguments:
+        obj: Object to check
+    """
+    return obj.__deprecated__ if hasattr(obj, "__deprecated__") else None
+
+
+@functools.cache
+def get_source(obj: HasCodeType) -> str:
+    """Cached wrapper for inspect.getsource.
+
+    Arguments:
+        obj: Object to return source for.
+    """
+    return inspect.getsource(obj)
+
+
+@functools.cache
+def get_source_lines(obj: HasCodeType) -> tuple[list[str], int]:
+    """Cached wrapper for inspect.getsourcelines.
+
+    Arguments:
+        obj: Object to return source lines for.
+    """
+    return inspect.getsourcelines(obj)
+
+
+@functools.cache
+def get_signature(obj: Callable) -> inspect.Signature:
+    """Cached wrapper for inspect.signature.
+
+    Arguments:
+        obj: Callable to get a signature for.
+    """
+    return inspect.signature(obj)
+
+
+@functools.cache
+def get_file(obj: HasCodeType) -> pathlib.Path | None:
+    """Cached wrapper for inspect.getfile.
+
+    Arguments:
+        obj: Object to get file for
+    """
+    with contextlib.suppress(TypeError):
+        return pathlib.Path(inspect.getfile(obj))
+    return None
 
 
 if __name__ == "__main__":

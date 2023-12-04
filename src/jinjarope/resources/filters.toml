@@ -636,6 +636,16 @@ template = """
 {{ filters.get_doc | get_doc }}
 """
 
+
+[filters.get_argspec]
+fn = "jinjarope.inspectfilters.get_argspec"
+group = "inspect"
+
+[filters.get_argspec.examples.basic]
+template = """
+{{ filters.get_argspec | get_argspec }}
+"""
+
 [filters.get_hash]
 fn = "jinjarope.utils.get_hash"
 group = "misc"
@@ -803,4 +813,54 @@ group = "inspect"
 [filters.list_baseclasses.examples.basic]
 template = """
 {{ zip | list_baseclasses }}
+"""
+
+
+[filters.get_deprecated_message]
+fn = "jinjarope.inspectfilters.get_deprecated_message"
+group = "inspect"
+
+# [filters.get_deprecated_message.examples.basic]
+# template = """
+# {{ zip | get_deprecated_message }}
+# """
+
+
+[filters.get_source]
+fn = "jinjarope.inspectfilters.get_source"
+group = "inspect"
+
+[filters.get_source.examples.basic]
+template = """
+{{ filters.get_source | get_source }}
+"""
+
+
+[filters.get_source_lines]
+fn = "jinjarope.inspectfilters.get_source_lines"
+group = "inspect"
+
+[filters.get_source_lines.examples.basic]
+template = """
+{{ filters.get_source_lines | get_source_lines }}
+"""
+
+
+[filters.get_signature]
+fn = "jinjarope.inspectfilters.get_signature"
+group = "inspect"
+
+[filters.get_signature.examples.basic]
+template = """
+{{ filters.get_signature | get_signature }}
+"""
+
+
+[filters.get_file]
+fn = "jinjarope.inspectfilters.get_file"
+group = "inspect"
+
+[filters.get_file.examples.basic]
+template = """
+{{ filters.get_file | get_file }}
 """
