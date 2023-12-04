@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+from collections.abc import Callable
 import configparser
 import io
 import json
 
 from typing import Any, Literal
+
+from jinjarope import deepmerge
 
 
 def serialize(data: Any, fmt: Literal["yaml", "json", "ini", "toml"]) -> str:  # type: ignore[return]
@@ -113,3 +116,27 @@ def dig(
         result[sect] = data if sect == sections[-1] else {}
         result = result[sect]
     return new
+
+
+def merge(
+    target: list | dict,
+    *source: list | dict,
+    deepcopy: bool = False,
+    mergers: dict[type, Callable] | None = None,
+) -> list | dict:
+    """Merge given data structures using mergers provided.
+
+    Arguments:
+        target: Data structure to merge into
+        source:  Data structures to merge into target
+        deepcopy: Whether to deepcopy the target
+        mergers: Mergers with strategies for each type (default: additive)
+    """
+    import copy
+
+    if deepcopy:
+        target = copy.deepcopy(target)
+    context = deepmerge.DeepMerger(mergers)
+    for s in source[1:]:
+        target = context.merge(target, s)
+    return target

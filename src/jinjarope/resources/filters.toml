@@ -553,6 +553,16 @@ template = """
 {{ {"section1": {"section2": {"section3": "Hello, World"} } } | dig("section1", "section2", keep_path=True) }}
 """
 
+
+[filters.merge]
+fn = "jinjarope.serializefilters.merge"
+group = "serialize"
+
+[filters.merge.examples.basic]
+template = """
+{{ {"a": {"b": 1} } | merge({"a": {"c": 2} }) }}
+"""
+
 # Misc
 
 [filters.add]
