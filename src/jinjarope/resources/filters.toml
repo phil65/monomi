@@ -765,3 +765,22 @@ group = "environment"
 template = """
 {{ "1 + 2" | evaluate }}
 """
+
+[filters.choices]
+fn = "random.choices"
+group = "random"
+
+[filters.choices.examples.basic]
+template = """
+{{ [1, 2, 3] | choices(k=2) }}
+"""
+
+
+[filters.sample]
+fn = "random.sample"
+group = "random"
+
+[filters.sample.examples.basic]
+template = """
+{{ [1, 2, 3] | sample(2) }}
+"""

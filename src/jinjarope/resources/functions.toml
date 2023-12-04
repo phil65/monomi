@@ -29,3 +29,35 @@ group = "misc"
 template = """
 {{ cwd() }}
 """
+
+[functions.randrange]
+fn = "random.randrange"
+group = "misc"
+[functions.randrange.examples.basic]
+template = """
+{{ randrange(1, 10) }}
+"""
+
+[functions.randint]
+fn = "random.randint"
+group = "misc"
+[functions.randint.examples.basic]
+template = """
+{{ randint(1, 10) }}
+"""
+
+# [functions.random]
+# fn = "random.random"
+# group = "misc"
+# [functions.random.examples.basic]
+# template = """
+# {{ random() }}
+# """
+
+[functions.uniform]
+fn = "random.uniform"
+group = "misc"
+[functions.uniform.examples.basic]
+template = """
+{{ uniform(2, 5) }}
+"""
