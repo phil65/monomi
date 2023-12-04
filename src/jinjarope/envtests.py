@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 import datetime
 import math
 import os
@@ -123,15 +123,16 @@ def is_python_keyword(string: str) -> bool:
     return keyword.iskeyword(string)
 
 
-def is_python_builtin(string: str) -> bool:
-    """Return true when given string represents a python builtin.
+def is_python_builtin(fn: str | Callable) -> bool:
+    """Return true when given fn / string represents a python builtin.
 
     Arguments:
-        string: The string to check
+        fn: (Name of) function to check
     """
     import builtins
+    import inspect
 
-    return string in dir(builtins)
+    return fn in dir(builtins) if isinstance(fn, str) else inspect.isbuiltin(fn)
 
 
 def is_fsspec_url(string: str | os.PathLike[str]) -> bool:
