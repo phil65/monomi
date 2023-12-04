@@ -39,6 +39,11 @@ The latest released version is available at the [Python package index](https://p
 ``` py
 pip install jinjarope
 ```
+With CLI:
+
+``` py
+pip install jinjarope[cli]
+```
 
 
 ## Quick guide
