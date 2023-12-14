@@ -26,7 +26,7 @@ jobs:
         hatch run lint-check
     - name: Test
       run: |
-        hatch run test-cov-xml
+        hatch run pytest
     - uses: codecov/codecov-action@v3
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
