@@ -671,6 +671,27 @@ template = """
 {{ filters.get_argspec | get_argspec }}
 """
 
+
+# [filters.unwrap]
+# fn = "inspect.unwrap"
+# group = "inspect"
+
+# [filters.unwrap.examples.basic]
+# template = """
+# {{ filters.unwrap | unwrap }}
+# """
+
+
+[filters.get_annotations]
+fn = "inspect.get_annotations"
+group = "inspect"
+
+[filters.get_annotations.examples.basic]
+template = """
+{{ filters.get_annotations | get_annotations }}
+"""
+
+
 [filters.get_hash]
 fn = "jinjarope.utils.get_hash"
 group = "misc"

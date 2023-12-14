@@ -178,8 +178,6 @@ def get_doc(
         only_summary: Only return first line of docstrings
         only_description: Only return block after first line
     """
-    import inspect
-
     from jinjarope import mdfilters
 
     match obj:
@@ -267,6 +265,17 @@ def get_signature(obj: Callable) -> inspect.Signature:
         obj: Callable to get a signature for.
     """
     return inspect.signature(obj)
+
+
+@functools.cache
+def get_members(obj: object, predicate: Callable | None = None):
+    """Cached version of inspect.getmembers.
+
+    Arguments:
+        obj: Object to get members for
+        predicate: Optional predicate for the members
+    """
+    return inspect.getmembers(obj, predicate)
 
 
 @functools.cache
