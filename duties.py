@@ -42,9 +42,8 @@ def clean(ctx):
 def update(ctx, *args: str):
     """Update all environment packages using pip directly."""
     args_str = " " + " ".join(args) if args else ""
-    requirements = ctx.run(UPDATE_CMD + args_str)
-    requirements = "\n".join(requirements.split("\n")[1:])
-    packages = [x["name"] for x in json.loads(requirements)]
+    reqs = ctx.run(UPDATE_CMD + args_str)
+    packages = [x["name"] for x in json.loads(reqs)]
     if packages:
         pkgs = " ".join(packages)
         print(f"Packages to update: {pkgs}")
