@@ -1,12 +1,16 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 import pathlib
 import types
+from typing import TYPE_CHECKING
 
 import jinja2
 
 from jinjarope import inspectfilters, utils
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class LoaderMixin:

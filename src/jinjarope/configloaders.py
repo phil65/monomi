@@ -1,14 +1,16 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
 import os
 import pathlib
-
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 import jinja2
 
 from jinjarope import iterfilters, loaders, serializefilters, utils
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Mapping
 
 
 class NestedDictLoader(loaders.LoaderMixin, jinja2.BaseLoader):

@@ -1,12 +1,16 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 import functools
 import inspect
 import itertools
-import os
+from typing import TYPE_CHECKING
 
 from jinjarope import utils
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+    import os
 
 
 def removesuffix(text: str, suffix: str) -> str:

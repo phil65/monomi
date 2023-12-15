@@ -1,15 +1,17 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
 import datetime
 import functools
 import logging
-import os
 import pathlib
-
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from jinjarope import utils
+
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    import os
 
 
 logger = logging.getLogger(__name__)

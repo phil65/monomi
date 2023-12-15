@@ -1,15 +1,17 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 import pathlib
-
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import fsspec
 import fsspec.core
 import jinja2
 
 from jinjarope import loaders as loaders_, utils
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class FsSpecProtocolPathLoader(loaders_.LoaderMixin, jinja2.BaseLoader):

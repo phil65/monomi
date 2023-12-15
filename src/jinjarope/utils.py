@@ -1,17 +1,18 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
-from dataclasses import Field
 import functools
 import importlib
-
 from importlib.metadata import entry_points
 import logging
-import types
-
-from typing import Any, ClassVar, Protocol, TypeVar
+from typing import TYPE_CHECKING, Any, ClassVar, Protocol, TypeVar
 
 from jinjarope import envtests
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Mapping
+    from dataclasses import Field
+    import types
 
 
 logger = logging.getLogger(__name__)
@@ -41,7 +42,6 @@ def get_dataclass_nondefault_values(instance: DataclassInstance) -> dict[str, An
         instance: dataclass instance
     """
     import dataclasses
-
     from operator import attrgetter
 
     vals = []

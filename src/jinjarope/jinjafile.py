@@ -1,18 +1,19 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 import dataclasses
 import functools
 import os
 import tomllib
-
-from typing import Any, Literal, Self
-
-import jinja2
+from typing import TYPE_CHECKING, Any, Literal, Self
 
 import jinjarope
-
 from jinjarope import envconfig, envglobals, envtests, loaders, utils
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    import jinja2
 
 
 @functools.cache

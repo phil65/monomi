@@ -3,7 +3,6 @@ from __future__ import annotations
 from collections.abc import Callable
 import re
 import types
-
 from typing import Literal
 
 

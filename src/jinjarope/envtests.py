@@ -1,14 +1,16 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Sequence
 import datetime
 import math
 import os
 import re
-
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from jinjarope import utils
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Sequence
 
 
 _RFC_3986_PATTERN = re.compile(r"^[A-Za-z][A-Za-z0-9+\-+.]*://")

@@ -1,11 +1,15 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 import pathlib
+from typing import TYPE_CHECKING
 
 import jinja2
 
 from jinjarope import loaders as loaders_, utils
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 class RewriteLoader(loaders_.LoaderMixin, jinja2.BaseLoader):

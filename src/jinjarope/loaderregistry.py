@@ -1,13 +1,17 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-import os
 import pathlib
 import types
-
-import jinja2
+from typing import TYPE_CHECKING
 
 from jinjarope import fsspecloaders, iterfilters, loaders
+
+
+if TYPE_CHECKING:
+    import os
+
+    import jinja2
 
 
 class LoaderRegistry:

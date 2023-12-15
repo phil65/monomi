@@ -1,7 +1,10 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
-from typing import TypeVar
+from typing import TYPE_CHECKING, TypeVar
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable, Mapping
 
 
 T = TypeVar("T")

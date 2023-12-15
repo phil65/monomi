@@ -1,26 +1,20 @@
 from __future__ import annotations
 
 import ast
-
-from collections.abc import MutableMapping
 import contextlib
 import io
 import logging
 import os
 import pathlib
 import time
-
-from types import CodeType
-from typing import Any, Literal, overload
+from typing import TYPE_CHECKING, Any, Literal, overload
 import weakref
 
 import jinja2
-
 from jinja2.exceptions import TemplateSyntaxError
 import jinja2.nodes
 
 import jinjarope
-
 from jinjarope import (
     envconfig,
     envglobals,
@@ -29,6 +23,11 @@ from jinjarope import (
     undefined as undefined_,
     utils,
 )
+
+
+if TYPE_CHECKING:
+    from collections.abc import MutableMapping
+    from types import CodeType
 
 
 logger = logging.getLogger(__name__)

@@ -1,13 +1,15 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 import configparser
 import io
 import json
-
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 from jinjarope import deepmerge
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 def serialize(data: Any, fmt: Literal["yaml", "json", "ini", "toml"]) -> str:  # type: ignore[return]

@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Literal
 
 import mknodes as mk
-
 from mknodes.manual import dev_section
 
 from jinjarope import inspectfilters, iterfilters, jinjafile, mdfilters

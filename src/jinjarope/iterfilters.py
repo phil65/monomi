@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from collections.abc import Callable, Generator, Iterable, Mapping
 import itertools
-
 from typing import Any, TypeVar
 
 

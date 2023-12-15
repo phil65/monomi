@@ -1,10 +1,14 @@
 from __future__ import annotations
 
-import pathlib
+from typing import TYPE_CHECKING
 
 import jinja2
 import jinjarope
 import pytest
+
+
+if TYPE_CHECKING:
+    import pathlib
 
 
 def test_environment_init():

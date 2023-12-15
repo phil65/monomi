@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import jinja2
-
 from jinjarope import jinjaloaderfilesystem
 import pytest
 

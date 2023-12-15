@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from collections.abc import Mapping
 import json
 import re
-
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
 from xml.etree import ElementTree as Et
+
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 
 QueryStr = Literal[
