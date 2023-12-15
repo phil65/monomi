@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import functools
 import json
+import logging
+import posixpath
 import re
 from typing import TYPE_CHECKING, Any, Literal
 from xml.etree import ElementTree as Et
@@ -9,6 +12,8 @@ from xml.etree import ElementTree as Et
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
+
+logger = logging.getLogger(__name__)
 
 QueryStr = Literal[
     "fragment",
@@ -144,6 +149,7 @@ def format_css_rule(dct: Mapping) -> str:
     return string
 
 
+@functools.lru_cache
 def format_xml(
     str_or_elem: str | Et.Element,
     indent: str | int = "  ",
@@ -177,6 +183,7 @@ def format_xml(
     )
 
 
+@functools.lru_cache
 def split_url(value: str, query: QueryStr | None = None) -> str | dict[str, str]:
     """Split a URL into its parts (and optionally return a specific part).
 
@@ -210,6 +217,82 @@ def split_url(value: str, query: QueryStr | None = None) -> str | dict[str, str]
         msg = "split_url: unknown URL component: %s"
         raise ValueError(msg, query)
     return results[query]
+
+
+@functools.lru_cache
+def _get_norm_url(path: str) -> tuple[str, int]:
+    from urllib.parse import urlsplit
+
+    if not path:
+        path = "."
+    elif "\\" in path:
+        logger.warning(
+            "Path %r uses OS-specific separator '\\'. "
+            "That will be unsupported in a future release. Please change it to '/'.",
+            path,
+        )
+        path = path.replace("\\", "/")
+    # Allow links to be fully qualified URLs
+    parsed = urlsplit(path)
+    if parsed.scheme or parsed.netloc or path.startswith(("/", "#")):
+        return path, -1
+
+    # Relative path - preserve information about it
+    norm = posixpath.normpath(path) + "/"
+    relative_level = 0
+    while norm.startswith("../", relative_level * 3):
+        relative_level += 1
+    return path, relative_level
+
+
+@functools.lru_cache
+def normalize_url(path: str, url: str | None = None, base: str = "") -> str:
+    """Return a URL relative to the given url or using the base.
+
+    Arguments:
+        path: The path to normalize
+        url: Optional relative url
+        base: Base path
+    """
+    path, relative_level = _get_norm_url(path)
+    if relative_level == -1:
+        return path
+    if url is None:
+        return posixpath.join(base, path)
+    result = relative_url(url, path)
+    if relative_level > 0:
+        result = "../" * relative_level + result
+    return result
+
+
+@functools.lru_cache
+def relative_url(url_a: str, url_b: str) -> str:
+    """Compute the relative path from URL A to URL B.
+
+    Arguments:
+        url_a: URL A.
+        url_b: URL B.
+
+    Returns:
+        The relative URL to go from A to B.
+    """
+    parts_a = url_a.split("/")
+    if "#" in url_b:
+        url_b, anchor = url_b.split("#", 1)
+    else:
+        anchor = None
+    parts_b = url_b.split("/")
+
+    # remove common left parts
+    while parts_a and parts_b and parts_a[0] == parts_b[0]:
+        parts_a.pop(0)
+        parts_b.pop(0)
+
+    # go up as many times as remaining a parts' depth
+    levels = len(parts_a) - 1
+    parts_relative = [".."] * levels + parts_b
+    relative = "/".join(parts_relative)
+    return f"{relative}#{anchor}" if anchor else relative
 
 
 if __name__ == "__main__":

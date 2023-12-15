@@ -217,6 +217,27 @@ template = """
 {{ '<br></br>' | format_xml(short_empty_elements=True, add_declaration=True, method="xml") }}
 """
 
+
+[filters.relative_url]
+fn = "jinjarope.htmlfilters.relative_url"
+group = "html"
+
+[filters.relative_url.examples.basic]
+template = """
+{{ "https://phil65.github.io" | relative_url("https://phil65.github.io/mknodes") }}
+"""
+
+
+
+[filters.normalize_url]
+fn = "jinjarope.htmlfilters.normalize_url"
+group = "html"
+
+[filters.normalize_url.examples.basic]
+template = """
+{{ "test" | normalize_url(base="https://phil65.github.io") }}
+"""
+
 # Itertools
 
 [filters.batched]
