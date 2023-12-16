@@ -465,6 +465,26 @@ template = """
 {{ " abc" | lstrip }}
 """
 
+
+[filters.lower_camel_case]
+fn = "jinjarope.textfilters.lower_camel_case"
+group = "text"
+
+[filters.lower_camel_case.examples.basic]
+template = """
+{{ "some_text" | lower_camel_case }}
+"""
+
+
+[filters.snake_case]
+fn = "jinjarope.textfilters.snake_case"
+group = "text"
+
+[filters.snake_case.examples.basic]
+template = """
+{{ " someText" | snake_case }}
+"""
+
 [filters.removesuffix]
 fn = "jinjarope.textfilters.removesuffix"
 group = "text"

@@ -3,9 +3,13 @@ from __future__ import annotations
 import functools
 import inspect
 import itertools
+import re
 from typing import TYPE_CHECKING
 
 from jinjarope import utils
+
+
+CASE_PATTERN = re.compile(r"(?<!^)(?=[A-Z])")
 
 
 if TYPE_CHECKING:
@@ -51,6 +55,31 @@ def rstrip(text: str, chars: str | None = None) -> str:
         chars: The chars to remove
     """
     return text.rstrip(chars)
+
+
+def lower_camel_case(text: str) -> str:
+    """Convert given text to lower-camel-case.
+
+    Arguments:
+        text: The string to convert
+    """
+    # do nothing if nothing to camel
+    if "_" not in text:
+        return text
+    first, *others = text.split("_")
+    return "".join([first.lower(), *map(str.title, others)])
+
+
+def snake_case(text: str) -> str:
+    """Convert given text to snake-case.
+
+    Arguments:
+        text: The string to convert
+    """
+    #  don't snake-case snakes.
+    if "_" in text:
+        return text
+    return CASE_PATTERN.sub("_", text).lower()
 
 
 @functools.cache
