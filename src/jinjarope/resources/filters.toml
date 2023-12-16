@@ -217,6 +217,14 @@ template = """
 {{ '<br></br>' | format_xml(short_empty_elements=True, add_declaration=True, method="xml") }}
 """
 
+[filters.ansi2html]
+fn = "jinjarope.htmlfilters.ansi2html"
+group = "html"
+
+[filters.ansi2html.examples.basic]
+template = """
+{{ "\\033[31;1;4mHello\\033[0m" | ansi2html }}
+"""
 
 [filters.relative_url]
 fn = "jinjarope.htmlfilters.relative_url"
