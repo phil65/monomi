@@ -8,7 +8,7 @@ from mknodes.manual import dev_section
 from jinjarope import inspectfilters, iterfilters, jinjafile, mdfilters
 
 
-def table_for_items(items):
+def table_for_items(items) -> mk.MkTable:
     t = mk.MkTable(columns=["Name", "Description"])
     for item in items:
         link = mdfilters.autoref_link(item.identifier, item.identifier)
@@ -71,6 +71,9 @@ class Build:
             filters_index += table_for_items(filters)
 
 
-def build(project) -> mk.MkNav:
+if __name__ == "__main__":
     build = Build()
-    return build.on_root(project.root) or project.root
+    nav = mk.MkNav("JinjaRope")
+    theme = mk.MaterialTheme()
+    build.build(nav, theme)
+    print(nav)
