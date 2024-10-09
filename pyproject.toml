@@ -83,7 +83,7 @@ license = "MIT"
 cli = ["rich", "typer"]
 doc = ["mkdocs-material", "mkdocs-mknodes", "humanize"]
 test = ["pytest", "pytest-cov"]
-misc = ["black", "pigments", "pyreadline3", "pyinstrument"]
+misc = ["black", "pygments", "pyreadline3", "pyinstrument"]
 
 [project.scripts]
 jinjarope = "jinjarope.cli:cli"
