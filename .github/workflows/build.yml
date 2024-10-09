@@ -20,15 +20,12 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync --all-extras
-          python -m pip install --upgrade pip
-          pip install hatch[cli]
-          hatch env create
       - name: Lint and typecheck
         run: |
-          hatch run lint-check
+          uv run lint-check
       - name: Test
         run: |
-          hatch run pytest
+          uv run pytest
       - uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
