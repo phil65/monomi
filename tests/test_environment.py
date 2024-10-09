@@ -3,8 +3,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import jinja2
-import jinjarope
 import pytest
+
+import jinjarope
 
 
 if TYPE_CHECKING:

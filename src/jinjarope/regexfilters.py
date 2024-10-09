@@ -120,4 +120,5 @@ def re_escape(string: str, re_type: Literal["python", "posix_basic"] = "python")
             # list of BRE special chars:
             return re_replace(string, r"([].[^$*\\])", r"\\\1")
         case _:
-            raise NotImplementedError("Invalid regex type (%s)" % re_type)
+            msg = f"Invalid regex type ({re_type})"
+            raise NotImplementedError(msg)

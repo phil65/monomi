@@ -6,7 +6,7 @@ import logging
 import posixpath
 import re
 from typing import TYPE_CHECKING, Any, Literal
-from xml.etree import ElementTree as Et
+from xml.etree import ElementTree as ET
 
 
 if TYPE_CHECKING:
@@ -123,7 +123,7 @@ def svg_to_data_uri(svg: str) -> str:
     if not isinstance(svg, str):
         msg = "Invalid type: %r"
         raise TypeError(msg, type(svg))
-    return f"url('data:image/svg+xml;charset=utf-8,{ svg }')"
+    return f"url('data:image/svg+xml;charset=utf-8,{svg}')"
 
 
 def clean_svg(text: str) -> str:
@@ -170,7 +170,7 @@ def format_css_rule(dct: Mapping) -> str:
 
 @functools.lru_cache
 def format_xml(
-    str_or_elem: str | Et.Element,
+    str_or_elem: str | ET.Element,
     indent: str | int = "  ",
     level: int = 0,
     method: Literal["xml", "html", "text", "c14n"] = "html",
@@ -190,10 +190,10 @@ def format_xml(
                          (applies when mode is "xml")
     """
     if isinstance(str_or_elem, str):
-        str_or_elem = Et.fromstring(str_or_elem)
+        str_or_elem = ET.fromstring(str_or_elem)
     space = indent if isinstance(indent, str) else indent * " "
-    Et.indent(str_or_elem, space=space, level=level)
-    return Et.tostring(
+    ET.indent(str_or_elem, space=space, level=level)
+    return ET.tostring(
         str_or_elem,
         encoding="unicode",
         method=method,

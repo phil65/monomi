@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import jinja2
-from jinjarope import configloaders
 import pytest
+
+from jinjarope import configloaders
 
 
 def test_nested_dict_loader():

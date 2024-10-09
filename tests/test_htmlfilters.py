@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from xml.etree import ElementTree as Et
+from xml.etree import ElementTree as ET
+
+import pytest
 
 from jinjarope import htmlfilters
-import pytest
 
 
 def test_wrap_in_elem():
@@ -92,8 +93,8 @@ def test_format_xml_with_str():
 
 
 def test_format_xml_with_element():
-    xml_elem = Et.Element("root")
-    child = Et.SubElement(xml_elem, "child")
+    xml_elem = ET.Element("root")
+    child = ET.SubElement(xml_elem, "child")
     child.text = "text"
     formatted_xml = htmlfilters.format_xml(xml_elem)
     expected_xml = "<root>\n  <child>text</child>\n</root>"

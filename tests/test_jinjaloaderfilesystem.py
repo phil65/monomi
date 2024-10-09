@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import jinja2
-from jinjarope import jinjaloaderfilesystem
 import pytest
+
+from jinjarope import jinjaloaderfilesystem
 
 
 dct = {"home.html": "Home", "about.html": "About", "subfolder/sub.html": "Sub"}

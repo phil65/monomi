@@ -60,7 +60,7 @@ class PrefixLoader(LoaderMixin, jinja2.PrefixLoader):
         return utils.get_repr(self, self.mapping)
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.mapping == other.mapping
+        return type(self) is type(other) and self.mapping == other.mapping
 
     def __hash__(self):
         return hash(tuple(sorted(self.mapping.items())))
@@ -85,7 +85,7 @@ class ModuleLoader(LoaderMixin, jinja2.ModuleLoader):
 
     def __eq__(self, other):
         return (
-            type(self) == type(other)
+            type(self) is type(other)
             and self.package_name == other.package_name
             and self.module == other.module
         )
@@ -107,7 +107,7 @@ class FunctionLoader(LoaderMixin, jinja2.FunctionLoader):
         return utils.get_repr(self, self.load_func)
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.load_func == other.load_func
+        return type(self) is type(other) and self.load_func == other.load_func
 
     def __hash__(self):
         return hash(self.load_func)
@@ -151,7 +151,7 @@ class PackageLoader(LoaderMixin, jinja2.PackageLoader):
 
     def __eq__(self, other):
         return (
-            type(self) == type(other)
+            type(self) is type(other)
             and self.package_name == other.package_name
             and self.package_path == other.package_path
         )
@@ -176,7 +176,7 @@ class FileSystemLoader(LoaderMixin, jinja2.FileSystemLoader):
         return len(self.searchpath) > 0
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.searchpath == other.searchpath
+        return type(self) is type(other) and self.searchpath == other.searchpath
 
     def __hash__(self):
         return hash(tuple(self.searchpath))
@@ -194,7 +194,7 @@ class ChoiceLoader(LoaderMixin, jinja2.ChoiceLoader):
         return len(self.loaders) > 0
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.loaders == other.loaders
+        return type(self) is type(other) and self.loaders == other.loaders
 
     def __hash__(self):
         return hash(tuple(self.loaders))
@@ -219,7 +219,7 @@ class DictLoader(LoaderMixin, jinja2.DictLoader):
         return DictLoader(mapping)
 
     def __eq__(self, other):
-        return type(self) == type(other) and self.mapping == other.mapping
+        return type(self) is type(other) and self.mapping == other.mapping
 
     def __hash__(self):
         return hash(tuple(sorted(self.mapping.items())))

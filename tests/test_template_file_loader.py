@@ -4,8 +4,9 @@ import json
 from typing import TYPE_CHECKING
 
 import jinja2
-from jinjarope import configloaders
 import pytest
+
+from jinjarope import configloaders
 
 
 if TYPE_CHECKING:

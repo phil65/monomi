@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from jinjarope import manual
 import mknodes as mk
+
+from jinjarope import manual
 
 
 def test_building_the_docs():

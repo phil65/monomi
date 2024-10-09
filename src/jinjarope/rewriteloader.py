@@ -39,7 +39,7 @@ class RewriteLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
 
     def __eq__(self, other):
         return (
-            type(self) == type(other)
+            type(self) is type(other)
             and self.loader == other.loader
             and self.rewrite_fn == other.rewrite_fn
         )

@@ -181,7 +181,7 @@ class Environment(jinja2.Environment):
             self._add_loader(loader)
 
     @overload
-    def compile(  # type: ignore[misc]  # noqa: A003
+    def compile(  # type: ignore[misc]
         self,
         source: str | jinja2.nodes.Template,
         name: str | None = None,
@@ -191,7 +191,7 @@ class Environment(jinja2.Environment):
     ) -> CodeType: ...
 
     @overload
-    def compile(  # noqa: A003
+    def compile(
         self,
         source: str | jinja2.nodes.Template,
         name: str | None = None,
@@ -200,7 +200,7 @@ class Environment(jinja2.Environment):
         defer_init: bool = False,
     ) -> str: ...
 
-    def compile(  # noqa: A003
+    def compile(
         self,
         source: str | jinja2.nodes.Template,
         name: str | None = None,

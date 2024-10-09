@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from jinja2.exceptions import FilterArgumentError
-from jinjarope import regexfilters
 import pytest
+
+from jinjarope import regexfilters
 
 
 def test_re_replace():

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from jinjarope import cli
 from typer.testing import CliRunner
+
+from jinjarope import cli
 
 
 def test_render_with_cli():

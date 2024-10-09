@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import jinja2
-from jinjarope import environment, fsspecloaders
 import pytest
+
+from jinjarope import environment, fsspecloaders
 
 
 def test_fsspec_protocol_loader():
