@@ -64,7 +64,6 @@ dynamic = ["version"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
@@ -82,6 +81,9 @@ license = "MIT"
 
 [project.optional-dependencies]
 cli = ["rich", "typer"]
+doc = ["mkdocs-material", "mkdocs-mknodes", "humanize"]
+test = ["pytest", "pytest-cov"]
+misc = ["black", "pigments", "pyreadline3", "pyinstrument"]
 
 [project.scripts]
 jinjarope = "jinjarope.cli:cli"
