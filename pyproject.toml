@@ -39,14 +39,14 @@ dependencies = [
 [tool.hatch.envs.default.scripts]
 test = "pytest"
 lint = [
-  "hatch run ruff --fix .",
-  "hatch run ruff format .",
-  "hatch run mypy src/jinjarope/",
+    "hatch run ruff check --fix .",
+    "hatch run ruff format .",
+    "hatch run mypy src/jinjarope/",
 ]
 lint-check = [
-  "hatch run ruff .",
-  "hatch run ruff format --check .",
-  "hatch run mypy src/jinjarope/",
+    "hatch run ruff check .",
+    "hatch run ruff format --check .",
+    "hatch run mypy src/jinjarope/",
 ]
 
 [build-system]
@@ -56,7 +56,7 @@ build-backend = "hatchling.build"
 [project]
 name = "jinjarope"
 authors = [
-  { name = "Philipp Temminghoff", email = "philipptemminghoff@gmail.com" }
+    { name = "Philipp Temminghoff", email = "philipptemminghoff@gmail.com" },
 ]
 description = "Jinja2 utilities, loaders & fsspec integration."
 readme = "README.md"
@@ -77,10 +77,7 @@ classifiers = [
 keywords = ["filesystem", "fsspec", "internet", "templates", "jinja2"]
 
 requires-python = ">=3.11"
-dependencies = [
-    "jinja2",
-    "fsspec",
-]
+dependencies = ["jinja2", "fsspec"]
 license = "MIT"
 
 [project.optional-dependencies]
@@ -108,7 +105,7 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "@overload",
     "except ImportError",
-    'if __name__ == "__main__":'
+    'if __name__ == "__main__":',
 ]
 
 [tool.mypy]
@@ -119,70 +116,70 @@ pretty = true
 [tool.ruff]
 line-length = 90
 select = [
-    "A",    # Flake8-builtins
+    "A", # Flake8-builtins
     # "ANN",  # Flake8-Annotations
     # "ASYNC",  # Flake8-Async
     # "ARG",  # # Flake8-Unused-Arguments
-    "B",    # flake8-bugbear
-    "BLE",  # Flake8-blind-except
+    "B",   # flake8-bugbear
+    "BLE", # Flake8-blind-except
     "C",
-    "C4",   # flake8-comprehensions
+    "C4",  # flake8-comprehensions
     # "C90",  # MCCabe
-    "COM",  #  Flake8-commas
+    "COM", #  Flake8-commas
     # "CPY",  #  Copyright-related rules
-    "D",    # PyDocStyle
+    "D", # PyDocStyle
     # "DTZ",  # Flake8- Datetimez
-    "E",    # PyCodeStyle Error
-    "EM",   # flake8-errmsg
+    "E",  # PyCodeStyle Error
+    "EM", # flake8-errmsg
     # "ERA",  #  Eradicate
-    "EXE",  # flake8-executable
-    "F",    # PyFlakes
+    "EXE", # flake8-executable
+    "F",   # PyFlakes
     "FA",  # flake8-future-annotations
     # "FBT",  # flake8-boolean-trap
     # "FIX",  # flake8-fixme
-    "FLY",  # flynt
-    "G",    #  flake8-logging-format
-    "I",    # ISort
-    "ICN",  # Flake8-import-conventions
-    "INP",  # flake8-no-pep420
-    "INT",  # flake8-gettext
-    "ISC",  # flake8-implicit-str-concat
-    "N",    # pep8-naming
+    "FLY", # flynt
+    "G",   #  flake8-logging-format
+    "I",   # ISort
+    "ICN", # Flake8-import-conventions
+    "INP", # flake8-no-pep420
+    "INT", # flake8-gettext
+    "ISC", # flake8-implicit-str-concat
+    "N",   # pep8-naming
     # "NPY",  # numpy-specific rules
     # "PD",   # pandas-vet
     "PERF", # perflint
     # "PGH",  # pygrep-hooks
-    "PIE",  # flake8-pie
-    "PLE",  # PyLint Error
-    "PLC",  # PyLint convention
+    "PIE", # flake8-pie
+    "PLE", # PyLint Error
+    "PLC", # PyLint convention
     # "PLW",  # PyLint Warning
-    "PLR",  # PyLint refactor
-    "PT",   # flake8-pytest-style
-    "PTH",  # flake8-use-pathlib
-    "PYI",  # flake8-pyi
-    "Q",    # flake8-quotes
-    "RET",  # flake8-return
-    "RSE",  # flake8-raise
-    "RUF",  # ruff-specific rules
+    "PLR", # PyLint refactor
+    "PT",  # flake8-pytest-style
+    "PTH", # flake8-use-pathlib
+    "PYI", # flake8-pyi
+    "Q",   # flake8-quotes
+    "RET", # flake8-return
+    "RSE", # flake8-raise
+    "RUF", # ruff-specific rules
     # "S",    # flake8-bandit
     "SIM",  # flake8-simplify
     "SLF",  # flake8-self
-    "SLOT",  # flake8-slots
+    "SLOT", # flake8-slots
     # "T",
     # "TD",   # flake8-todos
-    "T10",  # flake8-debugger
+    "T10", # flake8-debugger
     # "T20",  # flake8-print
-    "TCH",  # flake8-type-checking
-    "TID",  # flake8-tidy-imports
-    "TRY",  # tryceratops
-    "UP",   # PyUpgrade
-    "W",    # PyCodeStyle warning
-    "YTT",  # flake8-2020
+    "TCH", # flake8-type-checking
+    "TID", # flake8-tidy-imports
+    "TRY", # tryceratops
+    "UP",  # PyUpgrade
+    "W",   # PyCodeStyle warning
+    "YTT", # flake8-2020
 ]
 ignore = [
-    "C408",    # Unnecessary {obj_type} call (rewrite as a literal)
-    "B905",    # zip() without an explicit strict= parameter
-    "C901",    # {name} is too complex ({complexity} > {max_complexity})
+    "C408", # Unnecessary {obj_type} call (rewrite as a literal)
+    "B905", # zip() without an explicit strict= parameter
+    "C901", # {name} is too complex ({complexity} > {max_complexity})
     # "CPY001", # Missing copyright notice at top of file
     "D100",    # Missing docstring in public module
     "D101",    # Missing docstring in public class
@@ -210,9 +207,7 @@ ignore = [
     "SLF001",  # Private member accessed
     "TRY003",  # Avoid specifying long messages outside the exception class
 ]
-extend-exclude = [
-    'docs',
-]
+extend-exclude = ['docs']
 target-version = "py311"
 
 [tool.ruff.flake8-quotes]
