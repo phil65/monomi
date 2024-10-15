@@ -52,9 +52,12 @@ license = "MIT"
 
 [project.optional-dependencies]
 cli = ["rich", "typer"]
-doc = ["mkdocs-material", "mkdocs-mknodes", "humanize"]
-test = ["pytest", "pytest-cov"]
-misc = ["black", "pygments", "pyreadline3", "pyinstrument"]
+extras = ["black", "pygments", "humanize"]
+
+[tool.uv]
+dev-dependencies = [
+  "ruff", "mypy", "pyreadline3", "pyinstrument", "pytest", "pytest-cov", "mkdocs-material", "mkdocs-mknodes",
+]
 
 [project.scripts]
 jinjarope = "jinjarope.cli:cli"
