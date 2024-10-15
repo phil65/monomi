@@ -1,35 +1,27 @@
 from __future__ import annotations
 
-import json
-
 from duty import duty
-
-
-ENV_PREFIX = "hatch run "
-
-PARAMS = ["--disable-pip-version-check", "--outdated", "--format=json"]
-UPDATE_CMD = f"""{ENV_PREFIX}python -m pip list {" ".join(PARAMS)}"""
 
 
 @duty(capture=False)
 def build(ctx, *args: str):
     """Build a MkNodes page."""
     args_str = " " + " ".join(args) if args else ""
-    ctx.run(f"{ENV_PREFIX}mknodes build{args_str}")
+    ctx.run(f"uv run mknodes build{args_str}")
 
 
 @duty(capture=False)
 def serve(ctx, *args: str):
     """Serve a MkNodes page."""
     args_str = " " + " ".join(args) if args else ""
-    ctx.run(f"{ENV_PREFIX}mknodes serve{args_str}")
+    ctx.run(f"uv run mknodes serve{args_str}")
 
 
 @duty(capture=False)
 def test(ctx, *args: str):
     """Serve a MkNodes page."""
     args_str = " " + " ".join(args) if args else ""
-    ctx.run(f"{ENV_PREFIX}pytest{args_str}")
+    ctx.run(f"uv run pytest{args_str}")
 
 
 @duty(capture=False)
@@ -38,31 +30,23 @@ def clean(ctx):
     ctx.run("git clean -dfX")
 
 
-@duty
-def update(ctx, *args: str):
+@duty(capture=False)
+def update(ctx):
     """Update all environment packages using pip directly."""
-    args_str = " " + " ".join(args) if args else ""
-    reqs = ctx.run(UPDATE_CMD + args_str)
-    packages = [x["name"] for x in json.loads(reqs)]
-    if packages:
-        pkgs = " ".join(packages)
-        print(f"Packages to update: {pkgs}")
-        ctx.run(f"{ENV_PREFIX}python -m pip install -U {pkgs}{args_str}", capture=False)
-    else:
-        print("No packages to update!")
-    ctx.run(f"{ENV_PREFIX}python -m pip install -e .", capture=False)
+    ctx.run("uv sync --all-extras")
 
 
 @duty(capture=False)
 def lint(ctx):
-    """Update all environment packages using pip directly."""
+    """Lint the code and fix issues if possible."""
     ctx.run("uv run ruff check --fix .")
     ctx.run("uv run ruff format .")
     ctx.run("uv run mypy src/jinjarope/")
 
+
 @duty(capture=False)
 def lint_check(ctx):
-    """Update all environment packages using pip directly."""
+    """Lint the code."""
     ctx.run("uv run ruff check .")
     ctx.run("uv run ruff format --check .")
     ctx.run("uv run mypy src/jinjarope/")
