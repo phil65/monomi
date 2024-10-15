@@ -1,5 +1,3 @@
-[tool.hatch]
-
 [tool.hatch.metadata]
 allow-direct-references = true
 
@@ -8,45 +6,18 @@ source = "regex_commit"
 commit_extra_args = ["-e"]
 path = "src/jinjarope/__init__.py"
 
-[tool.hatch.dirs.env]
-virtual = ".hatch"
-
-[tool.hatch.envs.default]
-python = "3.11"
-dependencies = [
-    # Linting
-    "mypy",
-    "ruff",
-
-    # Testing
-    "pytest",
-    "pytest-cov",
-
-    # Docs
-    "mkdocs-material",
-    "mkdocs-mknodes",
-    "humanize",
-
-    # used for formatting signature
-    "black",
-    "pygments",
-
-    # Debugging
-    "pyreadline3",
-    "pyinstrument",
-]
 
 [tool.hatch.envs.default.scripts]
 test = "pytest"
 lint = [
-    "hatch run ruff check --fix .",
-    "hatch run ruff format .",
-    "hatch run mypy src/jinjarope/",
+    "uv run ruff check --fix .",
+    "uv run ruff format .",
+    "uv run mypy src/jinjarope/",
 ]
 lint-check = [
-    "hatch run ruff check .",
-    "hatch run ruff format --check .",
-    "hatch run mypy src/jinjarope/",
+    "uv run ruff check .",
+    "uv run ruff format --check .",
+    "uv run mypy src/jinjarope/",
 ]
 
 [build-system]
