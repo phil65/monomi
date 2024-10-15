@@ -56,13 +56,16 @@ def update(ctx, *args: str):
 @duty(capture=False)
 def lint(ctx):
     """Update all environment packages using pip directly."""
-    ctx.run(f"{ENV_PREFIX}lint")
-
+    ctx.run("uv run ruff check --fix .")
+    ctx.run("uv run ruff format .")
+    ctx.run("uv run mypy src/jinjarope/")
 
 @duty(capture=False)
 def lint_check(ctx):
     """Update all environment packages using pip directly."""
-    ctx.run(f"{ENV_PREFIX}lint-check")
+    ctx.run("uv run ruff check .")
+    ctx.run("uv run ruff format --check .")
+    ctx.run("uv run mypy src/jinjarope/")
 
 
 @duty(capture=False)

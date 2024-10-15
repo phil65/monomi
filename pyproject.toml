@@ -7,19 +7,6 @@ commit_extra_args = ["-e"]
 path = "src/jinjarope/__init__.py"
 
 
-[tool.hatch.envs.default.scripts]
-test = "pytest"
-lint = [
-    "uv run ruff check --fix .",
-    "uv run ruff format .",
-    "uv run mypy src/jinjarope/",
-]
-lint-check = [
-    "uv run ruff check .",
-    "uv run ruff format --check .",
-    "uv run mypy src/jinjarope/",
-]
-
 [build-system]
 requires = ["hatchling", "hatch-regex-commit"]
 build-backend = "hatchling.build"
