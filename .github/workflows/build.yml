@@ -55,13 +55,14 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install hatch[cli]
-      - name: Build and publish on PyPI
-        env:
-          HATCH_INDEX_USER: ${{ secrets.HATCH_INDEX_USER }}
-          HATCH_INDEX_AUTH: ${{ secrets.HATCH_INDEX_AUTH }}
+      - name: Build
         run: |
-          hatch build
-          hatch publish
+          uv build
+      - name: Publish on PyPI
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}
+        run: |
+          uv publish
       - name: Create release
         uses: ncipollo/release-action@v1
         with:
