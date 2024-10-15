@@ -43,7 +43,18 @@ extras = ["black", "pygments", "humanize"]
 
 [tool.uv]
 dev-dependencies = [
-  "ruff", "mypy", "pyreadline3", "pyinstrument", "pytest", "pytest-cov", "mkdocs-material", "mkdocs-mknodes",
+  # lint
+  "ruff",
+  "mypy",
+  # test
+  "pytest",
+  "pytest-cov",
+  # docs
+  "mkdocs-material",
+  "mkdocs-mknodes",
+  # dev
+  "pyreadline3",
+  "pyinstrument",
 ]
 
 [project.scripts]
