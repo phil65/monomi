@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import re
-from typing import Literal
+from typing import Any, Literal
 
 from jinja2.exceptions import FilterArgumentError
 
@@ -43,7 +43,7 @@ def re_findall(
     *,
     ignorecase: bool = False,
     multiline: bool = False,
-) -> list:
+) -> list[Any]:
     """Perform re.findall and return the list of matches.
 
     Filter adapted from Ansible

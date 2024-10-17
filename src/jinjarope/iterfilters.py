@@ -82,7 +82,7 @@ def repeat(obj: T, times: int | None = None) -> Iterable[T]:
     return itertools.repeat(obj)
 
 
-def zip_longest(*iterables: Iterable, fillvalue: Any = None) -> Iterable:
+def zip_longest(*iterables: Iterable[Any], fillvalue: Any = None) -> Iterable[Any]:
     """Make an iterator that aggregates elements from each of the iterables.
 
     If the iterables are of uneven length, missing values are filled-in with fillvalue.
@@ -100,7 +100,7 @@ def zip_longest(*iterables: Iterable, fillvalue: Any = None) -> Iterable:
     return itertools.zip_longest(*iterables, fillvalue)
 
 
-def islice(iterable: Iterable, *args: int | None) -> itertools.islice:
+def islice(iterable: Iterable[T], *args: int | None) -> itertools.islice[T]:
     """Make an iterator that returns selected elements from the iterable.
 
     If start is non-zero, then elements from the iterable are skipped until start

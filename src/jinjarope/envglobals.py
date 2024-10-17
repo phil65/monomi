@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 
 @functools.cache
-def load_file_cached(path: str | os.PathLike) -> str:
+def load_file_cached(path: str | os.PathLike[str]) -> str:
     """Return the str-content of file at given path.
 
     Arguments:
@@ -34,7 +34,7 @@ _cache: dict[str, str] = {}
 
 def get_output_from_call(
     call: str | Sequence[str],
-    cwd: str | os.PathLike | None = None,
+    cwd: str | os.PathLike[str] | None = None,
     use_cache: bool = False,
 ) -> str | None:
     """Execute a system call and return its output as a string.
@@ -90,7 +90,7 @@ def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     return true_val if bool(value) else false_val
 
 
-def match(obj: Any, mapping: dict | None = None, **kwargs: Any) -> str:
+def match(obj: Any, mapping: dict[str | type, str] | None = None, **kwargs: Any) -> str:
     """A filter trying to imitate a python match-case statement.
 
     Arguments:
@@ -147,7 +147,7 @@ def now(tz: datetime.tzinfo | None = None) -> datetime.datetime:
 
 def utcnow() -> datetime.datetime:
     """Get UTC datetime."""
-    return datetime.datetime.utcnow()
+    return datetime.datetime.now(datetime.UTC)
 
 
 ENV_GLOBALS = {

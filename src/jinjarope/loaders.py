@@ -59,7 +59,7 @@ class PrefixLoader(LoaderMixin, jinja2.PrefixLoader):
     def __repr__(self):
         return utils.get_repr(self, self.mapping)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         return type(self) is type(other) and self.mapping == other.mapping
 
     def __hash__(self):
@@ -83,7 +83,7 @@ class ModuleLoader(LoaderMixin, jinja2.ModuleLoader):
     def __repr__(self):
         return utils.get_repr(self, path=self.module.__path__)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         return (
             type(self) is type(other)
             and self.package_name == other.package_name
@@ -106,7 +106,7 @@ class FunctionLoader(LoaderMixin, jinja2.FunctionLoader):
     def __repr__(self):
         return utils.get_repr(self, self.load_func)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         return type(self) is type(other) and self.load_func == other.load_func
 
     def __hash__(self):
@@ -149,7 +149,7 @@ class PackageLoader(LoaderMixin, jinja2.PackageLoader):
             package_path=self.package_path,
         )
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         return (
             type(self) is type(other)
             and self.package_name == other.package_name
@@ -175,7 +175,7 @@ class FileSystemLoader(LoaderMixin, jinja2.FileSystemLoader):
     def __bool__(self):
         return len(self.searchpath) > 0
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         return type(self) is type(other) and self.searchpath == other.searchpath
 
     def __hash__(self):
@@ -193,7 +193,7 @@ class ChoiceLoader(LoaderMixin, jinja2.ChoiceLoader):
     def __bool__(self):
         return len(self.loaders) > 0
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         return type(self) is type(other) and self.loaders == other.loaders
 
     def __hash__(self):
@@ -218,7 +218,7 @@ class DictLoader(LoaderMixin, jinja2.DictLoader):
             mapping = self.mapping | other
         return DictLoader(mapping)
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         return type(self) is type(other) and self.mapping == other.mapping
 
     def __hash__(self):

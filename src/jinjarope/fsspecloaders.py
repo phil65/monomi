@@ -30,7 +30,7 @@ class FsSpecProtocolPathLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
 
     ID = "fsspec_protocol_path"
 
-    def __eq__(self, other):
+    def __eq__(self, other: object):
         return type(self) is type(other)
 
     def __hash__(self):

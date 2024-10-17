@@ -24,7 +24,7 @@ class LoaderRegistry:
 
     def by_path(
         self,
-        path: str | os.PathLike,
+        path: str | os.PathLike[str],
     ) -> loaders.FileSystemLoader | fsspecloaders.FsSpecFileSystemLoader:
         """Convenience method to get a suiting loader for given path.
 
@@ -51,7 +51,9 @@ class LoaderRegistry:
         self.fsspec_loaders[path] = loader
         return loader
 
-    def get_filesystem_loader(self, path: str | os.PathLike) -> loaders.FileSystemLoader:
+    def get_filesystem_loader(
+        self, path: str | os.PathLike[str]
+    ) -> loaders.FileSystemLoader:
         """Return a FileSystem loader for given path from registry.
 
         If the loader does not exist yet, create and cache it.

@@ -177,7 +177,7 @@ def format_filter_signature(
     return f"{first_val} | {filter_name}{sig}"
 
 
-def slugify(text: str | os.PathLike) -> str:
+def slugify(text: str | os.PathLike[str]) -> str:
     """Create a slug for given text.
 
     Returned text only contains alphanumerical and underscore.

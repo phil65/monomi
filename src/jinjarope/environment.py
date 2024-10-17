@@ -107,7 +107,7 @@ class Environment(jinja2.Environment):
         cfg = self.get_config()
         return utils.get_repr(self, **utils.get_dataclass_nondefault_values(cfg))
 
-    def __contains__(self, template: str | os.PathLike) -> bool:
+    def __contains__(self, template: str | os.PathLike[str]) -> bool:
         """Check whether given template path exists.
 
         Arguments:
@@ -133,7 +133,7 @@ class Environment(jinja2.Environment):
 
     def load_jinja_file(
         self,
-        path: str | os.PathLike,
+        path: str | os.PathLike[str],
         scope_prefix: str = "",
         load_filters: bool = True,
         load_tests: bool = True,
@@ -241,7 +241,7 @@ class Environment(jinja2.Environment):
         self.linked_to = env
         self.overlayed = True
 
-    def add_template(self, file: str | os.PathLike):
+    def add_template(self, file: str | os.PathLike[str]):
         """Add a new template during runtime.
 
         Will create a new DictLoader and inject it into the existing loaders.
@@ -261,7 +261,7 @@ class Environment(jinja2.Environment):
         new_loader = loaders.DictLoader({file: content})
         self._add_loader(new_loader)
 
-    def add_template_path(self, *path: str | os.PathLike):
+    def add_template_path(self, *path: str | os.PathLike[str]):
         """Add a new template path during runtime.
 
         Will append a new FileSystemLoader by wrapping it and the the current loader into
@@ -277,7 +277,7 @@ class Environment(jinja2.Environment):
             new_loader = loaders.FileSystemLoader(p)
             self._add_loader(new_loader)
 
-    def _add_loader(self, new_loader: jinja2.BaseLoader | dict | str | os.PathLike):
+    def _add_loader(self, new_loader: jinja2.BaseLoader | dict | str | os.PathLike[str]):
         match new_loader:
             case dict():
                 new_loader = loaders.DictLoader(new_loader)
@@ -294,7 +294,7 @@ class Environment(jinja2.Environment):
     def render_condition(
         self,
         string: str,
-        variables: dict | None = None,
+        variables: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> bool:
         """Render a template condition.
@@ -312,7 +312,7 @@ class Environment(jinja2.Environment):
     def render_string(
         self,
         string: str,
-        variables: dict | None = None,
+        variables: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> str:
         """Render a template string.
@@ -333,8 +333,8 @@ class Environment(jinja2.Environment):
 
     def render_file(
         self,
-        file: str | os.PathLike,
-        variables: dict | None = None,
+        file: str | os.PathLike[str],
+        variables: dict[str, Any] | None = None,
         **kwargs: Any,
     ) -> str:
         """Helper to directly render a template from filesystem.
