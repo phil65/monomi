@@ -10,25 +10,36 @@ jobs:
         python_version: ["3.11", "3.12", "3.13"]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
+
       - name: Install uv
         uses: yezz123/setup-uv@v4
-      - name: Install dependencies
-        run: |
-          uv sync --all-extras
-      - name: Lint and typecheck
-        run: |
-          uv run ruff check .
-          uv run ruff format --check .
-          uv run mypy src/jinjarope/
-      - name: Test
-        run: |
-          uv run pytest
-      - uses: codecov/codecov-action@v4
+
+      - name: Install dependencies (uv sync)
+        run: uv sync --all-extras
+
+      - name: Check for code issues (ruff check)
+        uses: astral-sh/ruff-action@v1
+
+      - name: Check code format (ruff format)
+        uses: astral-sh/ruff-action@v1
+        with:
+          args: "format --check"
+
+      - name: Static type checking (MyPy)
+        run: uv run mypy src/jinjarope/
+
+      - name: Run tests
+        run: uv run pytest --cov-report=xml
+
+      - name: Upload test results to Codecov
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           fail_ci_if_error: false
@@ -39,31 +50,30 @@ jobs:
     needs: test
     if: startsWith(github.ref, 'refs/tags/')
     permissions:
-      # IMPORTANT: this permission is mandatory for trusted publishing
+      # this permission is mandatory for trusted publishing
       id-token: write
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out repository
+        uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
       - name: Install uv
         uses: yezz123/setup-uv@v4
-      - name: Install dependencies
-        shell: bash
-        run: |
-          python -m pip install --upgrade pip
-          pip install hatch[cli]
-      - name: Build
-        run: |
-          uv build
-      - name: Publish on PyPI
+
+      - name: Build package
+        run: uv build
+
+      - name: Release package on PyPI
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}
-        run: |
-          uv publish
-      - name: Create release
+        run: uv publish
+
+      - name: Release package on GitHub
         uses: ncipollo/release-action@v1
         with:
           draft: true
