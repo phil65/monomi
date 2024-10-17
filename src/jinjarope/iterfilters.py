@@ -36,7 +36,10 @@ def chain(*iterables: Iterable[T]) -> itertools.chain[T]:
     return itertools.chain(*iterables)
 
 
-def product(*iterables: Iterable, repeat: int = 1) -> itertools.product[tuple]:
+def product(
+    *iterables: Iterable[Any],
+    repeat: int = 1,
+) -> itertools.product[tuple[Any, ...]]:
     """Cartesian product of input iterables.
 
     Roughly equivalent to nested for-loops in a generator expression.
@@ -132,7 +135,7 @@ def islice(iterable: Iterable[T], *args: int | None) -> itertools.islice[T]:
     return itertools.islice(iterable, *args)
 
 
-def do_zip(*items: Iterable[T]) -> zip:
+def do_zip(*items: Iterable[T]) -> zip[tuple[T, ...]]:
     """Zip iterables into a single one.
 
     Arguments:
@@ -262,7 +265,7 @@ def groupby(
 
 def groupby_first_letter(
     data: Iterable[T],
-    keyfunc: Callable | None = None,
+    keyfunc: Callable[..., Any] | None = None,
 ) -> dict[str, list[T]]:
     """Group given iterable by first letter.
 
@@ -272,13 +275,13 @@ def groupby_first_letter(
     """
     data = sorted(data, key=keyfunc or (lambda x: x))
 
-    def first_letter(x):
+    def first_letter(x: Any) -> Any:
         return keyfunc(x)[0].upper() if keyfunc else x[0].upper()
 
     return {k.upper(): list(g) for k, g in itertools.groupby(data, first_letter)}
 
 
-def do_any(seq: Iterable, attribute: str | None = None) -> bool:
+def do_any(seq: Iterable[Any], attribute: str | None = None) -> bool:
     """Check if at least one of the item in the sequence evaluates to true.
 
     The `any` builtin as a filter for Jinja templates.

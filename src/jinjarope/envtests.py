@@ -4,9 +4,12 @@ import datetime
 import math
 import os
 import re
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, TypeVar
 
 from jinjarope import utils
+
+
+T = TypeVar("T")
 
 
 if TYPE_CHECKING:
@@ -55,7 +58,7 @@ def _to_set(value: Any) -> set[Any]:
     return set(value)
 
 
-def _to_tuple(value: Sequence) -> tuple:
+def _to_tuple(value: Sequence[T]) -> tuple[T, ...]:
     """Convert value to tuple."""
     return tuple(value)
 
@@ -125,7 +128,7 @@ def is_python_keyword(string: str) -> bool:
     return keyword.iskeyword(string)
 
 
-def is_python_builtin(fn: str | Callable) -> bool:
+def is_python_builtin(fn: str | Callable[..., Any]) -> bool:
     """Return true when given fn / string represents a python builtin.
 
     Arguments:
