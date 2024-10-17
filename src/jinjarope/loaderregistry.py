@@ -52,7 +52,8 @@ class LoaderRegistry:
         return loader
 
     def get_filesystem_loader(
-        self, path: str | os.PathLike[str]
+        self,
+        path: str | os.PathLike[str],
     ) -> loaders.FileSystemLoader:
         """Return a FileSystem loader for given path from registry.
 

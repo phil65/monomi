@@ -197,7 +197,7 @@ def batched(iterable: Iterable[T], n: int) -> Generator[tuple[T, ...], None, Non
 
 def natsort(
     val: Iterable[T],
-    key: str | Callable | None = None,
+    key: str | Callable[[T], Any] | None = None,
     reverse: bool = False,
     ignore_case: bool = True,
 ) -> Iterable[T]:
@@ -225,7 +225,7 @@ def natsort(
 
 def groupby(
     data: Iterable[T],
-    key: Callable | str | None = None,
+    key: Callable[[T], Any] | str | None = None,
     *,
     sort_groups: bool = True,
     natural_sort: bool = False,

@@ -257,7 +257,7 @@ def get_source_lines(obj: HasCodeType) -> tuple[list[str], int]:
 
 
 @functools.cache
-def get_signature(obj: Callable) -> inspect.Signature:
+def get_signature(obj: Callable[..., Any]) -> inspect.Signature:
     """Cached wrapper for inspect.signature.
 
     Arguments:
@@ -267,7 +267,7 @@ def get_signature(obj: Callable) -> inspect.Signature:
 
 
 @functools.cache
-def get_members(obj: object, predicate: Callable | None = None):
+def get_members(obj: object, predicate: Callable[[Any], bool] | None = None):
     """Cached version of inspect.getmembers.
 
     Arguments:
