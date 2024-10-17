@@ -1,11 +1,7 @@
-[tool.hatch.metadata]
-allow-direct-references = true
-
 [tool.hatch.version]
 source = "regex_commit"
 commit_extra_args = ["-e"]
 path = "src/jinjarope/__init__.py"
-
 
 [build-system]
 requires = ["hatchling", "hatch-regex-commit"]
@@ -27,6 +23,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Software Development :: User Interfaces",
     "Topic :: Internet",
@@ -65,10 +62,7 @@ Documentation = "https://phil65.github.io/jinjarope/"
 Source = "https://github.com/phil65/jinjarope"
 
 [tool.pytest.ini_options]
-minversion = "7.0"
-testpaths = ["tests"]
 log_cli = true
-# log_cli_level = "DEBUG"
 log_format = "%(asctime)s %(levelname)s %(message)s"
 log_date_format = "%Y-%m-%d %H:%M:%S"
 addopts = "--cov=jinjarope/ --cov-report=term-missing --cov-report=xml"
@@ -202,11 +196,6 @@ combine-as-imports = true
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "I001"]
-
-[tool.black]
-line-length = 90
-target-version = ['py311']
-preview = true
 
 [tool.mknodes]
 allowed-commit-types = [
