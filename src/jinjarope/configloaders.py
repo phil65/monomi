@@ -11,6 +11,9 @@ from jinjarope import iterfilters, loaders, serializefilters, utils
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping
+    from typing import TypeAlias
+
+    NestedMapping: TypeAlias = Mapping[str, "str | NestedMapping"]
 
 
 class NestedDictLoader(loaders.LoaderMixin, jinja2.BaseLoader):
@@ -34,7 +37,7 @@ class NestedDictLoader(loaders.LoaderMixin, jinja2.BaseLoader):
 
     ID = "nested_dict"
 
-    def __init__(self, mapping: Mapping):
+    def __init__(self, mapping: NestedMapping):
         """Constructor.
 
         Arguments:
@@ -53,7 +56,7 @@ class NestedDictLoader(loaders.LoaderMixin, jinja2.BaseLoader):
         self,
         environment: jinja2.Environment,
         template: str,
-    ) -> tuple[str, str, Callable[[], bool] | None]:
+    ) -> tuple[str, str | None, Callable[[], bool] | None]:
         data: Any = self._data
         try:
             for part in template.split("/"):
@@ -92,7 +95,7 @@ class TemplateFileLoader(NestedDictLoader):
 
     def __init__(
         self,
-        path: str | os.PathLike,
+        path: str | os.PathLike[str],
         fmt: Literal["toml", "json", "ini", "yaml"] | None = None,
         sub_path: tuple[str, ...] | None = None,
     ):
