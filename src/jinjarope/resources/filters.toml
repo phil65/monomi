@@ -236,7 +236,6 @@ template = """
 """
 
 
-
 [filters.normalize_url]
 fn = "jinjarope.htmlfilters.normalize_url"
 group = "html"
@@ -245,6 +244,16 @@ group = "html"
 template = """
 {{ "test" | normalize_url(base="https://phil65.github.io") }}
 """
+
+[filters.url_to_b64]
+fn = "jinjarope.htmlfilters.url_to_b64"
+group = "html"
+
+[filters.url_to_b64.examples.basic]
+template = """
+{{ "https://picsum.photos/200/300" | url_to_b64 }}
+"""
+
 
 # Itertools
 

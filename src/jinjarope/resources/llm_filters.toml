@@ -1,7 +1,7 @@
 [filters.llm_complete]
 fn = "jinjarope.llmfilters.llm_complete"
 group = "llm"
-required_packages = ["litellm", "python-dotenv"]
+required_packages = ["litellm"]
 
 [filters.llm_complete.examples.basic]
 template = """
@@ -26,7 +26,7 @@ template = """
 [filters.llm_generate_image]
 fn = "jinjarope.llmfilters.llm_generate_image"
 group = "llm"
-required_packages = ["litellm", "python-dotenv"]
+required_packages = ["litellm", "pillow"]
 
 [filters.llm_generate_image.examples.basic]
 template = """
