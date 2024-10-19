@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import functools
 import json
 import logging
@@ -7,6 +8,8 @@ import posixpath
 import re
 from typing import TYPE_CHECKING, Any, Literal
 from xml.etree import ElementTree as ET
+
+import requests
 
 
 if TYPE_CHECKING:
@@ -374,6 +377,27 @@ def relative_url(url_a: str, url_b: str) -> str:
     parts_relative = [".."] * levels + parts_b
     relative = "/".join(parts_relative)
     return f"{relative}#{anchor}" if anchor else relative
+
+
+def url_to_b64(image_url: str) -> str | None:
+    """Convert an image URL to a base64-encoded string.
+
+    Args:
+        image_url: The URL of the image to convert.
+
+    Returns:
+        The base64-encoded string of the image.
+
+    Raises:
+        requests.RequestException: If there's an error downloading the image.
+    """
+    # Download the image
+    response = requests.get(image_url)
+    response.raise_for_status()
+    image_data = response.content
+
+    # Encode the image to base64
+    return base64.b64encode(image_data).decode("utf-8")
 
 
 if __name__ == "__main__":

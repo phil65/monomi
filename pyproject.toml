@@ -37,6 +37,7 @@ license = "MIT"
 [project.optional-dependencies]
 cli = ["rich", "typer"]
 extras = ["black", "pygments", "humanize"]
+llm = ["litellm", "python-dotenv", "pillow"]
 
 [tool.uv]
 dev-dependencies = [
@@ -78,6 +79,7 @@ exclude_lines = [
 
 [tool.mypy]
 python_version = "3.11"
+# python_executable = ".venv/env/virtual/jinjarope/Scripts/python.exe"
 disable_error_code = ["assignment", "misc", "import", "has-type"]
 pretty = true
 
@@ -176,8 +178,9 @@ ignore = [
     "PLR0912", # Too many branches
     "PLR0913", # Too many arguments to function call
     "PLR0915", # Too many statements
-    "SLF001",  # Private member accessed
-    "TRY003",  # Avoid specifying long messages outside the exception class
+    # "PLR2004", # Magic values instead of named consts
+    "SLF001", # Private member accessed
+    "TRY003", # Avoid specifying long messages outside the exception class
 ]
 
 [tool.ruff.lint.flake8-quotes]
