@@ -1,3 +1,5 @@
+# This file indexes the "original" jinja filters so that they show up in the docs.
+
 [filters.abs]
 fn = "builtins.abs"  # "jinja2.filters.abs"
 group = "number"

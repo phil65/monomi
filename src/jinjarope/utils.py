@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import dataclasses
 import functools
 import importlib
 from importlib.metadata import entry_points
@@ -35,31 +36,33 @@ def partial(fn: Callable, *args: Any, **kwargs: Any):
     return functools.partial(fn, *args, **kwargs)
 
 
-def get_dataclass_nondefault_values(instance: DataclassInstance) -> dict[str, Any]:
+def get_dataclass_nondefault_values(
+    instance: DataclassInstance,
+) -> dict[str, Any]:
     """Return dictionary with non-default key-value pairs of given dataclass.
 
     Arguments:
         instance: dataclass instance
     """
-    import dataclasses
-    from operator import attrgetter
+    non_default_fields: dict[str, Any] = {}
 
-    vals = []
-    for f in dataclasses.fields(instance):
-        no_default = isinstance(f.default, dataclasses._MISSING_TYPE)
-        no_default_factory = isinstance(f.default_factory, dataclasses._MISSING_TYPE)
-        if not no_default:
-            val = attrgetter(f.name)(instance)
-            if val != f.default:
-                vals.append((f.name, val))
-        if not no_default_factory:
-            val = attrgetter(f.name)(instance)
-            if val != f.default_factory():
-                vals.append((f.name, val))
-        if no_default and no_default_factory:
-            val = attrgetter(f.name)(instance)
-            vals.append((f.name, val))
-    return dict(vals)
+    for field in dataclasses.fields(instance):
+        value = getattr(instance, field.name)
+
+        # Check if the field has a default value
+        if field.default is not dataclasses.MISSING:
+            default = field.default
+        elif field.default_factory is not dataclasses.MISSING:
+            default = field.default_factory()
+        else:
+            # If there's no default, we consider the current value as non-default
+            non_default_fields[field.name] = value
+            continue
+
+        # Compare the current value with the default
+        if value != default:
+            non_default_fields[field.name] = value
+    return non_default_fields
 
 
 def get_repr(_obj: Any, *args: Any, **kwargs: Any) -> str:
@@ -101,7 +104,8 @@ def _get_black_formatter() -> Callable[[str, int], str]:
     otherwise a noop callable is returned.
     """
     try:
-        from black import InvalidInput, Mode, format_str
+        from black import Mode, format_str
+        from black.parsing import InvalidInput
     except ModuleNotFoundError:
         logger.info("Formatting signatures requires Black to be installed.")
         return lambda text, _: text
@@ -117,7 +121,7 @@ def _get_black_formatter() -> Callable[[str, int], str]:
 
 
 @functools.lru_cache
-def _entry_points(group: str) -> Mapping[str, Callable]:
+def _entry_points(group: str) -> Mapping[str, Callable[..., Any]]:
     eps = {ep.name: ep.load() for ep in entry_points(group=group)}
     logger.debug("Available %r entry points: %s", group, sorted(eps))
     return eps
@@ -137,7 +141,10 @@ def get_hash(obj: Any, hash_length: int | None = 7) -> str:
 
 
 @functools.cache
-def resolve(name: str, module: str | None = None) -> types.ModuleType | Callable:
+def resolve(
+    name: str,
+    module: str | None = None,
+) -> types.ModuleType | Callable[..., Any]:
     """Resolve ``name`` to a Python object via imports / attribute lookups.
 
     If ``module`` is None, ``name`` must be "absolute" (no leading dots).

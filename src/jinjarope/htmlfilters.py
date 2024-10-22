@@ -101,7 +101,7 @@ def format_js_map(mapping: dict | str, indent: int = 4) -> str:
         indent: The amount of indentation for the key-value pairs
     """
     dct = json.loads(mapping) if isinstance(mapping, str) else mapping
-    rows = []
+    rows: list[str] = []
     indent_str = " " * indent
     for k, v in dct.items():
         match v:

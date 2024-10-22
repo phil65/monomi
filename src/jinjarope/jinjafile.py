@@ -17,12 +17,12 @@ if TYPE_CHECKING:
 
 
 @functools.cache
-def _load(txt: str) -> dict:
+def _load(txt: str) -> dict[str, Any]:
     """Some dumb caching since this might be invoked on each env instanciation."""
     return tomllib.loads(txt)
 
 
-class JinjaFile(dict):
+class JinjaFile(dict[str, Any]):
     """A file defining filters / tests."""
 
     def __init__(self, path: str | os.PathLike[str]):
@@ -122,7 +122,7 @@ class JinjaItem:
     typ: Literal["filter", "test", "function"]
     fn: str
     group: str
-    examples: dict[str, dict] = dataclasses.field(default_factory=dict)
+    examples: dict[str, dict[str, str]] = dataclasses.field(default_factory=dict)
     description: str | None = None
     aliases: list[str] = dataclasses.field(default_factory=list)
     required_packages: list[str] = dataclasses.field(default_factory=list)

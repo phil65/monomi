@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 load_dotenv()
 
 
-def generate_openai_schema(func: Callable) -> dict[str, Any]:
+def generate_openai_schema(func: Callable[..., Any]) -> dict[str, Any]:
     """Generate an OpenAI-tools-JSON schema for the given function.
 
     Args:
@@ -82,7 +82,7 @@ def generate_class_schemas(cls_instance: Any) -> list[dict[str, Any]]:
         msg = "Input must be a class instance"
         raise TypeError(msg)
 
-    schemas = []
+    schemas: list[dict[str, Any]] = []
 
     for name, method in inspect.getmembers(cls_instance, predicate=inspect.ismethod):
         # Skip magic methods and private methods
