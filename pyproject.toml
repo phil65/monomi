@@ -82,6 +82,8 @@ python_version = "3.11"
 # python_executable = ".venv/env/virtual/jinjarope/Scripts/python.exe"
 disable_error_code = ["assignment", "misc", "import", "has-type"]
 pretty = true
+check_untyped_defs = true
+exclude = ['venv/', '.venv/', 'tests/']
 
 [tool.ruff]
 line-length = 90
