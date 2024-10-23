@@ -68,7 +68,7 @@ def re_search(
     *args: str,
     ignorecase: bool = False,
     multiline: bool = False,
-) -> list | None | str:
+) -> list[str] | None | str:
     """Perform re.search and return the list of matches or a backref.
 
     Filter adapted from Ansible

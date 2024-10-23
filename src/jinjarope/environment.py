@@ -278,7 +278,10 @@ class Environment(jinja2.Environment):
             new_loader = loaders.FileSystemLoader(p)
             self._add_loader(new_loader)
 
-    def _add_loader(self, new_loader: jinja2.BaseLoader | dict | str | os.PathLike[str]):
+    def _add_loader(
+        self,
+        new_loader: jinja2.BaseLoader | dict[str, str] | str | os.PathLike[str],
+    ):
         match new_loader:
             case dict():
                 new_loader = loaders.DictLoader(new_loader)

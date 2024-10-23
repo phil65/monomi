@@ -10,7 +10,7 @@ from jinjarope import utils
 
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Callable, Sequence
     import os
 
 
@@ -150,7 +150,7 @@ def utcnow() -> datetime.datetime:
     return datetime.datetime.now(datetime.UTC)
 
 
-ENV_GLOBALS = {
+ENV_GLOBALS: dict[str, Callable[..., Any]] = {
     "range": range,
     "zip": zip,
     "set": set,

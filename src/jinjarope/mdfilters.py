@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Callable
 import re
 import types
-from typing import Literal
+from typing import Any, Literal
 
 
 HEADER_REGEX = re.compile(r"^(#{1,6}) (.*)", flags=re.MULTILINE)
@@ -113,7 +113,7 @@ def shift_header_levels(text: str, level_shift: int) -> str:
     if not level_shift:
         return text
 
-    def mod_header(match: re.Match, levels: int) -> str:
+    def mod_header(match: re.Match[str], levels: int) -> str:
         header_str = match[1]
         if levels > 0:
             header_str += levels * "#"
@@ -126,7 +126,7 @@ def shift_header_levels(text: str, level_shift: int) -> str:
 
 def autoref_link(
     text: str | None = None,
-    link: str | types.ModuleType | Callable | None = None,
+    link: str | types.ModuleType | Callable[..., Any] | None = None,
 ) -> str:
     """Create a markdown autorefs-style link (used by MkDocs / MkDocStrings).
 

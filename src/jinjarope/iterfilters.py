@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Generator, Iterable, Mapping
 import itertools
+import operator
 from typing import Any, TypeVar
 
 
@@ -212,14 +213,12 @@ def natsort(
         reverse: Whether to reverse the sort order
         ignore_case: Whether to ignore case for sorting
     """
-    from operator import attrgetter
-
     from natsort import natsorted, ns
 
     alg = ns.IGNORECASE
     if not ignore_case:
         alg = ns.LOWERCASEFIRST
-    key_fn = attrgetter(key) if isinstance(key, str) else key
+    key_fn = operator.attrgetter(key) if isinstance(key, str) else key
     return natsorted(val, key=key_fn, reverse=reverse, alg=alg)
 
 
@@ -246,8 +245,6 @@ def groupby(
             return x
 
     elif isinstance(key, str):
-        import operator
-
         keyfunc = operator.attrgetter(key)
     else:
         keyfunc = key
