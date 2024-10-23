@@ -52,6 +52,7 @@ dev-dependencies = [
     # dev
     "pyreadline3",
     "pyinstrument",
+    "logfire>=1.2.0",
 ]
 
 [project.scripts]
