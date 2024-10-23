@@ -1,9 +1,9 @@
-site_name: Monomi
+site_name: JinjaRope
 site_description: "Jinja2 helpers & loaders."
-repo_url: "https://github.com/phil65/monomi/"
-site_url: https://phil65.github.io/monomi/
+repo_url: "https://github.com/phil65/jinjarope/"
+site_url: https://phil65.github.io/jinjarope/
 site_author: Philipp Temminghoff
-copyright: Copyright &copy; 2023 Philipp Temminghoff
+copyright: Copyright &copy; 2024 Philipp Temminghoff
 
 theme:
   name: material
