@@ -22,7 +22,7 @@ class LoaderMixin:
     get_source: Callable
     load: Callable
 
-    def __or__(self, other: jinja2.BaseLoader):
+    def __or__(self, other: jinja2.BaseLoader) -> ChoiceLoader:
         own = self.loaders if isinstance(self, jinja2.ChoiceLoader) else [self]  # type: ignore[list-item]
         others = other.loaders if isinstance(other, jinja2.ChoiceLoader) else [other]
         return ChoiceLoader([*own, *others])
@@ -168,7 +168,7 @@ class FileSystemLoader(LoaderMixin, jinja2.FileSystemLoader):
     def __repr__(self):
         return utils.get_repr(self, searchpath=self.searchpath)
 
-    def __add__(self, other):
+    def __add__(self, other) -> FileSystemLoader:
         ls = [other] if isinstance(other, jinja2.FileSystemLoader) else other.serchpath
         return FileSystemLoader([*self.searchpath, *ls])
 
@@ -211,11 +211,11 @@ class DictLoader(LoaderMixin, jinja2.DictLoader):
     def __repr__(self):
         return utils.get_repr(self, mapping=self.mapping)
 
-    def __add__(self, other):
+    def __add__(self, other: dict[str, str] | jinja2.DictLoader) -> DictLoader:
         if isinstance(other, jinja2.DictLoader):
-            mapping = self.mapping | other.mapping
-        elif isinstance(other, dict):
-            mapping = self.mapping | other
+            mapping = {**self.mapping, **other.mapping}
+        else:
+            mapping = {**self.mapping, **other}
         return DictLoader(mapping)
 
     def __eq__(self, other):

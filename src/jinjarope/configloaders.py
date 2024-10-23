@@ -11,9 +11,8 @@ from jinjarope import iterfilters, loaders, serializefilters, utils
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping
-    from typing import TypeAlias
 
-    NestedMapping: TypeAlias = Mapping[str, "str | NestedMapping"]
+    type NestedMapping = Mapping[str, "str | NestedMapping"]
 
 
 class NestedDictLoader(loaders.LoaderMixin, jinja2.BaseLoader):
