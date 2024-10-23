@@ -69,8 +69,6 @@ jobs:
         run: uv build
 
       - name: Release package on PyPI
-        env:
-          UV_PUBLISH_TOKEN: ${{ secrets.UV_PUBLISH_TOKEN }}
         run: uv publish
 
       - name: Release package on GitHub
