@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python_version: ["3.11", "3.12"] # tokenizers not supporting 3.13 yet
+        python_version: ["3.12"] # tokenizers not supporting 3.13 yet
 
     steps:
       - name: Check out repository
@@ -60,7 +60,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install uv
         uses: yezz123/setup-uv@v4

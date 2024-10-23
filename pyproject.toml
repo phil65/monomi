@@ -21,7 +21,6 @@ classifiers = [
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
@@ -30,7 +29,7 @@ classifiers = [
 ]
 keywords = ["filesystem", "fsspec", "internet", "templates", "jinja2"]
 
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = ["jinja2", "fsspec"]
 license = "MIT"
 
@@ -78,7 +77,7 @@ exclude_lines = [
 ]
 
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.12"
 # python_executable = ".venv/env/virtual/jinjarope/Scripts/python.exe"
 disable_error_code = ["assignment", "misc", "import", "has-type"]
 pretty = true
@@ -88,7 +87,7 @@ exclude = ['venv/', '.venv/', 'tests/']
 [tool.ruff]
 line-length = 90
 extend-exclude = ['docs']
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.lint]
 select = [
