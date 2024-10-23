@@ -12,7 +12,10 @@ if TYPE_CHECKING:
     from collections.abc import Callable
 
 
-def serialize(data: Any, fmt: Literal["yaml", "json", "ini", "toml"]) -> str:  # type: ignore[return]
+SerializeFormatStr = Literal["yaml", "json", "ini", "toml"]
+
+
+def serialize(data: Any, fmt: SerializeFormatStr) -> str:  # type: ignore[return]
     """Serialize given json-like object to given format.
 
     Arguments:
@@ -49,7 +52,7 @@ def load_ini(data: str) -> dict[str, dict[str, str]]:
 
 def deserialize(
     data: str,
-    fmt: Literal["yaml", "json", "ini", "toml"],
+    fmt: SerializeFormatStr,
 ) -> Any:
     """Serialize given json-like object to given format.
 
@@ -124,7 +127,7 @@ def merge(
     target: list | dict,
     *source: list | dict,
     deepcopy: bool = False,
-    mergers: dict[type, Callable] | None = None,
+    mergers: dict[type, Callable[[Any, Any, Any], Any]] | None = None,
 ) -> list | dict:
     """Merge given data structures using mergers provided.
 
@@ -139,6 +142,6 @@ def merge(
     if deepcopy:
         target = copy.deepcopy(target)
     context = deepmerge.DeepMerger(mergers)
-    for s in source[1:]:
-        target = context.merge(target, s)
+    for s in source:
+        target = context.merge(s, target)
     return target
