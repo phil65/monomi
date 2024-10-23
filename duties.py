@@ -34,6 +34,7 @@ def clean(ctx):
 def update(ctx):
     """Update all environment packages using pip directly."""
     ctx.run("uv sync --all-extras")
+    ctx.run("uv pip install google-generativeai")
 
 
 @duty(capture=False)
