@@ -42,7 +42,7 @@ llm = ["litellm", "python-dotenv", "pillow"]
 dev-dependencies = [
     # lint
     "ruff",
-    "mypy",
+    "mypy[faster-cache]",
     # test
     "pytest",
     "pytest-cov",
