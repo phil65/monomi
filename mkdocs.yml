@@ -11,6 +11,12 @@ theme:
   icon:
     logo: material/graph-outline
   palette:
+    # Palette toggle for automatic mode
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+
     # Palette toggle for light mode
     - media: "(prefers-color-scheme: light)"
       scheme: default
@@ -25,7 +31,7 @@ theme:
       primary: red
       toggle:
         icon: material/brightness-4
-        name: Switch to light mode
+        name: Switch to system preference
   features:
     - announce.dismiss
     - content.action.edit
