@@ -349,6 +349,45 @@ def normalize_url(path: str, url: str | None = None, base: str = "") -> str:
     return result
 
 
+@functools.cache
+def _norm_parts(path: str) -> list[str]:
+    if not path.startswith("/"):
+        path = "/" + path
+    path = posixpath.normpath(path)[1:]
+    return path.split("/") if path else []
+
+
+def relative_url_mkdocs(url: str, other: str) -> str:
+    """Return given url relative to other (MkDocs implementation).
+
+    Both are operated as slash-separated paths, similarly to the 'path' part of a URL.
+    The last component of `other` is skipped if it contains a dot (considered a file).
+    Actual URLs (with schemas etc.) aren't supported. The leading slash is ignored.
+    Paths are normalized ('..' works as parent directory), but going higher than the
+    root has no effect ('foo/../../bar' ends up just as 'bar').
+
+    Arguments:
+        url: URL A.
+        other: URL B.
+    """
+    # Remove filename from other url if it has one.
+    dirname, _, basename = other.rpartition("/")
+    if "." in basename:
+        other = dirname
+
+    other_parts = _norm_parts(other)
+    dest_parts = _norm_parts(url)
+    common = 0
+    for a, b in zip(other_parts, dest_parts):
+        if a != b:
+            break
+        common += 1
+
+    rel_parts = [".."] * (len(other_parts) - common) + dest_parts[common:]
+    relurl = "/".join(rel_parts) or "."
+    return relurl + "/" if url.endswith("/") else relurl
+
+
 @functools.lru_cache
 def relative_url(url_a: str, url_b: str) -> str:
     """Compute the relative path from URL A to URL B.

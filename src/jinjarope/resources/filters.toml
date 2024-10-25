@@ -235,6 +235,15 @@ template = """
 {{ "https://phil65.github.io" | relative_url("https://phil65.github.io/mknodes") }}
 """
 
+[filters.relative_url_mkdocs]
+fn = "jinjarope.htmlfilters.relative_url_mkdocs"
+group = "html"
+
+[filters.relative_url_mkdocs.examples.basic]
+template = """
+{{ "https://phil65.github.io" | relative_url_mkdocs("https://phil65.github.io/mknodes") }}
+"""
+
 
 [filters.normalize_url]
 fn = "jinjarope.htmlfilters.normalize_url"

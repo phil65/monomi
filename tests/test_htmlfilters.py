@@ -52,7 +52,7 @@ def test_svg_to_data_uri():
     )
     assert htmlfilters.svg_to_data_uri("") == "url('data:image/svg+xml;charset=utf-8,')"
     with pytest.raises(TypeError):
-        htmlfilters.svg_to_data_uri(None)
+        htmlfilters.svg_to_data_uri(None)  # type: ignore[arg-type]
 
 
 def test_clean_svg():
@@ -114,3 +114,13 @@ def test_format_xml_with_level():
     # IMO missing indent at beginning this is unexpected, but thats what ET returns..
     expected_xml = "<root>\n    <child>text</child>\n  </root>"
     assert formatted_xml == expected_xml
+
+
+def test_get_relative_url_empty():
+    for url in ["", ".", "/."]:
+        for other in ["", ".", "/", "/."]:
+            assert htmlfilters.relative_url_mkdocs(url, other) == "."
+    assert htmlfilters.relative_url_mkdocs("/", "") == "./"
+    assert htmlfilters.relative_url_mkdocs("/", "/") == "./"
+    assert htmlfilters.relative_url_mkdocs("/", ".") == "./"
+    assert htmlfilters.relative_url_mkdocs("/", "/.") == "./"
