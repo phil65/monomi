@@ -3,6 +3,7 @@ from __future__ import annotations
 import datetime
 import math
 import os
+import pathlib
 import re
 from typing import TYPE_CHECKING, Any, TypeVar
 
@@ -151,6 +152,12 @@ def is_fsspec_url(string: str | os.PathLike[str]) -> bool:
         and bool(_RFC_3986_PATTERN.match(string))
         and not string.startswith(("http://", "https://"))
     )
+
+
+def contains_files(site_directory: str | os.PathLike[str]) -> bool:
+    """Check if the site directory contains stale files from a previous build."""
+    path = pathlib.Path(site_directory)
+    return path.exists() and any(path.iterdir())
 
 
 def is_installed(package_name: str) -> bool:
