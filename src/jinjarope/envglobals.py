@@ -53,11 +53,9 @@ def get_output_from_call(
     key = pathlib.Path(cwd or ".").absolute().as_posix() + call
     if key in _cache and use_cache:
         return _cache[key]
-    msg = f"Executing {call!r}..."
-    logger.info(msg)
+    logger.info("Executing %r...", call)
     try:
-        pipe = subprocess.PIPE
-        text = subprocess.run(call, stdout=pipe, text=True, shell=True, cwd=cwd).stdout
+        text = subprocess.getoutput(call)
         _cache[key] = text
         return text  # noqa: TRY300
     except subprocess.CalledProcessError:
@@ -159,3 +157,8 @@ ENV_GLOBALS: dict[str, Callable[..., Any]] = {
     "int": int,
     "str": str,
 }
+
+
+if __name__ == "__main__":
+    output = get_output_from_call("git status")
+    print(output)
