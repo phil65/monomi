@@ -38,7 +38,7 @@ theme:
     - content.code.copy
     - content.code.select
     - content.code.annotate
-    # - content.tooltips  # for insiders..
+    - content.tooltips
     # - content.tabs.link
     - navigation.tracking # update URL based on current item in TOC
     - navigation.path # shows breadcrumbs
