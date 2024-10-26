@@ -86,3 +86,7 @@ def test_get_source_not_found():
     loader = configloaders.NestedDictLoader(templates)
     with pytest.raises(jinja2.exceptions.TemplateNotFound):
         loader.get_source(jinja2.Environment(), "nonexistent/template")
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

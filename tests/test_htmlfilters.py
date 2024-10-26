@@ -124,3 +124,7 @@ def test_get_relative_url_empty():
     assert htmlfilters.relative_url_mkdocs("/", "/") == "./"
     assert htmlfilters.relative_url_mkdocs("/", ".") == "./"
     assert htmlfilters.relative_url_mkdocs("/", "/.") == "./"
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

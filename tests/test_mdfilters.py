@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from jinjarope import mdfilters
 
 
@@ -73,3 +75,7 @@ def test_md_style():
         == "<p style='text-align: center;'>`***<font size='3'>Hello,"
         " World!</font>***`</p>"
     )
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

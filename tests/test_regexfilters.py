@@ -57,3 +57,7 @@ def test_re_escape():
     assert regexfilters.re_escape("[a]", "posix_basic") == "\\[a\\]"
     with pytest.raises(NotImplementedError):
         regexfilters.re_escape("Hello, World!", "unknown")
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

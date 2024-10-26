@@ -57,3 +57,7 @@ def test_template_file_loader_repr(tmp_path: pathlib.Path):
 
     loader = configloaders.TemplateFileLoader(p)
     assert repr(loader) == f"TemplateFileLoader(path='{p.as_posix()}')"
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

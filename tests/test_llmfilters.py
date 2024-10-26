@@ -142,3 +142,7 @@ def test_llm_analyze_image_download_error(mock_get):
 
     with pytest.raises(Exception, match="Download failed"):
         llm_analyze_image("http://test-image.com", encode_b64=True)
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

@@ -35,3 +35,7 @@ def test_jinja_loader_file_system():
         fs.ls("no-loader-set")
     with pytest.raises(FileNotFoundError):
         fs.open("no-loader-set")
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

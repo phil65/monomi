@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from jinjarope import textfilters
 
 
@@ -58,3 +60,7 @@ if __name__ == "__main__":
     code = "def test(sth, fsjkdalfjksdalfjsadk, fjskldjfkdsljf, fsdkjlafjkdsafj): pass"
     text = textfilters.format_code(code, line_length=50)
     print(text)
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

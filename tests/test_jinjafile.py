@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 import jinjarope
 
 
@@ -30,3 +32,7 @@ def test_loading_loaders():
     env = jinjarope.Environment()
     env.load_jinja_file("tests/testresources/testconfig.toml")
     assert env.get_template("testfile.jinja").render()
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

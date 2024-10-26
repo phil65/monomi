@@ -206,3 +206,7 @@ def test_merge_empty_structures() -> None:
 def test_merge_invalid_input(invalid_input: Any) -> None:
     with pytest.raises(TypeError):
         serializefilters.merge(invalid_input, {})
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

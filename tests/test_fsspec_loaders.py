@@ -32,3 +32,7 @@ def test_fsspec_filesystem_loader_with_dir_prefix():
     assert env.get_template("testfile.jinja").render()
     with pytest.raises(jinja2.TemplateNotFound):
         env.get_template("not-existing.jinja")
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

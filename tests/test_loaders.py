@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 import jinjarope
 
 
@@ -48,3 +50,7 @@ def test_choiceloader():
     assert repr(loader)
     assert bool(loader)
     assert list(loader) == [ld]
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])

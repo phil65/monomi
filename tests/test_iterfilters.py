@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from jinjarope import iterfilters
 
 
@@ -57,6 +59,10 @@ def test_groupby_first_letter():
 
 
 def test_groupby_first_letter_with_empty_data():
-    data = []
+    data: list[str] = []
     grouped = iterfilters.groupby_first_letter(data)
     assert grouped == {}
+
+
+if __name__ == "__main__":
+    pytest.main([__file__])
