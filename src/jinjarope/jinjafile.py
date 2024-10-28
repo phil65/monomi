@@ -64,7 +64,7 @@ class JinjaFile(dict[str, Any]):
         ]
 
     @property
-    def filters_dict(self) -> dict[str, Callable]:
+    def filters_dict(self) -> dict[str, Callable[..., Any]]:
         """Return a dictionary with all filters.
 
         Can directly get merged into env filters.
@@ -77,7 +77,7 @@ class JinjaFile(dict[str, Any]):
         return dct
 
     @property
-    def tests_dict(self) -> dict[str, Callable]:
+    def tests_dict(self) -> dict[str, Callable[..., bool]]:
         """Return a dictionary with all filters.
 
         Can directly get merged into env filters.
@@ -90,7 +90,7 @@ class JinjaFile(dict[str, Any]):
         return dct
 
     @property
-    def functions_dict(self) -> dict[str, Callable]:
+    def functions_dict(self) -> dict[str, Callable[..., Any]]:
         """Return a dictionary with all filters.
 
         Can directly get merged into env filters.
@@ -132,7 +132,7 @@ class JinjaItem:
         return utils.get_repr(self, self.identifier)
 
     @property
-    def filter_fn(self) -> Callable:
+    def filter_fn(self) -> Callable[..., Any]:
         """Return the callable to use as filter / test / function."""
         try:
             obj = utils.resolve(self.fn)
