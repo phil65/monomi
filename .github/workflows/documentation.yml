@@ -39,6 +39,8 @@ jobs:
         run: |
           uv sync --all-extras
       - name: Build
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: uv run mknodes build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
