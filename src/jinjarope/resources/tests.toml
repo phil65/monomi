@@ -158,6 +158,16 @@ True!
 {% endif %}
 """
 
+[tests.in_std_library]
+fn = "jinjarope.envtests.is_in_std_library"
+group = "python"
+[tests.in_std_library.examples.basic]
+template = """
+{% if "inspect.getsource" is in_std_library %}
+True!
+{% endif %}
+"""
+
 [tests.template]
 fn = "jinjarope.Environment.__contains__"
 group = "environment"

@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import builtins
 import datetime
+import inspect
 import math
 import os
 import pathlib
 import re
+import sys
 from typing import TYPE_CHECKING, Any, TypeVar
 
 from jinjarope import utils
@@ -135,10 +138,17 @@ def is_python_builtin(fn: str | Callable[..., Any]) -> bool:
     Arguments:
         fn: (Name of) function to check
     """
-    import builtins
-    import inspect
-
     return fn in dir(builtins) if isinstance(fn, str) else inspect.isbuiltin(fn)
+
+
+def is_in_std_library(fn: str | Callable[..., Any]) -> bool:
+    """Return true when given fn / string is part of the std library.
+
+    Arguments:
+        fn: (Name of) function to check
+    """
+    name = fn if isinstance(fn, str) else fn.__module__
+    return name.split(".")[0] in sys.stdlib_module_names
 
 
 def is_fsspec_url(string: str | os.PathLike[str]) -> bool:
@@ -188,3 +198,8 @@ def is_indented(text: str, indentation: str = "    ") -> bool:
         indentation: The indent each line must start with
     """
     return all(i.startswith(indentation) for i in text.split("\n"))
+
+
+if __name__ == "__main__":
+    result = is_in_std_library(inspect.getsource)
+    print(result)
