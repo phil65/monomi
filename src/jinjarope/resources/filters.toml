@@ -260,7 +260,7 @@ group = "html"
 
 [filters.url_to_b64.examples.basic]
 template = """
-{{ "https://picsum.photos/200/300" | url_to_b64 }}
+{{ "https://picsum.photos/100/100" | url_to_b64 }}
 """
 
 
