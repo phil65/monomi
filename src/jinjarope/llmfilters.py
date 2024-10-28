@@ -5,9 +5,9 @@ import os
 from typing import TYPE_CHECKING, Any
 
 from dotenv import load_dotenv
-import litellm
 
-from jinjarope import htmlfilters
+# import litellm
+from jinjarope import htmlfilters, lazylitellm
 
 
 if TYPE_CHECKING:
@@ -15,6 +15,9 @@ if TYPE_CHECKING:
 
 
 load_dotenv()
+
+
+litellm = lazylitellm.LazyLiteLLM()
 
 
 def generate_openai_schema(func: Callable[..., Any]) -> dict[str, Any]:
@@ -86,7 +89,7 @@ def generate_class_schemas(cls_instance: Any) -> list[dict[str, Any]]:
 
     for name, method in inspect.getmembers(cls_instance, predicate=inspect.ismethod):
         # Skip magic methods and private methods
-        if not name.startswith("__") and not name.startswith("_"):
+        if not name.startswith("_"):
             try:
                 schema = generate_openai_schema(method)
                 schemas.append(schema)
@@ -249,7 +252,6 @@ def llm_analyze_image(
 
 
 if __name__ == "__main__":
-    print("LLM...")
     response = llm_analyze_image(
         image_url="https://picsum.photos/200/300",
         model="ollama/llava",
