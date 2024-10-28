@@ -126,7 +126,6 @@ class JinjaItem:
     description: str | None = None
     aliases: list[str] = dataclasses.field(default_factory=list)
     required_packages: list[str] = dataclasses.field(default_factory=list)
-    builtin: bool = False
 
     def __repr__(self):
         return utils.get_repr(self, self.identifier)
@@ -147,7 +146,7 @@ class JinjaItem:
     @classmethod
     def for_function(
         cls,
-        fn: Callable,
+        fn: Callable[..., Any],
         typ: Literal["filter", "test", "function"],
         group: str = "imported",
         **kwargs: Any,
