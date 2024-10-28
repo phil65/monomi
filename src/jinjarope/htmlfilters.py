@@ -205,7 +205,7 @@ def format_xml(
     )
 
 
-def ansi2html(ansi_string: str, styles: dict[int, dict[str, str]] = ANSI_STYLES) -> str:
+def ansi2html(ansi_string: str, styles: dict[int, dict[str, str]] | None = None) -> str:
     """Convert ansi string to colored HTML.
 
     Arguments:
@@ -215,6 +215,7 @@ def ansi2html(ansi_string: str, styles: dict[int, dict[str, str]] = ANSI_STYLES)
     Returns:
         HTML string
     """
+    styles = styles or ANSI_STYLES
     previous_end = 0
     in_span = False
     ansi_codes: list[int] = []
