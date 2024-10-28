@@ -1,3 +1,5 @@
+# This file contains definitions for functions of the "humanize" library.
+
 [filters.naturaldate]
 fn = "humanize.time.naturaldate"
 group = "time"

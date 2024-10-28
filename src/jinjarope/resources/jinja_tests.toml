@@ -1,3 +1,5 @@
+# This file indexes the "original" jinja tests so that they show up in the docs.
+
 [tests.odd]
 fn = "jinja2.tests.test_odd"
 group = "builtin"

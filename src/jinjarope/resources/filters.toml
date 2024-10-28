@@ -1,4 +1,4 @@
-# Format
+# This file contains definitions of the jinjarope filters as well as std library filters.
 
 [filters.repr]
 fn = "repr"

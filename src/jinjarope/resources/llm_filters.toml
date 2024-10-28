@@ -1,3 +1,5 @@
+# This file contains definitions for functions of the "litellm" library.
+
 [filters.llm_complete]
 fn = "jinjarope.llmfilters.llm_complete"
 group = "llm"

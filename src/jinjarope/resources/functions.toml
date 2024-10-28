@@ -1,3 +1,5 @@
+# This file contains definitions of the jinjarope filters as well as std library filters.
+
 [functions.online]
 fn = "jinjarope.envglobals.has_internet"
 group = "misc"

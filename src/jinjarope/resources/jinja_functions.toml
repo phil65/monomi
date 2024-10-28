@@ -1,3 +1,5 @@
+# This file indexes the "original" jinja functions so that they show up in the docs.
+
 # [functions.range]
 # fn = "range"
 # group = "builtin"

@@ -1,3 +1,5 @@
+# This file contains definitions of the jinjarope tests as well as std library tests.
+
 [tests.number]
 fn = "jinjarope.envtests.is_number"
 group = "type"
