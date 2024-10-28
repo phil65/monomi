@@ -156,6 +156,7 @@ ignore = [
     "C408", # Unnecessary {obj_type} call (rewrite as a literal)
     "B905", # zip() without an explicit strict= parameter
     "C901", # {name} is too complex ({complexity} > {max_complexity})
+    "COM812",
     # "CPY001", # Missing copyright notice at top of file
     "D100",    # Missing docstring in public module
     "D101",    # Missing docstring in public class
@@ -177,6 +178,7 @@ ignore = [
     "D408",    # Section underline should be in the line following the section's name ("{name}")
     "D409",    # Section underline should match the length of its name ("{name}")
     "D413",    # Missing blank line after last section ("{name}")
+    "ISC001",
     "PLR0912", # Too many branches
     "PLR0913", # Too many arguments to function call
     "PLR0915", # Too many statements
