@@ -3,6 +3,7 @@
 [filters.repr]
 fn = "repr"
 group = "format"
+icon = "mdi:format-quote"
 
 [filters.repr.examples.basic]
 template = """
@@ -12,6 +13,7 @@ template = """
 [filters.slugify]
 fn = "jinjarope.textfilters.slugify"
 group = "format"
+icon = "mdi:link"
 
 [filters.slugify.examples.basic]
 template = """
@@ -21,6 +23,7 @@ template = """
 [filters.pformat]
 fn = "pprint.pformat"
 group = "format"
+icon = "mdi:format-align-left"
 
 [filters.pformat.examples.basic]
 template = """
@@ -30,6 +33,7 @@ template = """
 [filters.split_url]
 fn = "jinjarope.htmlfilters.split_url"
 group = "format"
+icon = "mdi:link-variant"
 
 [filters.split_url.examples.basic]
 template = """
@@ -40,16 +44,17 @@ template = """
 [filters.format_code]
 fn = "jinjarope.textfilters.format_code"
 group = "format"
+icon = "mdi:code-braces"
 
 [filters.format_code.examples.basic]
 template = """
 {{ "AVeryLargeCodeBlock(a_parameter=3, another_parameter=4, abc=False)" | format_code }}
 """
 
-
 [filters.extract_body]
 fn = "jinjarope.textfilters.extract_body"
 group = "format"
+icon = "mdi:content-cut"
 
 [filters.extract_body.examples.basic]
 template = """
@@ -60,20 +65,20 @@ def test(a):
 " | extract_body }}
 """
 
-
 [filters.format_signature]
 fn = "jinjarope.textfilters.format_signature"
 group = "format"
+icon = "mdi:function"
 
 [filters.format_signature.examples.basic]
 template = """
 {{ "".removesuffix | format_signature }}
 """
 
-
 [filters.format_filter_signature]
 fn = "jinjarope.textfilters.format_filter_signature"
 group = "format"
+icon = "mdi:function-variant"
 
 [filters.format_filter_signature.examples.basic]
 template = """
@@ -85,6 +90,7 @@ template = """
 [filters.md_link]
 fn = "jinjarope.mdfilters.md_link"
 group = "markdown"
+icon = "mdi:markdown"
 
 [filters.md_link.examples.basic]
 template = """
@@ -94,6 +100,7 @@ template = """
 [filters.autoref_link]
 fn = "jinjarope.mdfilters.autoref_link"
 group = "markdown"
+icon = "mdi:link-box"
 
 [filters.autoref_link.examples.basic]
 template = """
@@ -103,6 +110,7 @@ template = """
 [filters.md_escape]
 fn = "jinjarope.mdfilters.md_escape"
 group = "markdown"
+icon = "mdi:markdown"
 
 [filters.md_escape.examples.basic]
 template = """
@@ -112,6 +120,7 @@ template = """
 [filters.md_style]
 fn = "jinjarope.mdfilters.md_style"
 group = "markdown"
+icon = "mdi:format-text"
 
 [filters.md_style.examples.basic]
 template = """
@@ -121,16 +130,17 @@ template = """
 [filters.extract_header_section]
 fn = "jinjarope.mdfilters.extract_header_section"
 group = "markdown"
+icon = "mdi:format-header-pound"
 
 [filters.extract_header_section.examples.basic]
 template = """
 {{ "# Section 1\nABC\n# Section 2\nDEF" | extract_header_section("Section 2") }}
 """
 
-
 [filters.shift_header_levels]
 fn = "jinjarope.mdfilters.shift_header_levels"
 group = "markdown"
+icon = "mdi:format-header-increase"
 
 [filters.shift_header_levels.examples.basic]
 template = """
@@ -142,6 +152,7 @@ template = """
 [filters.html_link]
 fn = "jinjarope.htmlfilters.html_link"
 group = "html"
+icon = "mdi:link"
 
 [filters.html_link.examples.basic]
 template = """
@@ -151,6 +162,7 @@ template = """
 [filters.wrap_in_elem]
 fn = "jinjarope.htmlfilters.wrap_in_elem"
 group = "html"
+icon = "mdi:code-tags"
 
 [filters.wrap_in_elem.examples.basic]
 template = """
@@ -160,6 +172,7 @@ template = """
 [filters.format_js_map]
 fn = "jinjarope.htmlfilters.format_js_map"
 group = "html"
+icon = "mdi:language-javascript"
 
 [filters.format_js_map.examples.basic]
 template = """
@@ -169,6 +182,7 @@ template = """
 [filters.format_css_rule]
 fn = "jinjarope.htmlfilters.format_css_rule"
 group = "html"
+icon = "mdi:language-css3"
 
 [filters.format_css_rule.examples.basic]
 template = """
@@ -178,6 +192,7 @@ template = """
 [filters.svg_to_data_uri]
 fn = "jinjarope.htmlfilters.svg_to_data_uri"
 group = "html"
+icon = "mdi:svg"
 
 [filters.svg_to_data_uri.examples.basic]
 template = """
@@ -187,6 +202,7 @@ template = """
 [filters.clean_svg]
 fn = "jinjarope.htmlfilters.clean_svg"
 group = "html"
+icon = "mdi:svg"
 
 [filters.clean_svg.examples.basic]
 template = """
@@ -196,6 +212,7 @@ template = """
 [filters.format_xml]
 fn = "jinjarope.htmlfilters.format_xml"
 group = "html"
+icon = "mdi:xml"
 
 [filters.format_xml.examples.basic]
 template = """
@@ -220,6 +237,7 @@ template = """
 [filters.ansi2html]
 fn = "jinjarope.htmlfilters.ansi2html"
 group = "html"
+icon = "mdi:console"
 
 [filters.ansi2html.examples.basic]
 template = """
@@ -229,6 +247,7 @@ template = """
 [filters.relative_url]
 fn = "jinjarope.htmlfilters.relative_url"
 group = "html"
+icon = "mdi:link-relative"
 
 [filters.relative_url.examples.basic]
 template = """
@@ -238,16 +257,17 @@ template = """
 [filters.relative_url_mkdocs]
 fn = "jinjarope.htmlfilters.relative_url_mkdocs"
 group = "html"
+icon = "mdi:link-relative"
 
 [filters.relative_url_mkdocs.examples.basic]
 template = """
 {{ "https://phil65.github.io" | relative_url_mkdocs("https://phil65.github.io/mknodes") }}
 """
 
-
 [filters.normalize_url]
 fn = "jinjarope.htmlfilters.normalize_url"
 group = "html"
+icon = "mdi:link-variant"
 
 [filters.normalize_url.examples.basic]
 template = """
@@ -257,18 +277,19 @@ template = """
 [filters.url_to_b64]
 fn = "jinjarope.htmlfilters.url_to_b64"
 group = "html"
+icon = "mdi:base64"
 
 [filters.url_to_b64.examples.basic]
 template = """
 {{ "https://picsum.photos/100/100" | url_to_b64 }}
 """
 
-
 # Itertools
 
 [filters.batched]
 fn = "jinjarope.iterfilters.batched"
 group = "iter"
+icon = "mdi:view-grid"
 
 [filters.batched.examples.basic]
 template = """
@@ -277,20 +298,20 @@ template = """
 {% endfor %}
 """
 
-
 [filters.groupby_plus]
 fn = "jinjarope.iterfilters.groupby"
 group = "iter"
+icon = "mdi:group"
 
 [filters.groupby_plus.examples.basic]
 template = """
 {{ ["20", "20", "100", "0"] | groupby_plus(natural_sort=True) }}
 """
 
-
 [filters.chain]
 fn = "jinjarope.iterfilters.chain"
 group = "iter"
+icon = "mdi:link-chain"
 
 [filters.chain.examples.basic]
 template = """
@@ -302,6 +323,7 @@ template = """
 [filters.combinations]
 fn = "itertools.combinations"
 group = "iter"
+icon = "mdi:arrange-bring-forward"
 
 [filters.combinations.examples.basic]
 template = """
@@ -310,10 +332,10 @@ template = """
 {% endfor %}
 """
 
-
 [filters.combinations_with_replacement]
 fn = "itertools.combinations_with_replacement"
 group = "iter"
+icon = "mdi:arrange-bring-to-front"
 
 [filters.combinations_with_replacement.examples.basic]
 template = """
@@ -322,10 +344,10 @@ template = """
 {% endfor %}
 """
 
-
 [filters.compress]
 fn = "itertools.compress"
 group = "iter"
+icon = "mdi:compress"
 
 [filters.compress.examples.basic]
 template = """
@@ -334,10 +356,10 @@ template = """
 {% endfor %}
 """
 
-
 [filters.islice]
 fn = "jinjarope.iterfilters.islice"
 group = "iter"
+icon = "mdi:segment"
 
 [filters.islice.examples.basic]
 template = """
@@ -346,10 +368,11 @@ template = """
 {% endfor %}
 """
 
-
 [filters.groupby_first_letter]
 fn = "jinjarope.iterfilters.groupby_first_letter"
 group = "iter"
+icon = "mdi:alphabetical"
+
 [filters.groupby_first_letter.examples.basic]
 template = """
 {{ ["apple", "banana", "cherry", "avocado", "carrot", "blueberry"] | groupby_first_letter }}
@@ -358,6 +381,7 @@ template = """
 [filters.reduce_list]
 fn = "jinjarope.iterfilters.reduce_list"
 group = "iter"
+icon = "mdi:list-status"
 
 [filters.reduce_list.examples.basic]
 template = """
@@ -367,6 +391,7 @@ template = """
 [filters.flatten_dict]
 fn = "jinjarope.iterfilters.flatten_dict"
 group = "iter"
+icon = "mdi:unfold-more-horizontal"
 
 [filters.flatten_dict.examples.basic]
 template = """
@@ -376,6 +401,7 @@ template = """
 [filters.pairwise]
 fn = "jinjarope.iterfilters.pairwise"
 group = "iter"
+icon = "mdi:compare"
 
 [filters.pairwise.examples.basic]
 template = """
@@ -384,10 +410,10 @@ template = """
 {% endfor %}
 """
 
-
 [filters.permutations]
 fn = "itertools.permutations"
 group = "iter"
+icon = "mdi:arrange-send-backward"
 
 [filters.permutations.examples.basic]
 template = """
@@ -396,10 +422,10 @@ template = """
 {% endfor %}
 """
 
-
 [filters.product]
 fn = "jinjarope.iterfilters.product"
 group = "iter"
+icon = "mdi:multiplication"
 
 [filters.product.examples.basic]
 template = """
@@ -408,10 +434,10 @@ template = """
 {% endfor %}
 """
 
-
 [filters.repeat]
 fn = "jinjarope.iterfilters.repeat"
 group = "iter"
+icon = "mdi:repeat"
 
 [filters.repeat.examples.basic]
 template = """
@@ -420,10 +446,10 @@ template = """
 {% endfor %}
 """
 
-
 [filters.zip]
 fn = "jinjarope.iterfilters.do_zip"
 group = "iter"
+icon = "mdi:zip-box"
 
 [filters.zip.examples.basic]
 template = """
@@ -432,10 +458,10 @@ template = """
 {% endfor %}
 """
 
-
 [filters.zip_longest]
 fn = "jinjarope.iterfilters.zip_longest"
 group = "iter"
+icon = "mdi:zip-box-outline"
 
 [filters.zip_longest.examples.basic]
 template = """
@@ -444,11 +470,12 @@ template = """
 {% endfor %}
 """
 
-
 [filters.natsort]
 fn = "jinjarope.iterfilters.natsort"
 group = "iter"
+icon = "mdi:sort-alphabetical-ascending"
 required_packages = ["natsort"]
+
 [filters.natsort.examples.basic]
 template = """
 {{ ["A1", "B1", "A2", "A10"] | natsort }}
@@ -457,6 +484,7 @@ template = """
 [filters.any]
 fn = "jinjarope.iterfilters.do_any"
 group = "iter"
+icon = "mdi:check-circle-outline"
 
 [filters.any.examples.basic]
 template = """
@@ -468,6 +496,7 @@ template = """
 [filters.rstrip]
 fn = "jinjarope.textfilters.rstrip"
 group = "text"
+icon = "mdi:format-align-right"
 
 [filters.rstrip.examples.basic]
 template = """
@@ -477,26 +506,27 @@ template = """
 [filters.lstrip]
 fn = "jinjarope.textfilters.lstrip"
 group = "text"
+icon = "mdi:format-align-left"
 
 [filters.lstrip.examples.basic]
 template = """
 {{ " abc" | lstrip }}
 """
 
-
 [filters.lower_camel_case]
 fn = "jinjarope.textfilters.lower_camel_case"
 group = "text"
+icon = "mdi:format-letter-case"
 
 [filters.lower_camel_case.examples.basic]
 template = """
 {{ "some_text" | lower_camel_case }}
 """
 
-
 [filters.snake_case]
 fn = "jinjarope.textfilters.snake_case"
 group = "text"
+icon = "mdi:format-letter-case-lower"
 
 [filters.snake_case.examples.basic]
 template = """
@@ -506,6 +536,7 @@ template = """
 [filters.removesuffix]
 fn = "jinjarope.textfilters.removesuffix"
 group = "text"
+icon = "mdi:format-letter-ends-with"
 
 [filters.removesuffix.examples.basic]
 template = """
@@ -515,6 +546,7 @@ template = """
 [filters.removeprefix]
 fn = "jinjarope.textfilters.removeprefix"
 group = "text"
+icon = "mdi:format-letter-starts-with"
 
 [filters.removeprefix.examples.basic]
 template = """
@@ -526,6 +558,7 @@ template = """
 [filters.re_replace]
 fn = "jinjarope.regexfilters.re_replace"
 group = "regex"
+icon = "mdi:find-replace"
 
 [filters.re_replace.examples.basic]
 template = """
@@ -535,6 +568,7 @@ template = """
 [filters.re_findall]
 fn = "jinjarope.regexfilters.re_findall"
 group = "regex"
+icon = "mdi:text-search"
 
 [filters.re_findall.examples.basic]
 template = """
@@ -544,6 +578,7 @@ template = """
 [filters.re_search]
 fn = "jinjarope.regexfilters.re_search"
 group = "regex"
+icon = "mdi:magnify"
 
 [filters.re_search.examples.basic]
 template = """
@@ -553,6 +588,7 @@ template = """
 [filters.re_escape]
 fn = "jinjarope.regexfilters.re_escape"
 group = "regex"
+icon = "mdi:regex"
 
 [filters.re_escape.examples.basic]
 template = """
@@ -564,6 +600,7 @@ template = """
 [filters.dump_json]
 fn = "json.dumps"
 group = "serialize"
+icon = "mdi:code-json"
 
 [filters.dump_json.examples.basic]
 template = """
@@ -573,6 +610,7 @@ template = """
 [filters.load_json]
 fn = "json.loads"
 group = "serialize"
+icon = "mdi:code-json"
 
 [filters.load_json.examples.basic]
 template = """
@@ -582,6 +620,7 @@ template = """
 [filters.load_toml]
 fn = "tomllib.loads"
 group = "serialize"
+icon = "mdi:file-document"
 
 [filters.load_toml.examples.basic]
 template = """
@@ -591,6 +630,7 @@ template = """
 [filters.serialize]
 fn = "jinjarope.serializefilters.serialize"
 group = "serialize"
+icon = "mdi:file-export"
 
 [filters.serialize.examples.basic]
 template = """
@@ -600,6 +640,7 @@ template = """
 [filters.deserialize]
 fn = "jinjarope.serializefilters.deserialize"
 group = "serialize"
+icon = "mdi:file-import"
 
 [filters.deserialize.examples.basic]
 template = """
@@ -609,6 +650,7 @@ template = """
 [filters.dig]
 fn = "jinjarope.serializefilters.dig"
 group = "serialize"
+icon = "mdi:shovel"
 
 [filters.dig.examples.basic]
 template = """
@@ -620,10 +662,10 @@ template = """
 {{ {"section1": {"section2": {"section3": "Hello, World"} } } | dig("section1", "section2", keep_path=True) }}
 """
 
-
 [filters.merge]
 fn = "jinjarope.serializefilters.merge"
 group = "serialize"
+icon = "mdi:merge"
 
 [filters.merge.examples.basic]
 template = """
@@ -635,6 +677,7 @@ template = """
 [filters.add]
 fn = "jinjarope.envglobals.add"
 group = "misc"
+icon = "mdi:plus"
 
 [filters.add.examples.basic]
 template = """
@@ -644,16 +687,17 @@ template = """
 [filters.ternary]
 fn = "jinjarope.envglobals.ternary"
 group = "misc"
+icon = "mdi:code-greater-than"
 
 [filters.ternary.examples.basic]
 template = """
 {{ True | ternary("A", "B") }}
 """
 
-
 [filters.match]
 fn = "jinjarope.envglobals.match"
 group = "misc"
+icon = "mdi:equal"
 
 [filters.match.examples.basic]
 template = """
@@ -665,27 +709,10 @@ template = """
 {{ 5 | match({int: "hit", str: "miss"}) }}
 """
 
-# [filters.issubclass]
-# fn = "jinjarope.envtests.is_subclass"
-# group = "misc"
-
-# [filters.issubclass.examples.basic]
-# template = """
-# {{ issubclass(JinjaFile, dict) }}
-# """
-
-# [filters.isinstance]
-# fn = "jinjarope.envtests.is_instance"
-# group = "misc"
-
-# [filters.isinstance.examples.basic]
-# template = """
-# {{ 3 | isinstance("int") }}
-# """
-
 [filters.import_module]
 fn = "importlib.import_module"
 group = "misc"
+icon = "mdi:import"
 
 [filters.import_module.examples.basic]
 template = """
@@ -695,6 +722,7 @@ template = """
 [filters.hasattr]
 fn = "hasattr"
 group = "misc"
+icon = "mdi:help-circle"
 
 [filters.hasattr.examples.basic]
 template = """
@@ -704,6 +732,7 @@ template = """
 [filters.partial]
 fn = "jinjarope.utils.partial"
 group = "misc"
+icon = "mdi:function-variant"
 
 [filters.partial.examples.basic]
 template = """
@@ -713,6 +742,7 @@ template = """
 [filters.load_file]
 fn = "jinjarope.envglobals.load_file_cached"
 group = "misc"
+icon = "mdi:file"
 
 [filters.load_file.examples.basic]
 template = """
@@ -722,74 +752,67 @@ template = """
 [filters.get_doc]
 fn = "jinjarope.inspectfilters.get_doc"
 group = "inspect"
+icon = "mdi:file-document"
 
 [filters.get_doc.examples.basic]
 template = """
 {{ filters.get_doc | get_doc }}
 """
 
-
 [filters.get_argspec]
 fn = "jinjarope.inspectfilters.get_argspec"
 group = "inspect"
+icon = "mdi:function"
 
 [filters.get_argspec.examples.basic]
 template = """
 {{ filters.get_argspec | get_argspec }}
 """
 
-
-# [filters.unwrap]
-# fn = "inspect.unwrap"
-# group = "inspect"
-
-# [filters.unwrap.examples.basic]
-# template = """
-# {{ filters.unwrap | unwrap }}
-# """
-
-
 [filters.get_annotations]
 fn = "inspect.get_annotations"
 group = "inspect"
+icon = "mdi:annotation"
 
 [filters.get_annotations.examples.basic]
 template = """
 {{ filters.get_annotations | get_annotations }}
 """
 
-
 [filters.get_hash]
 fn = "jinjarope.utils.get_hash"
 group = "misc"
+icon = "mdi:hash"
 
 [filters.get_hash.examples.basic]
 template = """
 {{ "abc" | get_hash }}
 """
 
-
 [filters.expanduser]
 fn = "os.path.expanduser"
 group = "path"
+icon = "mdi:folder-home"
+
 [filters.expanduser.examples.basic]
 template = """
 {{ "~\\a" | expanduser }}
 """
 
-
 [filters.expandvars]
 fn = "os.path.expandvars"
 group = "path"
+icon = "mdi:variable"
+
 [filters.expandvars.examples.basic]
 template = """
 {{ "%TEMP%" | expandvars }}
 """
 
-
 [filters.path_join]
 fn = "os.path.join"
 group = "path"
+icon = "mdi:folder-plus"
 
 [filters.path_join.examples.basic]
 template = """
@@ -800,6 +823,7 @@ template = """
 fn = "fnmatch.fnmatch"
 group = "path"
 aliases = ["fnmatch_fnmatch"]
+icon = "mdi:file-find"
 
 [filters.fnmatch.examples.basic]
 template = """
@@ -810,6 +834,7 @@ template = """
 fn = "fnmatch.fnmatchcase"
 group = "path"
 aliases = ["fnmatch_fnmatchcase"]
+icon = "mdi:file-find"
 
 [filters.fnmatchcase.examples.basic]
 template = """
@@ -820,6 +845,7 @@ template = """
 [filters.fnmatch_filter]
 fn = "fnmatch.filter"
 group = "path"
+icon = "mdi:filter"
 
 [filters.fnmatch_filter.examples.basic]
 template = """
@@ -829,6 +855,7 @@ template = """
 [filters.glob]
 fn = "glob.glob"
 group = "path"
+icon = "mdi:file-search"
 
 [filters.glob.examples.basic]
 template = """
@@ -838,6 +865,7 @@ template = """
 [filters.check_output]
 fn = "jinjarope.envglobals.get_output_from_call"
 group = "misc"
+icon = "mdi:console"
 
 [filters.check_output.examples.basic]
 template = """
@@ -847,6 +875,7 @@ template = """
 [filters.getenv]
 fn = "os.getenv"
 group = "misc"
+icon = "mdi:variable-box"
 
 [filters.getenv.examples.basic]
 template = """
@@ -856,6 +885,7 @@ template = """
 [filters.render_template]
 fn = "jinjarope.Environment.render_template"
 group = "environment"
+icon = "mdi:file-code"
 
 [filters.render_template.examples.basic]
 template = """
@@ -865,6 +895,7 @@ template = """
 [filters.render_string]
 fn = "jinjarope.Environment.render_string"
 group = "environment"
+icon = "mdi:code-string"
 
 [filters.render_string.examples.basic]
 template = """
@@ -874,6 +905,7 @@ template = """
 [filters.render_file]
 fn = "jinjarope.Environment.render_file"
 group = "environment"
+icon = "mdi:file-code"
 
 [filters.render_file.examples.basic]
 template = """
@@ -883,6 +915,7 @@ template = """
 [filters.evaluate]
 fn = "jinjarope.Environment.evaluate"
 group = "environment"
+icon = "mdi:calculator"
 
 [filters.evaluate.examples.basic]
 template = """
@@ -892,86 +925,82 @@ template = """
 [filters.choices]
 fn = "random.choices"
 group = "random"
+icon = "mdi:dice-multiple"
 
 [filters.choices.examples.basic]
 template = """
 {{ [1, 2, 3] | choices(k=2) }}
 """
 
-
 [filters.sample]
 fn = "random.sample"
 group = "random"
+icon = "mdi:dice-3"
 
 [filters.sample.examples.basic]
 template = """
 {{ [1, 2, 3] | sample(2) }}
 """
 
-
 [filters.list_subclasses]
 fn = "jinjarope.inspectfilters.list_subclasses"
 group = "inspect"
+icon = "mdi:family-tree"
 
 [filters.list_subclasses.examples.basic]
 template = """
 {{ list | list_subclasses }}
 """
 
-
 [filters.list_baseclasses]
 fn = "jinjarope.inspectfilters.list_baseclasses"
 group = "inspect"
+icon = "mdi:family-tree"
 
 [filters.list_baseclasses.examples.basic]
 template = """
 {{ zip | list_baseclasses }}
 """
 
-
 [filters.get_deprecated_message]
 fn = "jinjarope.inspectfilters.get_deprecated_message"
 group = "inspect"
-
-# [filters.get_deprecated_message.examples.basic]
-# template = """
-# {{ zip | get_deprecated_message }}
-# """
-
+icon = "mdi:alert"
 
 [filters.get_source]
 fn = "jinjarope.inspectfilters.get_source"
 group = "inspect"
+icon = "mdi:code-braces"
 
 [filters.get_source.examples.basic]
 template = """
 {{ filters.get_source | get_source }}
 """
 
-
 [filters.get_source_lines]
 fn = "jinjarope.inspectfilters.get_source_lines"
 group = "inspect"
+icon = "mdi:code-array"
 
 [filters.get_source_lines.examples.basic]
 template = """
 {{ filters.get_source_lines | get_source_lines }}
 """
 
-
 [filters.get_signature]
 fn = "jinjarope.inspectfilters.get_signature"
 group = "inspect"
+icon = "mdi:function"
 
 [filters.get_signature.examples.basic]
 template = """
 {{ filters.get_signature | get_signature }}
 """
 
-
 [filters.get_file]
 fn = "jinjarope.inspectfilters.get_file"
 group = "inspect"
+icon = "mdi:file-find"
 
 [filters.get_file.examples.basic]
 template = """

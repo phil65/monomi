@@ -122,6 +122,7 @@ class JinjaItem:
     typ: Literal["filter", "test", "function"]
     fn: str
     group: str
+    icon: str | None = None
     examples: dict[str, dict[str, str]] = dataclasses.field(default_factory=dict)
     description: str | None = None
     aliases: list[str] = dataclasses.field(default_factory=list)
