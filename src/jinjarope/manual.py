@@ -69,7 +69,7 @@ class Build:
             filters_index = nav.add_page(title, is_index=True, hide="toc")
             grouped = iterfilters.groupby(items, key="group", natural_sort=True)
             for group, filters in grouped.items():
-                p = mk.MkPage(group)
+                p = mk.MkPage(f"{group} ({len(filters)})")
                 nav += p
                 variables = dict(mode=title.lower(), items=list(filters))
                 p += mk.MkTemplate("filters.jinja", variables=variables)
