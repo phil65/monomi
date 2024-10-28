@@ -5,22 +5,17 @@ required_packages = ["litellm"]
 
 [filters.llm_complete.examples.basic]
 template = """
-{{ "Describe how to install a package from PyPi" | llm_complete }}
+{{ "Describe how to install a package from PyPi" | llm_complete(model="gemini/gemini-1.5-flash") }}
 """
 
 [filters.llm_complete.examples.with_system_prompt]
 template = """
-{{ "What are the benefits of Python?" | llm_complete(system_prompt="You are a helpful programming assistant.") }}
+{{ "What are the benefits of Python?" | llm_complete(model="gemini/gemini-1.5-flash", system_prompt="You are a helpful programming assistant.") }}
 """
 
 [filters.llm_complete.examples.with_context]
 template = """
-{{ "Explain its importance." | llm_complete(context="We were discussing Python's role in data science.") }}
-"""
-
-[filters.llm_complete.examples.with_model]
-template = """
-{{ "Compare Python and JavaScript" | llm_complete(model="ollama/llama3.2:1b") }}
+{{ "Explain its importance." | llm_complete(model="gemini/gemini-1.5-flash", context="We were discussing Python's role in data science.") }}
 """
 
 [filters.llm_generate_image]
@@ -28,22 +23,22 @@ fn = "jinjarope.llmfilters.llm_generate_image"
 group = "llm"
 required_packages = ["litellm", "pillow"]
 
-[filters.llm_generate_image.examples.basic]
-template = """
-{{ "A beautiful sunset over the ocean" | llm_generate_image }}
-"""
+# [filters.llm_generate_image.examples.basic]
+# template = """
+# {{ "A beautiful sunset over the ocean" | llm_generate_image(model="gemini/gemini-pro-vision") }}
+# """
 
-[filters.llm_generate_image.examples.with_size]
-template = """
-{{ "A futuristic cityscape" | llm_generate_image(size="512x512") }}
-"""
+# [filters.llm_generate_image.examples.with_size]
+# template = """
+# {{ "A futuristic cityscape" | llm_generate_image(model="gemini/gemini-pro-vision", size="512x512") }}
+# """
 
-[filters.llm_generate_image.examples.with_quality]
-template = """
-{{ "A detailed portrait of a cat" | llm_generate_image(quality="hd") }}
-"""
+# [filters.llm_generate_image.examples.with_quality]
+# template = """
+# {{ "A detailed portrait of a cat" | llm_generate_image(model="gemini/gemini-pro-vision", quality="hd") }}
+# """
 
-[filters.llm_generate_image.examples.as_b64_json]
-template = """
-{{ "A colorful abstract painting" | llm_generate_image(as_b64_json=true) }}
-"""
+# [filters.llm_generate_image.examples.as_b64_json]
+# template = """
+# {{ "A colorful abstract painting" | llm_generate_image(model="gemini/gemini-pro-vision", as_b64_json=true) }}
+# """
