@@ -61,6 +61,15 @@ def render(
         show_default=False,
     ),
 ):
+    """Render a Jinja template.
+
+    Args:
+        template_path: Path to a (remote) template file.
+        cfg_files: JinjaFiles to load.
+        output: Output path for resolved template. If not given, print to stdout.
+        undefined: Set undefined behavior. Overrides JinjaFiles settings.
+        trim_blocks: Trim blocks. Overrides JinjaFiles settings.
+    """
     env = jinjarope.Environment()
     for path in cfg_files:
         env.load_jinja_file(path)
