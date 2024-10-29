@@ -250,6 +250,10 @@ group = "misc"
 template = """
 {{ [1, cycler] | map(attribute="__doc__") }}
 """
+[filters.map.examples.with_method]
+template = """
+{{ ["HELLO", "WoRlD"] | map("lower") | list }}
+"""
 
 [filters.min]
 fn = "jinja2.filters.do_min"
@@ -291,20 +295,20 @@ template = """
 {{ [1, 2, 3] | random }}
 """
 
-# [filters.reject]
-# fn = "jinja2.filters.do_reject"
-# group = "builtin"
-# # [filters.reject.examples.basic]
-# template = """
-# {{ "sth" | reject }}
-# """
+[filters.reject]
+fn = "jinja2.filters.do_reject"
+group = "iter"
+[filters.reject.examples.basic]
+template = """
+{{ [1, 2, 3, 4] | reject("even") | list }}
+"""
 
-# [filters.rejectattr]
-# fn = "jinja2.filters.do_rejectattr"
-# group = "builtin"
-# # [filters.rejectattr.examples.basic]
+[filters.rejectattr]
+fn = "jinja2.filters.do_rejectattr"
+group = "iter"
+# [filters.rejectattr.examples.basic]
 # template = """
-# {{ "sth" | rejectattr }}
+# {{ users | rejectattr("is_active") | list }}
 # """
 
 [filters.replace]
@@ -348,32 +352,32 @@ fn = "jinja2.filters.do_mark_safe"
 group = "text"
 [filters.safe.examples.basic]
 template = """
-{{ "abc" | safe }}
+{{ "<strong>Bold</strong>" | safe }}
 """
 
-# [filters.select]
-# fn = "jinja2.filters.do_select"
-# group = "builtin"
-# # [filters.select.examples.basic]
+[filters.select]
+fn = "jinja2.filters.do_select"
+group = "iter"
+[filters.select.examples.basic]
+template = """
+{{ [1, 2, 3, 4] | select("even") | list }}
+"""
+
+[filters.selectattr]
+fn = "jinja2.filters.do_selectattr"
+group = "iter"
+# [filters.selectattr.examples.basic]
 # template = """
-# {{ "sth" | select }}
+# {{ users | selectattr("is_active") | list }}
 # """
 
-# [filters.selectattr]
-# fn = "jinja2.filters.do_selectattr"
-# group = "builtin"
-# # [filters.selectattr.examples.basic]
-# template = """
-# {{ "sth" | selectattr }}
-# """
-
-# [filters.slice]
-# fn = "jinja2.filters.do_slice"
-# group = "builtin"
-# # [filters.slice.examples.basic]
-# template = """
-# {{ "sth" | slice }}
-# """
+[filters.slice]
+fn = "jinja2.filters.do_slice"
+group = "iter"
+[filters.slice.examples.basic]
+template = """
+{{ [1, 2, 3, 4, 5] | slice(2) | list }}
+"""
 
 [filters.sort]
 fn = "jinja2.filters.do_sort"
@@ -430,14 +434,18 @@ group = "text"
 template = """
 {{ "  abc  " | trim }}
 """
+[filters.trim.examples.with_chars]
+template = """
+{{ "...text..." | trim(".") }}
+"""
 
-# [filters.truncate]
-# fn = "jinja2.filters.do_truncate"
-# group = "builtin"
-# # [filters.truncate.examples.basic]
-# template = """
-# {{ "sth" | truncate }}
-# """
+[filters.truncate]
+fn = "jinja2.filters.do_truncate"
+group = "text"
+[filters.truncate.examples.basic]
+template = """
+{{ "too long text" | truncate(5) }}
+"""
 
 [filters.unique]
 fn = "jinja2.filters.do_unique"
