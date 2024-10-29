@@ -35,7 +35,7 @@ license = "MIT"
 
 [project.optional-dependencies]
 cli = ["rich", "typer"]
-extras = ["black", "pygments", "humanize"]
+extras = ["black", "pygments", "humanize", "natsort"]
 llm = ["litellm", "python-dotenv", "pillow"]
 icons = ["pyconify"]
 
