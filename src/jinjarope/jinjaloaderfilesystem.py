@@ -3,6 +3,7 @@ from __future__ import annotations
 import io
 import logging
 import pathlib
+from typing import Any
 
 import fsspec
 import jinja2
@@ -66,7 +67,7 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
             raise FileNotFoundError(path)
         return items
 
-    def _open(self, path: str, mode="rb", **kwargs) -> io.BytesIO:
+    def _open(self, path: str, mode: str = "rb", **kwargs: Any) -> io.BytesIO:
         if not self.env.loader:
             msg = "Environment has no loader set"
             raise FileNotFoundError(msg)
