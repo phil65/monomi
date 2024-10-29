@@ -37,6 +37,7 @@ license = "MIT"
 cli = ["rich", "typer"]
 extras = ["black", "pygments", "humanize"]
 llm = ["litellm", "python-dotenv", "pillow"]
+icons = ["pyconify"]
 
 [tool.uv]
 dev-dependencies = [
