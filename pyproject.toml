@@ -81,7 +81,7 @@ exclude_lines = [
 [tool.mypy]
 python_version = "3.12"
 # python_executable = ".venv/env/virtual/jinjarope/Scripts/python.exe"
-disable_error_code = ["assignment", "misc", "import", "has-type"]
+disable_error_code = ["misc", "import"]
 pretty = true
 check_untyped_defs = true
 exclude = ['venv/', '.venv/', 'tests/']
