@@ -87,11 +87,13 @@ def get_icon_svg(
             making it harder to align it in design.
 
     Example:
+        ``` py
         get_icon_svg("file")  # implicit mdi group
         get_icon_svg("mdi:file")  # pyconify key
         get_icon_svg("material/file")  # Material-style path
         get_icon_svg(":material-file:")  # material-style emoji slug
         get_icon_svg("mdi:file|:material-file:")  # returns a string with two svgs
+        ```
     """
     label = ""
     for splitted in icon.split("|"):
