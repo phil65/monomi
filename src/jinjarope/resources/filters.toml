@@ -1012,56 +1012,66 @@ template = """
 [filters.get_favicon]
 fn = "jinjarope.iconfilters.get_favicon"
 group = "icons"
-required_packages = ["urllib3"]
+icon = "mdi:favicon"
 
 [filters.get_favicon.examples.basic]
 template = """
 {{ 'example.com' | get_favicon }}
 """
-icon = "mdi:favicon"
 
 [filters.get_favicon.examples.google]
 template = """
 {{ 'example.com' | get_favicon(provider='google', size=64) }}
 """
-icon = "mdi:google"
 
 [filters.get_icon_svg]
 fn = "jinjarope.iconfilters.get_icon_svg"
 group = "icons"
 required_packages = ["pyconify"]
+icon = "mdi:svg"
 
 [filters.get_icon_svg.examples.basic]
 template = """
 {{ 'mdi:file' | get_icon_svg }}
 """
-icon = "mdi:svg"
 
 [filters.get_icon_svg.examples.styled]
 template = """
 {{ 'mdi:file' | get_icon_svg(color='#ff0000', height=32, width=32) }}
 """
-icon = "mdi:palette"
 
 [filters.get_icon_svg.examples.transformed]
 template = """
 {{ 'mdi:file' | get_icon_svg(flip='horizontal', rotate=90) }}
 """
-icon = "mdi:rotate-3d-variant"
 
 [filters.get_pyconify_key]
 fn = "jinjarope.iconfilters.get_pyconify_key"
 group = "icons"
 required_packages = ["pyconify"]
+icon = "mdi:key"
 
 [filters.get_pyconify_key.examples.basic]
 template = """
 {{ 'material/file' | get_pyconify_key }}
 """
-icon = "mdi:key"
 
 [filters.get_pyconify_key.examples.emoji]
 template = """
 {{ ':material-file:' | get_pyconify_key }}
 """
-icon = "mdi:emoticon"
+
+[filters.get_path_icon]
+fn = "jinjarope.iconfilters.get_path_icon"
+group = "icons"
+icon = "vscode-icons:default-file"
+
+[filters.get_path_icon.examples.basic]
+template = """
+{{ "path/to/file.py" | get_path_icon }}
+"""
+
+[filters.get_path_icon.examples.advanced]
+template = """
+{{ "path/to/file.py" | get_path_icon | get_icon_svg(color='#ff0000', height=32, width=32) }}
+"""
