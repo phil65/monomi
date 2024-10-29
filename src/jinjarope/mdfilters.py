@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 import re
 import types
-from typing import Any, Literal
+from typing import TYPE_CHECKING, Any, Literal
+
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 
 HEADER_REGEX = re.compile(r"^(#{1,6}) (.*)", flags=re.MULTILINE)
@@ -139,13 +142,14 @@ def autoref_link(
     if not link:
         return text or ""
     match link:
-        case Callable():
+        case types.ModuleType():
+            link = link.__name__
+        case _ if callable(link):
             if (mod := link.__module__) != "builtins":
                 link = f"{mod}.{link.__qualname__}"
             else:
                 link = link.__qualname__
-        case types.ModuleType():
-            link = link.__name__
+
     return f"[{text or link}][{link}]"
 
 

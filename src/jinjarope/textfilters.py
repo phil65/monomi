@@ -107,8 +107,8 @@ def extract_body(src: str) -> str:
         src: Source code to extract the body from
     """
     # see https://stackoverflow.com/questions/38050649
-    src_lines = src.split("\n")
-    src_lines = itertools.dropwhile(lambda x: x.strip().startswith("@"), src_lines)
+    lines = src.split("\n")
+    src_lines = itertools.dropwhile(lambda x: x.strip().startswith("@"), lines)
     line = next(src_lines).strip()  # type: ignore
     if not line.startswith(("def ", "class ")):
         return line.rsplit(":")[-1].strip()

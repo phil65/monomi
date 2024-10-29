@@ -376,3 +376,8 @@ def get_pyconify_key(icon: str) -> str:
     if ":" not in icon:
         icon = f"mdi:{icon}"
     return icon
+
+
+if __name__ == "__main__":
+    img = get_path_icon("test.md")
+    print(img)

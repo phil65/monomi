@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from collections.abc import Callable
 import pathlib
 import types
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from jinjarope import fsspecloaders, iterfilters, loaders
 
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     import os
 
     import jinja2
@@ -88,7 +88,7 @@ class LoaderRegistry:
         *args: str | types.ModuleType,
         dir_paths: list[str] | None = None,
         module_paths: list[str] | None = None,
-        functions: list[Callable] | None = None,
+        functions: list[Callable[..., Any]] | None = None,
         static: dict[str, str] | None = None,
         fsspec_paths: bool = True,
     ) -> jinja2.BaseLoader:
@@ -113,7 +113,7 @@ class LoaderRegistry:
                 return self.by_path(path)
             case (types.ModuleType() as mod,):
                 return loaders.PackageLoader(mod)
-            case (Callable() as fn,):
+            case (fn,) if callable(fn):
                 return loaders.FunctionLoader(fn)
         m_paths = iterfilters.reduce_list(module_paths or [])
         loader = loaders.ChoiceLoader([self.get_package_loader(p) for p in m_paths])
@@ -122,8 +122,8 @@ class LoaderRegistry:
                 loader |= self.get_fsspec_loader(file)
             else:
                 loader |= self.get_filesystem_loader(file)
-        for fn in functions or []:
-            loader |= loaders.FunctionLoader(fn)
+        for function in functions or []:
+            loader |= loaders.FunctionLoader(function)
         if static:
             loader |= loaders.DictLoader(static)
         if fsspec_paths:

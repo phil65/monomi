@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import dataclasses
-from typing import Any
+from typing import Any, Literal
 
 import jinja2
 
@@ -35,7 +35,7 @@ class EnvConfig:
     """Remove first newline after a block (not variable tag!). Defaults to False."""
     lstrip_blocks: bool = False
     """Strip leading spaces / tabs from start of a line to a block. Defaults to False."""
-    newline_sequence: str = "\n"
+    newline_sequence: Literal["\n", "\r\n", "\r"] = "\n"
     r"""The sequence that starts a newline. ('\r', '\n' or '\r\n'. Defaults to '\n' """
     keep_trailing_newline: bool = False
     """Preserve the trailing newline when rendering templates. The default is False.
@@ -65,5 +65,5 @@ class EnvConfig:
 
 
 if __name__ == "__main__":
-    cfg = EnvConfig(newline_sequence="abc")
+    cfg = EnvConfig(newline_sequence="\n")
     print(repr(cfg))

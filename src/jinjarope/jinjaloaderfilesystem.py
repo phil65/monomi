@@ -36,6 +36,9 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
             raise FileNotFoundError(path)
         paths = self.env.loader.list_templates()
         path = pathlib.Path(path).as_posix().strip("/")
+        items: list[dict[str, str]] | list[str]
+        files: list[dict[str, str]] | list[str]
+        dirs: list[dict[str, str]] | list[str]
         if path in {"", "/", "."}:
             """Root, return all."""
             if detail:
