@@ -192,6 +192,23 @@ def slugify(text: str | os.PathLike[str]) -> str:
     return re.sub("^[^0-9a-zA-Z_#]+", "", text)
 
 
+def dirname_to_title(dirname: str | os.PathLike[str]) -> str:
+    """Return a page tile obtained from a directory name.
+
+    Replaces dashes and underscores with spaces and capitalizes the first letter
+    in case all letters are lowercase
+
+    Arguments:
+        dirname: directory to get a title for
+    """
+    title = str(dirname)
+    title = title.replace("-", " ").replace("_", " ")
+    if title.lower() == title:
+        title = title.capitalize()
+
+    return title
+
+
 def escape(text: str) -> str:
     """Escape text using Markupsafe library.
 

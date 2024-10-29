@@ -20,6 +20,17 @@ template = """
 {{ "Ä test" | slugify }}
 """
 
+[filters.dirname_to_title]
+fn = "jinjarope.textfilters.dirname_to_title"
+group = "format"
+icon = "mage:folder-2"
+
+
+[filters.dirname_to_title.examples.basic]
+template = """
+{{ "a_foldername" | dirname_to_title }}
+"""
+
 [filters.pformat]
 fn = "pprint.pformat"
 group = "format"
