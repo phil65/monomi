@@ -164,9 +164,13 @@ def is_fsspec_url(string: str | os.PathLike[str]) -> bool:
     )
 
 
-def contains_files(site_directory: str | os.PathLike[str]) -> bool:
-    """Check if the site directory contains stale files from a previous build."""
-    path = pathlib.Path(site_directory)
+def contains_files(directory: str | os.PathLike[str]) -> bool:
+    """Check if given directory exists and contains any files.
+
+    Arguments:
+        directory: The directoy to check
+    """
+    path = pathlib.Path(directory)
     return path.exists() and any(path.iterdir())
 
 
