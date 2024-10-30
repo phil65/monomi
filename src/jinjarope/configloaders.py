@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from typing import TYPE_CHECKING, Any, Literal
 
 import jinja2
@@ -11,6 +10,7 @@ from jinjarope import iterfilters, loaders, serializefilters, utils
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping
+    import os
 
     type NestedMapping = Mapping[str, "str | NestedMapping"]
 
@@ -106,9 +106,9 @@ class TemplateFileLoader(NestedDictLoader):
             sub_path: An optional tuple of keys describing the "dictionary path" inside
                       the file
         """
-        self.path = os.fspath(path)
-        text = utils.fsspec_get(self.path)
-        file_fmt = fmt if fmt else upath.UPath(self.path).suffix.lstrip(".")
+        self.path = upath.UPath(path)
+        text = utils.fsspec_get(str(self.path))
+        file_fmt = fmt if fmt else self.path.suffix.lstrip(".")
         assert file_fmt in ["json", "toml", "yaml", "ini"]
         mapping = serializefilters.deserialize(text, fmt=file_fmt)  # type: ignore[arg-type]
         for part in sub_path or []:
@@ -117,7 +117,7 @@ class TemplateFileLoader(NestedDictLoader):
         self._data = mapping
 
     def __repr__(self):
-        path = upath.UPath(self.path).as_posix()
+        path = self.path.as_posix()
         return utils.get_repr(self, path=path)
 
 

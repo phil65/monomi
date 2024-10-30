@@ -13,6 +13,7 @@ from jinjarope import envtests
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping
     from dataclasses import Field
+    import os
     import types
 
 
@@ -81,7 +82,7 @@ def get_repr(_obj: Any, *args: Any, **kwargs: Any) -> str:
 
 
 @functools.cache
-def fsspec_get(path: str) -> str:
+def fsspec_get(path: str | os.PathLike[str]) -> str:
     """Fetch a file via fsspec and return file content as a string.
 
     Arguments:
