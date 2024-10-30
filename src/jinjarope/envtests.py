@@ -5,10 +5,11 @@ import datetime
 import inspect
 import math
 import os
-import pathlib
 import re
 import sys
 from typing import TYPE_CHECKING, Any, TypeVar
+
+import upath
 
 from jinjarope import utils
 
@@ -167,10 +168,12 @@ def is_fsspec_url(string: str | os.PathLike[str]) -> bool:
 def contains_files(directory: str | os.PathLike[str]) -> bool:
     """Check if given directory exists and contains any files.
 
+    Supports regular file paths and fsspec URLs.
+
     Arguments:
         directory: The directoy to check
     """
-    path = pathlib.Path(directory)
+    path = upath.UPath(directory)
     return path.exists() and any(path.iterdir())
 
 
