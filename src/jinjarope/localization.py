@@ -145,6 +145,6 @@ def _get_merged_translations(
         if merged_translations is None:
             merged_translations = translations
         else:
-            merged_translations.merge(translations)
+            merged_translations.merge(translations)  # type: ignore[attr-defined]
 
-    return merged_translations
+    return merged_translations  # type: ignore[return-value]
