@@ -52,8 +52,7 @@ if TYPE_CHECKING:
     import jinja2
 
 
-log = logging.getLogger(__name__)
-BASE_PATH = pathlib.Path(__file__).absolute().parent
+logger = logging.getLogger(__name__)
 
 
 class NoBabelExtension(InternationalizationExtension):
@@ -105,7 +104,7 @@ def install_translations(
         else:
             env.install_null_translations()  # type: ignore[attr-defined]
             if locale.language != "en":
-                log.warning(
+                logger.warning(
                     "Translations couldnt be found for locale %r, defaulting to English",
                     locale,
                 )
@@ -130,7 +129,7 @@ def _get_merged_translations(
     """
     merged_translations: NullTranslations | None = None
 
-    log.debug("Looking for translations for locale %r", locale)
+    logger.debug("Looking for translations for locale %r", locale)
     locale_str = (
         f"{locale.language}_{locale.territory}" if locale.territory else locale.language
     )
@@ -139,9 +138,9 @@ def _get_merged_translations(
         translations = Translations.load(dirname, [locale_str])
 
         if type(translations) is NullTranslations:
-            log.debug("No translations found in: %r", dirname)
+            logger.debug("No translations found in: %r", dirname)
             continue
-        log.debug("Translations found in: %r", dirname)
+        logger.debug("Translations found in: %r", dirname)
         if merged_translations is None:
             merged_translations = translations
         else:
