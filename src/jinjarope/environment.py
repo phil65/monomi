@@ -39,7 +39,12 @@ class Context(jinja2.runtime.Context):
 
 
 class Environment(jinja2.Environment):
-    """An enhanced Jinja environment."""
+    """An enhanced Jinja environment.
+
+    This class extends the Jinja2 environment with functionality for
+    loading Jinja files, managing undefined variables, and providing
+    helper functions for rendering templates.
+    """
 
     def __init__(
         self,
@@ -55,11 +60,21 @@ class Environment(jinja2.Environment):
     ):
         """Constructor.
 
-        Arguments:
+        This constructor initializes the environment with custom
+        configuration and loads default filters, tests, functions and
+        globals. It also registers the custom ``render_template``,
+        ``render_string``, ``render_file`` and ``evaluate`` functions
+        as filters.
+
+        !!! info "Changes from Jinja2"
+            The ``trim_blocks`` parameter is set to ``True`` by default,
+            and the ``cache_size`` is set to ``-1``, which disables
+            automatic cache cleanup.
+
+        Args:
             undefined: Handling of "Undefined" errors
-            trim_blocks: Whitespace handling. Changes jinja default to `True`.
-            cache_size: Amount of templates to cache.
-                        Changes jinja default to not clean cache.
+            trim_blocks: Whitespace handling
+            cache_size: Amount of templates to cache
             auto_reload: Whether to check templates for changes on loading
             loader: Loader to use (Also accepts a JSON representation of loaders)
             kwargs: Keyword arguments passed to parent
@@ -111,19 +126,36 @@ class Environment(jinja2.Environment):
     def __contains__(self, template: str | os.PathLike[str]) -> bool:
         """Check whether given template path exists.
 
-        Arguments:
+        Args:
             template: The template path to check
+
+        Returns:
+            True if the template exists, False otherwise.
         """
         return pathlib.Path(template).as_posix() in self.list_templates()
 
     def __getitem__(self, val: str) -> jinja2.Template:
         """Return a template by path.
 
-        val: The template path
+        Args:
+            val: The template path
+
+        Returns:
+            The template object for the given path.
         """
         return self.get_template(val)
 
     def install_translations(self, locale: str, dirs: Sequence[str | os.PathLike[str]]):
+        """Install translations for the environment.
+
+        This function installs translations for the given locale
+        using the provided directory paths. It uses the
+        `jinjarope.localization` module to manage translations.
+
+        Args:
+            locale: The locale to install translations for
+            dirs: A sequence of directory paths containing translation files
+        """
         from jinjarope import localization
 
         localization.install_translations(self, locale, dirs)
@@ -131,7 +163,7 @@ class Environment(jinja2.Environment):
     def set_undefined(self, value: undefined_.UndefinedStr | type[jinja2.Undefined]):
         """Set the undefined behaviour for the environment.
 
-        Arguments:
+        Args:
             value: The new undefined behaviour
         """
         new = undefined_.UNDEFINED_BEHAVIOR[value] if isinstance(value, str) else value
@@ -149,7 +181,10 @@ class Environment(jinja2.Environment):
     ):
         """Load the content of a JinjaFile and add it to the environment.
 
-        Arguments:
+        This function reads a JinjaFile and adds its filters, tests,
+        functions, and configuration to the current environment.
+
+        Args:
             path: The path to the JinjaFile
             scope_prefix: Optional prefix to add to all tests / filters / functions
             load_filters: Whether to load filters from the JinjaFile
@@ -214,7 +249,29 @@ class Environment(jinja2.Environment):
         raw: bool = False,
         defer_init: bool = False,
     ) -> CodeType | str:
-        """Compile the template."""
+        """Compile the template.
+
+        This function compiles the given template source. If any of the
+        keyword arguments are set to a non-default value, the compiled code
+        is not cached. Otherwise, the compilation result is cached using the
+        ``source`` as key. This behavior can be overwritten by setting
+        ``self.cache_code`` to ``False``.
+
+        !!! info "Changes from Jinja2"
+            The default behavior of the ``compile`` method has been modified
+            to cache the compiled code unless any keyword arguments are
+            provided.
+
+        Args:
+            source: The template source
+            name: The name of the template
+            filename: The filename of the template
+            raw: Whether to compile the template as raw
+            defer_init: Whether to defer initialization
+
+        Returns:
+            The compiled template code.
+        """
         if (
             not self.cache_code
             or name is not None
@@ -240,7 +297,11 @@ class Environment(jinja2.Environment):
     def inherit_from(self, env: jinja2.Environment):
         """Inherit complete configuration from another environment.
 
-        Arguments:
+        This function copies all settings and configuration from another
+        environment to the current one. This effectively allows
+        inheritance of environment settings.
+
+        Args:
             env: The environment to inherit settings from
         """
         self.__dict__.update(env.__dict__)
@@ -250,12 +311,17 @@ class Environment(jinja2.Environment):
     def add_template(self, file: str | os.PathLike[str]):
         """Add a new template during runtime.
 
-        Will create a new DictLoader and inject it into the existing loaders.
+        This function adds a new template to the environment during
+        runtime by creating a new DictLoader and injecting it into the
+        existing loaders. This allows rendering templates that were not
+        defined when the environment was initialized.
 
-        Useful since render_string/render_file does not allow to use a parent template.
-        Using this, render_template can be used.
+        !!! info "Use case"
+            This function is particularly useful for situations where a
+            template needs to be rendered dynamically, such as when
+            rendering templates within other templates.
 
-        Arguments:
+        Args:
             file: File to add as a template
         """
         # we keep track of already added extra files to not add things multiple times.
@@ -270,11 +336,13 @@ class Environment(jinja2.Environment):
     def add_template_path(self, *path: str | os.PathLike[str]):
         """Add a new template path during runtime.
 
-        Will append a new FileSystemLoader by wrapping it and the the current loader into
-        either an already-existing or a new Choiceloader.
+        This function adds a new template path to the environment
+        during runtime by appending a new FileSystemLoader to the
+        existing loaders. This allows the environment to find templates
+        in additional locations.
 
-        Arguments:
-            path: Template serch path(s) to add
+        Args:
+            path: Template search path(s) to add
         """
         for p in path:
             if p in self._extra_paths:
@@ -287,6 +355,7 @@ class Environment(jinja2.Environment):
         self,
         new_loader: jinja2.BaseLoader | dict[str, str] | str | os.PathLike[str],
     ):
+        """Add a new loader to the current environment."""
         match new_loader:
             case dict():
                 new_loader = loaders.DictLoader(new_loader)
@@ -308,12 +377,17 @@ class Environment(jinja2.Environment):
     ) -> bool:
         """Render a template condition.
 
-        Returns True for true-ish return values from a render_string call.
+        This function renders a template string and evaluates its
+        result as a boolean. It returns True if the result is truthy
+        (not None, False, or an empty string), otherwise False.
 
-        Arguments:
+        Args:
             string: String to evaluate for True-ishness
             variables: Extra variables for the rendering
             kwargs: Further extra variables for rendering
+
+        Returns:
+            True if the rendered string is truthy, False otherwise.
         """
         result = self.render_string(string=string, variables=variables, **kwargs)
         return result not in ["None", "False", ""]
@@ -326,10 +400,16 @@ class Environment(jinja2.Environment):
     ) -> str:
         """Render a template string.
 
-        Arguments:
+        This function renders the given template string using the
+        current environment's configuration and globals.
+
+        Args:
             string: String to render
             variables: Extra variables for the rendering
             kwargs: Further extra variables for rendering
+
+        Returns:
+            The rendered string.
         """
         variables = (variables or {}) | kwargs
         cls = self.template_class
@@ -348,12 +428,21 @@ class Environment(jinja2.Environment):
     ) -> str:
         """Helper to directly render a template from filesystem.
 
-        Note: The file we pull in gets cached. That should be fine for our case though.
+        This function renders a template file directly from the
+        filesystem using the current environment's configuration and
+        globals.
 
-        Arguments:
+        !!! info
+            The file content is cached, which is generally acceptable
+            for common use cases.
+
+        Args:
             file: Template file to load
             variables: Extra variables for the rendering
             kwargs: Further extra variables for rendering
+
+        Returns:
+            The rendered string.
         """
         content = envglobals.load_file_cached(str(file))
         return self.render_string(content, variables, **kwargs)
@@ -368,12 +457,23 @@ class Environment(jinja2.Environment):
     ) -> str:
         """Render a loaded template (or a block of a template).
 
-        Arguments:
+        This function renders a loaded template or a specific block from
+        a template. It allows for the inclusion of parent templates and
+        provides the flexibility to render individual blocks.
+
+        Args:
             template_name: Template name
             variables: Extra variables for rendering
             block_name: Render specific block from the template
             parent_template: The name of the parent template importing this template
             kwargs: Further extra variables for rendering
+
+        Returns:
+            The rendered string.
+
+        Raises:
+            BlockNotFoundError: If the specified block is not found in the
+            template.
         """
         variables = (variables or {}) | kwargs
         template = self.get_template(template_name, parent=parent_template)
@@ -393,7 +493,11 @@ class Environment(jinja2.Environment):
     def with_globals(self, **kwargs: Any):
         """Context manager to temporarily set globals for the environment.
 
-        Arguments:
+        This context manager allows temporarily overriding the environment's
+        globals with the provided values. Any changes made within the context
+        manager are reverted upon exiting the context.
+
+        Args:
             kwargs: Globals to set
         """
         temp = self.globals.copy()
@@ -408,6 +512,18 @@ class Environment(jinja2.Environment):
         static: dict[str, str] | None = None,
         fsspec_paths: bool = True,
     ):
+        """Set the loader for the environment.
+
+        This function sets the loader for the environment based on
+        the provided parameters. It uses the ``jinjarope.get_loader``
+        function to create a suitable loader.
+
+        Args:
+            dir_paths: List of directory paths to search for templates
+            module_paths: List of module paths to search for templates
+            static: Dictionary of static files to include in the loader
+            fsspec_paths: Whether to use fsspec paths for loading
+        """
         self.loader = jinjarope.get_loader(
             dir_paths=dir_paths,
             module_paths=module_paths,
@@ -422,9 +538,17 @@ class Environment(jinja2.Environment):
     ) -> str:
         """Evaluate python code and return the caught stdout + return value of last line.
 
-        Arguments:
+        This function executes Python code within the environment's
+        globals. It captures the standard output generated during
+        execution and returns the combined result as a string.
+
+        Args:
             code: The code to execute
-            context: Globals for the execution evironment
+            context: Globals for the execution environment
+
+        Returns:
+            The combined standard output and return value of the last
+            line of code.
         """
         now = time.time()
         logger.debug("Evaluating code:\n%s", code)
@@ -443,7 +567,14 @@ class Environment(jinja2.Environment):
         return val or ""
 
     def get_config(self) -> envconfig.EnvConfig:
-        """All environment settings as a dict (not included: undefined and loaders)."""
+        """All environment settings as a dict (not included: undefined and loaders).
+
+        This function returns a dictionary representation of all
+        environment settings, excluding undefined and loaders.
+
+        Returns:
+            A dictionary containing the environment configuration.
+        """
         exts = [
             k
             for k in self.extensions
@@ -474,15 +605,18 @@ class Environment(jinja2.Environment):
     ) -> MutableMapping[str, Any]:
         """Make the globals map for a template.
 
-        Any given template
-        globals overlay the environment :attr:`globals`.
+        This function creates a globals map for a template, where
+        template-specific globals overlay the environment's global
+        variables.
 
-        Returns a :class:`collections.ChainMap`. This allows any changes
-        to a template's globals to only affect that template, while
-        changes to the environment's globals are still reflected.
-        However, avoid modifying any globals after a template is loaded.
+        !!! info
+            Avoid modifying any globals after a template is loaded.
 
-        :param d: Dict of template-specific globals.
+        Args:
+            d: Dict of template-specific globals
+
+        Returns:
+            A ChainMap containing the template globals.
         """
         if d is None:
             d = {}
@@ -505,6 +639,7 @@ class BlockNotFoundError(Exception):
         template_name: str,
         message: str | None = None,
     ):
+        """Initialize the exception."""
         self.block_name = block_name
         self.template_name = template_name
         super().__init__(
