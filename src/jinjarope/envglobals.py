@@ -50,7 +50,7 @@ def get_output_from_call(
         return None
     if not isinstance(call, str):
         call = " ".join(call)
-    key = pathlib.Path(cwd or ".").absolute().as_posix() + call
+    key = pathlib.Path(cwd or ".").resolve().as_posix() + call
     if key in _cache and use_cache:
         return _cache[key]
     logger.info("Executing %r...", call)
