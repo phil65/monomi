@@ -26,7 +26,7 @@ from jinjarope import (
 
 
 if TYPE_CHECKING:
-    from collections.abc import MutableMapping
+    from collections.abc import MutableMapping, Sequence
     from types import CodeType
 
 
@@ -122,6 +122,11 @@ class Environment(jinja2.Environment):
         val: The template path
         """
         return self.get_template(val)
+
+    def install_translations(self, locale: str, dirs: Sequence[str | os.PathLike[str]]):
+        from jinjarope import localization
+
+        localization.install_translations(self, locale, dirs)
 
     def set_undefined(self, value: undefined_.UndefinedStr | type[jinja2.Undefined]):
         """Set the undefined behaviour for the environment.
