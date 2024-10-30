@@ -295,6 +295,21 @@ template = """
 {{ "https://picsum.photos/100/100" | url_to_b64 }}
 """
 
+
+[filters.inject_javascript]
+fn = "jinjarope.htmlfilters.inject_javascript"
+group = "html"
+icon = "mdi:source-code"
+
+[filters.inject_javascript.examples.basic]
+template = """
+{{ "<body>some HTML</body>" | inject_javascript("var number = 1;") }}
+"""
+[filters.inject_javascript.examples.with_position]
+template = """
+{{ "<head>HEAD</head><body>some HTML</body>" | inject_javascript("var number = 1;", position="head") }}
+"""
+
 # Itertools
 
 [filters.batched]
@@ -1076,6 +1091,7 @@ template = """
 fn = "jinjarope.iconfilters.get_path_icon"
 group = "icons"
 icon = "vscode-icons:default-file"
+required_packages = ["universal_pathlib"]
 
 [filters.get_path_icon.examples.basic]
 template = """

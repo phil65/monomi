@@ -6,7 +6,7 @@ import json
 import logging
 import posixpath
 import re
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Any, Literal, TypeVar
 from xml.etree import ElementTree as ET
 
 import requests
@@ -438,6 +438,64 @@ def url_to_b64(image_url: str) -> str | None:
 
     # Encode the image to base64
     return base64.b64encode(image_data).decode("utf-8")
+
+
+StrOrBytes = TypeVar("StrOrBytes", bytes, str)
+
+
+# TypeVar for maintaining input/output type consistency
+ContentType = TypeVar("ContentType", str, bytes)
+Position = Literal["body", "head", "end_head", "end_body"]
+
+
+def inject_javascript(
+    html_content: ContentType,
+    javascript: str,
+    *,
+    position: Position = "end_body",
+) -> ContentType:
+    """Injects JavaScript code into an HTML string or bytes object.
+
+    Args:
+        html_content: The HTML content to inject the JavaScript into
+        javascript: The JavaScript code to inject
+        position: The position to inject the JavaScript ('body' by default)
+
+    Returns:
+        The modified HTML content with the same type as the input
+
+    Raises:
+        ValueError: If the specified position tag is not found in the HTML content
+        TypeError: If the input type is neither str nor bytes
+    """
+    # Convert bytes to str if needed
+    is_bytes = isinstance(html_content, bytes)
+    working_content: str = html_content.decode() if is_bytes else html_content  # type: ignore[assignment, attr-defined]
+
+    # Prepare the JavaScript tag
+    script_tag = f"<script>{javascript}</script>"
+
+    # Define the injection patterns
+    patterns = {
+        "body": (r"<body[^>]*>", lambda m: f"{m.group(0)}{script_tag}"),
+        "head": (r"<head[^>]*>", lambda m: f"{m.group(0)}{script_tag}"),
+        "end_head": (r"</head>", lambda m: f"{script_tag}{m.group(0)}"),
+        "end_body": (r"</body>", lambda m: f"{script_tag}{m.group(0)}"),
+    }
+
+    if position not in patterns:
+        msg = f"Invalid position: {position}. Must be one of {list(patterns.keys())}"
+        raise ValueError(msg)
+
+    pattern, replacement = patterns[position]
+    modified_content = re.sub(pattern, replacement, working_content, count=1)
+
+    # If no substitution was made, the tag wasn't found
+    if modified_content == working_content:
+        msg = f"Could not find {position} tag in HTML content"
+        raise ValueError(msg)
+    # Return the same type as input
+    return modified_content.encode() if is_bytes else modified_content  # type: ignore[return-value]
 
 
 if __name__ == "__main__":
