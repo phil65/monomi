@@ -161,9 +161,9 @@ select = [
     "YTT", # flake8-2020
 ]
 ignore = [
-    "C408", # Unnecessary {obj_type} call (rewrite as a literal)
-    "B905", # zip() without an explicit strict= parameter
-    "C901", # {name} is too complex ({complexity} > {max_complexity})
+    "C408",   # Unnecessary {obj_type} call (rewrite as a literal)
+    "B905",   # zip() without an explicit strict= parameter
+    "C901",   # {name} is too complex ({complexity} > {max_complexity})
     "COM812",
     # "CPY001", # Missing copyright notice at top of file
     "D100",    # Missing docstring in public module
@@ -211,6 +211,7 @@ combine-as-imports = true
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["E402", "I001"]
+"tests/test_decorators.py" = ["PLR2004"]
 
 [tool.pyright]
 reportUnusedCallResult = false
