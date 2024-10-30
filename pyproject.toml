@@ -37,7 +37,7 @@ keywords = [
 ]
 
 requires-python = ">=3.12"
-dependencies = ["jinja2", "fsspec"]
+dependencies = ["jinja2", "fsspec", "universal_pathlib"]
 license = "MIT"
 
 [project.optional-dependencies]
