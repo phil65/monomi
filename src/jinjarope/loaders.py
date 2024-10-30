@@ -5,6 +5,7 @@ import types
 from typing import TYPE_CHECKING
 
 import jinja2
+import upath
 
 from jinjarope import inspectfilters, utils
 
@@ -33,7 +34,7 @@ class LoaderMixin:
 
     def __contains__(self, path: str):
         """Check whether given path is loadable by this loader."""
-        return pathlib.Path(path).as_posix() in self.list_templates()
+        return upath.UPath(path).as_posix() in self.list_templates()
 
     def __rtruediv__(self, path: str):
         return self.prefixed_with(path)
