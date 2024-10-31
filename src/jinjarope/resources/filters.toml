@@ -1114,5 +1114,15 @@ template = """
 
 [filters.get_path_ascii_icon.examples.folder]
 template = """
-{{ "path/to/folder/" | get_path_ascii_icon }}
+{{ "src/" | get_path_ascii_icon }}
+"""
+
+[filters.format_timestamp]
+fn = "jinjarope.textfilters.format_timestamp"
+group = "time"
+icon = "mdi:clock"
+
+[filters.format_timestamp.examples.basic]
+template = """
+{{ 1594819641.9622827 | format_timestamp("%Y-%m-%d %H:%M:%S") }}
 """

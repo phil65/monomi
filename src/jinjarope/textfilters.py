@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 import functools
 import inspect
 import itertools
@@ -218,6 +219,19 @@ def escape(text: str) -> str:
     import markupsafe
 
     return markupsafe.escape(text)
+
+
+def format_timestamp(timestamp: float, fmt: str) -> str:
+    """Format Unix timestamp to date string.
+
+    Arguments:
+        timestamp: Unix timestamp to format
+        fmt: Format string according to strftime() format codes
+
+    Returns:
+        Formatted date string
+    """
+    return datetime.datetime.fromtimestamp(timestamp).strftime(fmt)
 
 
 if __name__ == "__main__":
