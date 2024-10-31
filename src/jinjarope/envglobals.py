@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import datetime
-import functools
 import logging
 import pathlib
 from typing import TYPE_CHECKING, Any
 
-from jinjarope import utils
+import upath
+
+from jinjarope import decorators as dec, utils
 
 
 if TYPE_CHECKING:
@@ -17,9 +18,12 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-@functools.cache
+@dec.cache_with_transforms(arg_transformers={0: lambda p: upath.UPath(p).resolve()})
 def load_file_cached(path: str | os.PathLike[str]) -> str:
-    """Return the str-content of file at given path.
+    """Return the text-content of file at given path.
+
+    Call is cached based on resolved file path.
+    Also supports fsspec-style URLs and UPaths.
 
     Arguments:
         path: The path to get str content from
