@@ -1,13 +1,24 @@
+"""Analyzes and visualizes Python code structure as a tree representation.
+
+This module provides functionality to parse Python source files and generate
+a tree-like visualization of their structure, including classes, methods,
+and functions with their decorators.
+"""
+
 from __future__ import annotations
 
 import ast
 from dataclasses import dataclass
 from enum import Enum, auto
-from pathlib import Path
+import pathlib
 
 
 class NodeType(Enum):
-    """Types of nodes that can be found in the Python file."""
+    """Types of nodes found in Python code structure analysis.
+
+    Each enum value represents a different structural element that can be
+    found when parsing Python source code.
+    """
 
     MODULE = auto()
     CLASS = auto()
@@ -22,7 +33,18 @@ class NodeType(Enum):
 
 @dataclass
 class Node:
-    """Represents a node in the Python file structure."""
+    """Represents a node in the Python code structure tree.
+
+    A node contains information about a specific code element (like a class
+    or function) and maintains relationships with its child nodes.
+
+    Args:
+        name: The identifier of the code element
+        type: The classification of the code element
+        children: List of child nodes
+        line_number: Source code line where this element appears
+        decorators: List of decorator names applied to this element
+    """
 
     name: str
     type: NodeType
@@ -33,7 +55,20 @@ class Node:
 
 @dataclass
 class TreeOptions:
-    """Configuration options for tree generation."""
+    """Configuration options for tree visualization.
+
+    Controls the appearance and content of the generated tree structure.
+
+    Args:
+        show_types: Include node type annotations
+        show_line_numbers: Display source line numbers
+        show_decorators: Include decorator information
+        sort_alphabetically: Sort nodes by name
+        include_private: Include private members (_name)
+        include_dunder: Include double underscore methods (__name__)
+        max_depth: Maximum tree depth to display
+        branch_style: Style of tree branches ("ascii" or "unicode")
+    """
 
     show_types: bool = True
     show_line_numbers: bool = False
@@ -46,7 +81,11 @@ class TreeOptions:
 
     @property
     def symbols(self) -> dict[str, str]:
-        """Return the appropriate tree symbols based on style."""
+        """Get tree drawing symbols based on selected style.
+
+        Returns a dictionary containing the appropriate symbols for
+        drawing tree branches.
+        """
         if self.branch_style == "unicode":
             return {"pipe": "│   ", "last": "└── ", "branch": "├── ", "empty": "    "}
         return {"pipe": "|   ", "last": "`-- ", "branch": "|-- ", "empty": "    "}
@@ -73,14 +112,28 @@ def _should_include_node(name: str, options: TreeOptions) -> bool:
     return not (name.startswith("_") and not options.include_private)
 
 
-def parse_python_file(file_path: Path | str) -> Node:
-    """Parse a Python file and return its structure as a tree."""
+def parse_python_file(file_path: pathlib.Path | str) -> Node:
+    """Parse a Python source file into a tree structure.
+
+    Analyzes the AST of a Python file and creates a hierarchical representation
+    of its structure, including classes, methods, and functions.
+
+    !!! note
+        The parser recognizes special method types through decorators
+        and handles both synchronous and asynchronous definitions.
+
+    Args:
+        file_path: Path to the Python source file
+
+    Example:
+        ```python
+        root = parse_python_file("example.py")
+        print(f"Found {len(root.children)} top-level definitions")
+        ```
+    """
     if isinstance(file_path, str):
-        file_path = Path(file_path)
-
-    with file_path.open("r", encoding="utf-8") as f:
-        content = f.read()
-
+        file_path = pathlib.Path(file_path)
+    content = file_path.read_text()
     tree = ast.parse(content)
     root = Node(file_path.name, NodeType.MODULE, [], 0, [])
 
@@ -181,7 +234,7 @@ def generate_tree(
 
 
 def create_structure_map(
-    file_path: Path | str,
+    file_path: pathlib.Path | str,
     *,
     show_types: bool = True,
     show_line_numbers: bool = False,
@@ -192,7 +245,37 @@ def create_structure_map(
     max_depth: int | None = None,
     use_unicode: bool = True,
 ) -> str:
-    """Create a tree representation of a Python file's structure."""
+    """Generate a textual tree representation of Python code structure.
+
+    Creates a visual tree showing the hierarchical structure of classes,
+    methods, and functions in a Python file, with customizable display options.
+
+    !!! tip
+        Use `use_unicode=True` for better-looking trees in terminals
+        that support Unicode characters.
+
+    Args:
+        file_path: Path to the Python source file
+        show_types: Include node type annotations
+        show_line_numbers: Display source line numbers
+        show_decorators: Include decorator information
+        sort_alphabetically: Sort nodes by name
+        include_private: Include private members
+        include_dunder: Include double underscore methods
+        max_depth: Maximum tree depth to display
+        use_unicode: Use Unicode characters for tree branches
+
+    Example:
+        ```python
+        tree = create_structure_map(
+            "myfile.py",
+            show_types=False,
+            show_line_numbers=True,
+            sort_alphabetically=True
+        )
+        print(tree)
+        ```
+    """
     options = TreeOptions(
         show_types=show_types,
         show_line_numbers=show_line_numbers,
