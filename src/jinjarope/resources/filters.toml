@@ -1091,7 +1091,6 @@ template = """
 fn = "jinjarope.iconfilters.get_path_icon"
 group = "icons"
 icon = "vscode-icons:default-file"
-required_packages = ["universal_pathlib"]
 
 [filters.get_path_icon.examples.basic]
 template = """
@@ -1101,4 +1100,19 @@ template = """
 [filters.get_path_icon.examples.advanced]
 template = """
 {{ "path/to/file.py" | get_path_icon | get_icon_svg(color='#ff0000', height=32, width=32) }}
+"""
+
+[filters.get_path_ascii_icon]
+fn = "jinjarope.iconfilters.get_path_ascii_icon"
+group = "icons"
+icon = "vscode-icons:default-file"
+
+[filters.get_path_ascii_icon.examples.basic]
+template = """
+{{ "path/to/file.py" | get_path_ascii_icon }}
+"""
+
+[filters.get_path_ascii_icon.examples.folder]
+template = """
+{{ "path/to/folder/" | get_path_ascii_icon }}
 """
