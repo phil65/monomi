@@ -47,7 +47,14 @@ class TreeOptions:
 
 
 def _get_path_info(path: pathlib.Path) -> dict[str, Any]:
-    """Get all relevant information about a path."""
+    """Get all relevant information about a path.
+
+    Args:
+        path: Path to get information about.
+
+    Returns:
+        Dictionary containing information about the path.
+    """
     try:
         stats = path.stat()
         return {
@@ -82,11 +89,25 @@ class DirectoryTree:
         root_path: str | os.PathLike[str],
         options: TreeOptions | None = None,
     ) -> None:
+        """A class to generate and print directory tree structure.
+
+        Attributes:
+            root_path: Root path of the directory tree.
+            options: Options for directory tree printing.
+        """
         self.root_path = upath.UPath(root_path)
         self.options = options or TreeOptions()
 
     def _get_sort_key(self, path: pathlib.Path) -> tuple[bool, Any]:
-        """Generate sort key based on current sort criteria."""
+        """Generate sort key based on current sort criteria.
+
+        Args:
+            path: Path to get sort key for.
+
+        Returns:
+            Tuple containing boolean indicating if path is a directory and
+            the sort key based on the selected criteria.
+        """
         info = _get_path_info(path)
         criteria_keys = {
             SortCriteria.NAME: lambda: (info["name"].lower(),),
@@ -98,7 +119,14 @@ class DirectoryTree:
         return not path.is_dir(), criteria_keys[self.options.sort_criteria]()
 
     def _should_include(self, path: pathlib.Path) -> bool:
-        """Check if path should be included based on filters."""
+        """Check if path should be included based on filters.
+
+        Args:
+            path: Path to check.
+
+        Returns:
+            True if the path should be included, False otherwise.
+        """
         name = path.name
 
         if not self.options.show_hidden and name.startswith("."):
@@ -125,7 +153,13 @@ class DirectoryTree:
     ) -> bool:
         """Recursively check if directory is empty after applying all filters.
 
-        Returns True if directory has no visible contents after filtering.
+        Args:
+            directory: Directory to check.
+            depth: Current depth of recursion.
+
+        Returns:
+            True if directory has no visible contents after filtering,
+            False otherwise.
         """
         if self.options.max_depth is not None and depth > self.options.max_depth:
             return True
@@ -158,7 +192,17 @@ class DirectoryTree:
     def _get_tree_entries(
         self, directory: pathlib.Path, prefix: str = "", depth: int = 0
     ) -> list[tuple[str, pathlib.Path, bool]]:
-        """Generate tree entries with proper formatting."""
+        """Generate tree entries with proper formatting.
+
+        Args:
+            directory: Directory to generate entries for.
+            prefix: Prefix string for the entry.
+            depth: Current depth of recursion.
+
+        Returns:
+            List of tuples containing prefix, path and boolean indicating if it's
+            the last entry.
+        """
         entries: list[tuple[str, pathlib.Path, bool]] = []
 
         if self.options.max_depth is not None and depth > self.options.max_depth:
@@ -203,7 +247,10 @@ class DirectoryTree:
         return entries
 
     def print_tree(self) -> None:
-        """Print the directory tree structure."""
+        """Print the directory tree structure.
+
+        Prints the directory tree structure based on the configured options.
+        """
         if not self.root_path.exists():
             msg = f"Path does not exist: {self.root_path}"
             raise FileNotFoundError(msg)
