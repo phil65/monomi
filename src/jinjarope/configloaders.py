@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, Literal
 import jinja2
 import upath
 
-from jinjarope import iterfilters, loaders, serializefilters, utils
+from jinjarope import envglobals, iterfilters, loaders, serializefilters, utils
 
 
 if TYPE_CHECKING:
@@ -107,7 +107,7 @@ class TemplateFileLoader(NestedDictLoader):
                       the file
         """
         self.path = upath.UPath(path)
-        text = utils.fsspec_get(str(self.path))
+        text = envglobals.load_file_cached(self.path)
         file_fmt = fmt if fmt else self.path.suffix.lstrip(".")
         assert file_fmt in ["json", "toml", "yaml", "ini"]
         mapping = serializefilters.deserialize(text, fmt=file_fmt)  # type: ignore[arg-type]

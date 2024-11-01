@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 import upath
 
-from jinjarope import decorators as dec, utils
+from jinjarope import decorators as dec
 
 
 if TYPE_CHECKING:
@@ -28,9 +28,7 @@ def load_file_cached(path: str | os.PathLike[str]) -> str:
     Arguments:
         path: The path to get str content from
     """
-    if "://" in str(path):
-        return utils.fsspec_get(str(path))
-    return pathlib.Path(path).read_text(encoding="utf-8")
+    return upath.UPath(path).read_text()
 
 
 _cache: dict[str, str] = {}

@@ -7,7 +7,7 @@ import fsspec
 import fsspec.core
 import jinja2
 
-from jinjarope import loaders as loaders_, utils
+from jinjarope import envglobals, loaders as loaders_, utils
 
 
 if TYPE_CHECKING:
@@ -42,7 +42,7 @@ class FsSpecProtocolPathLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
         template: str,
     ) -> tuple[str, str, Callable[[], bool] | None]:
         try:
-            src = utils.fsspec_get(template)
+            src = envglobals.load_file_cached(template)
         except FileNotFoundError as e:
             raise jinja2.TemplateNotFound(template) from e
         path = pathlib.Path(template).as_posix()
