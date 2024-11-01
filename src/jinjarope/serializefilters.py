@@ -15,22 +15,23 @@ if TYPE_CHECKING:
 SerializeFormatStr = Literal["yaml", "json", "ini", "toml"]
 
 
-def serialize(data: Any, fmt: SerializeFormatStr) -> str:  # type: ignore[return]
+def serialize(data: Any, fmt: SerializeFormatStr, **kwargs: Any) -> str:
     """Serialize given json-like object to given format.
 
     Arguments:
         data: The data to serialize
         fmt: The serialization format
+        kwargs: Keyword arguments passed to the dumper function
     """
     match fmt:
         case "yaml":
-            import yaml
+            from jinjarope import yamltools
 
-            return yaml.dump(data)
+            return yamltools.dump_yaml(data, **kwargs)
         case "json":
-            return json.dumps(data, indent=4)
+            return json.dumps(data, indent=4, **kwargs)
         case "ini":
-            config = configparser.ConfigParser()
+            config = configparser.ConfigParser(**kwargs)
             config.read_dict(data)
             file = io.StringIO()
             with file as fp:
@@ -39,7 +40,7 @@ def serialize(data: Any, fmt: SerializeFormatStr) -> str:  # type: ignore[return
         case "toml" if isinstance(data, dict):
             import tomli_w
 
-            return tomli_w.dumps(data)
+            return tomli_w.dumps(data, **kwargs)
         case _:
             raise TypeError(fmt)
 
@@ -50,29 +51,27 @@ def load_ini(data: str) -> dict[str, dict[str, str]]:
     return {s: dict(config.items(s)) for s in config.sections()}
 
 
-def deserialize(
-    data: str,
-    fmt: SerializeFormatStr,
-) -> Any:
+def deserialize(data: str, fmt: SerializeFormatStr, **kwargs: Any) -> Any:
     """Serialize given json-like object to given format.
 
     Arguments:
         data: The data to deserialize
         fmt: The serialization format
+        kwargs: Keyword arguments passed to the loader function
     """
     match fmt:
         case "yaml":
-            import yaml
+            from jinjarope import yamltools
 
-            return yaml.full_load(data)
+            return yamltools.load_yaml(data, **kwargs)
         case "json":
-            return json.loads(data)
+            return json.loads(data, **kwargs)
         case "ini":
-            return load_ini(data)
+            return load_ini(data, **kwargs)
         case "toml":
             import tomllib
 
-            return tomllib.loads(data)
+            return tomllib.loads(data, **kwargs)
         case _:
             raise TypeError(fmt)
 
