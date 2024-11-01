@@ -45,6 +45,7 @@ cli = ["rich", "typer"]
 extras = ["black", "pygments", "humanize", "natsort"]
 llm = ["litellm", "python-dotenv", "pillow"]
 icons = ["pyconify"]
+yaml = ["PyYAML >=5.1", "pyyaml-include", "pyyaml_env_tag"]
 
 [tool.uv]
 dev-dependencies = [
