@@ -28,7 +28,7 @@ def load_file_cached(path: str | os.PathLike[str]) -> str:
     Arguments:
         path: The path to get str content from
     """
-    return upath.UPath(path).read_text()
+    return upath.UPath(path).read_text("utf-8")
 
 
 _cache: dict[str, str] = {}

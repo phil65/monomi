@@ -136,7 +136,7 @@ def parse_object(obj: os.PathLike[str] | str | type) -> Node:
     """
     if isinstance(obj, str | os.PathLike):
         path = upath.UPath(obj)
-        content = path.read_text()
+        content = path.read_text("utf-8")
         name = path.name
     else:
         content = inspect.getsource(obj)
