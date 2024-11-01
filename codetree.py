@@ -194,7 +194,30 @@ def generate_tree(
     is_last: bool = True,
     depth: int = 0,
 ) -> str:
-    """Generate an ASCII/Unicode tree representation of the structure."""
+    """Recursively generate a textual tree representation from a Node.
+
+    Traverses the provided Node structure and creates a string
+    representing the tree in ASCII or Unicode format, applying
+    the specified options to control its appearance.
+
+    Args:
+        node: The Node to start from
+        options: Configuration options for tree visualization
+        prefix: Prefix string to use for indentation
+        is_last: Flag indicating if this node is the last child
+        depth: Current depth in the tree
+
+    !!! note
+        This function is recursive and uses the provided options to
+        determine if a node should be included and how it's formatted.
+
+    Example:
+        ```python
+        root = parse_python_file("my_module.py")
+        tree_str = generate_tree(root, options)
+        print(tree_str)
+        ```
+    """
     if options.max_depth is not None and depth > options.max_depth:
         return ""
 
