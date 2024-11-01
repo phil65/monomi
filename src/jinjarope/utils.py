@@ -3,7 +3,7 @@ from __future__ import annotations
 import dataclasses
 import functools
 import importlib
-from importlib.metadata import entry_points
+from importlib.metadata import entry_points as _entry_points
 import logging
 from typing import TYPE_CHECKING, Any, ClassVar, Protocol, TypeVar
 
@@ -122,8 +122,8 @@ def _get_black_formatter() -> Callable[[str, int], str]:
 
 
 @functools.lru_cache
-def _entry_points(group: str) -> Mapping[str, Callable[..., Any]]:
-    eps = {ep.name: ep.load() for ep in entry_points(group=group)}
+def entry_points(group: str) -> Mapping[str, Callable[..., Any]]:
+    eps = {ep.name: ep.load() for ep in _entry_points(group=group)}
     logger.debug("Available %r entry points: %s", group, sorted(eps))
     return eps
 
