@@ -10,7 +10,10 @@ from __future__ import annotations
 import ast
 from dataclasses import dataclass
 from enum import Enum, auto
-import pathlib
+import inspect
+import os
+
+import upath
 
 
 class NodeType(Enum):
@@ -112,8 +115,8 @@ def _should_include_node(name: str, options: TreeOptions) -> bool:
     return not (name.startswith("_") and not options.include_private)
 
 
-def parse_python_file(file_path: pathlib.Path | str) -> Node:
-    """Parse a Python source file into a tree structure.
+def parse_object(obj: os.PathLike[str] | str | type) -> Node:
+    """Parse Python source code into a tree structure.
 
     Analyzes the AST of a Python file and creates a hierarchical representation
     of its structure, including classes, methods, and functions.
@@ -123,19 +126,23 @@ def parse_python_file(file_path: pathlib.Path | str) -> Node:
         and handles both synchronous and asynchronous definitions.
 
     Args:
-        file_path: Path to the Python source file
+        obj: Path to the Python source file
 
     Example:
         ```python
-        root = parse_python_file("example.py")
+        root = parse_object("example.py")
         print(f"Found {len(root.children)} top-level definitions")
         ```
     """
-    if isinstance(file_path, str):
-        file_path = pathlib.Path(file_path)
-    content = file_path.read_text()
+    if isinstance(obj, str | os.PathLike):
+        path = upath.UPath(obj)
+        content = path.read_text()
+        name = path.name
+    else:
+        content = inspect.getsource(obj)
+        name = obj.__name__
     tree = ast.parse(content)
-    root = Node(file_path.name, NodeType.MODULE, [], 0, [])
+    root = Node(name, NodeType.MODULE, [], 0, [])
 
     # Process top-level nodes
     for node in ast.iter_child_nodes(tree):
@@ -213,7 +220,7 @@ def generate_tree(
 
     Example:
         ```python
-        root = parse_python_file("my_module.py")
+        root = parse_object("my_module.py")
         tree_str = generate_tree(root, options)
         print(tree_str)
         ```
@@ -256,8 +263,8 @@ def generate_tree(
     return tree
 
 
-def create_structure_map(
-    file_path: pathlib.Path | str,
+def get_structure_map(
+    obj: os.PathLike[str] | str,
     *,
     show_types: bool = True,
     show_line_numbers: bool = False,
@@ -278,7 +285,7 @@ def create_structure_map(
         that support Unicode characters.
 
     Args:
-        file_path: Path to the Python source file
+        obj: Path to the Python source file or a Python object
         show_types: Include node type annotations
         show_line_numbers: Display source line numbers
         show_decorators: Include decorator information
@@ -290,7 +297,7 @@ def create_structure_map(
 
     Example:
         ```python
-        tree = create_structure_map(
+        tree = get_structure_map(
             "myfile.py",
             show_types=False,
             show_line_numbers=True,
@@ -310,7 +317,7 @@ def create_structure_map(
         branch_style="unicode" if use_unicode else "ascii",
     )
 
-    root = parse_python_file(file_path)
+    root = parse_object(obj)
     return generate_tree(root, options)
 
 
@@ -337,7 +344,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    tree = create_structure_map(
+    tree = get_structure_map(
         args.file,
         show_types=not args.no_types,
         show_line_numbers=args.line_numbers,
@@ -351,7 +358,7 @@ if __name__ == "__main__":
 
     print(tree)
     print(
-        create_structure_map(
+        get_structure_map(
             "src/jinjarope/environment.py",
             show_types=False,
             show_line_numbers=True,

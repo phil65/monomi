@@ -14,6 +14,7 @@ from jinjarope import iconfilters, textfilters
 
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
     import os
     import pathlib
 
@@ -246,10 +247,14 @@ class DirectoryTree:
 
         return entries
 
-    def print_tree(self) -> None:
-        """Print the directory tree structure.
+    def get_tree_text(self) -> str:
+        """Generate and return the directory tree as a string."""
+        return "\n".join(self.iter_tree_lines())
 
-        Prints the directory tree structure based on the configured options.
+    def iter_tree_lines(self) -> Iterator[str]:
+        """Iterate the directory and yield the formatted lines.
+
+        Included items as well as design is based on the configured options.
         """
         if not self.root_path.exists():
             msg = f"Path does not exist: {self.root_path}"
@@ -260,11 +265,11 @@ class DirectoryTree:
             self.root_path
         ):
             icon = self.DIRECTORY if self.options.show_icons else ""
-            print(f"{icon} {self.root_path.name} (empty)")
+            yield f"{icon} {self.root_path.name} (empty)"
             return
 
         root_icon = self.DIRECTORY if self.options.show_icons else ""
-        print(f"{root_icon} {self.root_path.name}")
+        yield f"{root_icon} {self.root_path.name}"
 
         for prefix, path, _is_last in self._get_tree_entries(self.root_path):
             info = _get_path_info(path)
@@ -293,7 +298,76 @@ class DirectoryTree:
 
             details_str = f" ({', '.join(details)})" if details else ""
 
-            print(f"{prefix}{icon} {path.name}{details_str}")
+            yield f"{prefix}{icon} {path.name}{details_str}"
+
+
+def get_directory_tree(
+    root_path: str | os.PathLike[str],
+    *,
+    show_hidden: bool = False,
+    show_size: bool = True,
+    show_date: bool = False,
+    show_permissions: bool = False,
+    show_icons: bool = True,
+    max_depth: int | None = None,
+    include_pattern: Pattern[str] | None = None,
+    exclude_pattern: Pattern[str] | None = None,
+    allowed_extensions: set[str] | None = None,
+    hide_empty: bool = True,
+    sort_criteria: SortCriteria = SortCriteria.NAME,
+    reverse_sort: bool = False,
+    date_format: str = "%Y-%m-%d %H:%M:%S",
+) -> str:
+    """Create a DirectoryTree instance with the specified options.
+
+    Args:
+        root_path: Root path of the directory tree
+        show_hidden: Whether to show hidden files/directories
+        show_size: Whether to show file sizes
+        show_date: Whether to show modification dates
+        show_permissions: Whether to show file permissions
+        show_icons: Whether to show icons for files/directories
+        max_depth: Maximum depth to traverse (None for unlimited)
+        include_pattern: Regex pattern for files/directories to include
+        exclude_pattern: Regex pattern for files/directories to exclude
+        allowed_extensions: Set of allowed file extensions
+        hide_empty: Whether to hide empty directories
+        sort_criteria: Criteria for sorting entries
+        reverse_sort: Whether to reverse the sort order
+        date_format: Format string for dates
+
+    Returns:
+        DirectoryTree: Configured DirectoryTree instance
+
+    Example:
+        ```python
+        tree = create_directory_tree(
+            ".",
+            show_hidden=True,
+            max_depth=3,
+            allowed_extensions={".py", ".txt"},
+            exclude_pattern=re.compile(r"__pycache__")
+        )
+        tree.print_tree()
+        ```
+    """
+    options = TreeOptions(
+        show_hidden=show_hidden,
+        show_size=show_size,
+        show_date=show_date,
+        show_permissions=show_permissions,
+        show_icons=show_icons,
+        max_depth=max_depth,
+        include_pattern=include_pattern,
+        exclude_pattern=exclude_pattern,
+        allowed_extensions=allowed_extensions,
+        hide_empty=hide_empty,
+        sort_criteria=sort_criteria,
+        reverse_sort=reverse_sort,
+        date_format=date_format,
+    )
+
+    return DirectoryTree(root_path, options).get_tree_text()
 
 
 def main() -> None:
@@ -308,7 +382,8 @@ def main() -> None:
         hide_empty=False,
     )
     tree = DirectoryTree(".", options)
-    tree.print_tree()
+    text = tree.get_tree_text()
+    print(text)
 
 
 if __name__ == "__main__":

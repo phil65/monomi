@@ -31,6 +31,17 @@ template = """
 {{ "a_foldername" | dirname_to_title }}
 """
 
+[filters.get_directory_tree]
+fn = "jinjarope.filetree.get_directory_tree"
+group = "path"
+icon = "mdi:file-tree-outline"
+
+[filters.get_directory_tree.examples.basic]
+markdown = true
+template = """
+{{ "." | get_directory_tree(allowed_extensions=[".py", ".md"]) }}
+"""
+
 [filters.pformat]
 fn = "pprint.pformat"
 group = "format"
@@ -1032,6 +1043,19 @@ icon = "mdi:file-find"
 template = """
 {{ filters.get_file | get_file }}
 """
+
+
+[filters.get_structure_map]
+fn = "jinjarope.codetree.get_structure_map"
+group = "inspect"
+icon = "mdi:code-braces"
+
+[filters.get_structure_map.examples.basic]
+markdown = true
+template = """
+{{ "jinjarope.codetree" | import_module | get_structure_map }}
+"""
+
 
 # Icons
 
