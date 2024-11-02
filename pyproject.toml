@@ -215,6 +215,10 @@ combine-as-imports = true
 "tests/test_decorators.py" = ["PLR2004"]
 
 [tool.pyright]
+pythonVersion = "3.12"
+pythonPlatform = "All"
+deprecateTypingAliases = true
+reportMissingTypeStubs = false
 reportUnusedCallResult = false
 reportUnknownVariableType = false
 reportAny = false
