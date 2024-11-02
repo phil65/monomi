@@ -16,10 +16,19 @@ import yaml_include
 logger = log.get_logger(__name__)
 
 LoaderStr = Literal["unsafe", "full", "safe"]
-LoaderType = type[yaml.Loader | yaml.CLoader]
+LoaderType = type[
+    yaml.Loader
+    | yaml.CLoader
+    | yaml.UnsafeLoader
+    | yaml.CUnsafeLoader
+    | yaml.FullLoader
+    | yaml.CFullLoader
+]
 DumperType = type[yaml.Dumper | yaml.CDumper]
 YamlError = yaml.YAMLError  # Reference for external libs
-LOADERS: dict = {
+YAMLPrimitive = str | int | float | bool | None
+YAMLValue = YAMLPrimitive | dict[str, Any] | list[Any]
+LOADERS: dict[str, LoaderType] = {
     "unsafe": yaml.CUnsafeLoader,
     "full": yaml.CFullLoader,
     "safe": yaml.CSafeLoader,
@@ -110,23 +119,29 @@ def get_safe_loader(base_loader_cls: LoaderType) -> LoaderType:
 def get_loader(
     base_loader_cls: LoaderType,
     include_base_path: str | os.PathLike[str] | fsspec.AbstractFileSystem | None = None,
+    enable_include: bool = True,
+    enable_env: bool = True,
 ) -> LoaderType:
-    """Construct an enhanced YAML loader with support for !env and !include tags.
+    """Construct an enhanced YAML loader with optional support for !env and !include tags.
 
     Args:
         base_loader_cls: Base loader class to extend
-        include_base_path: Base path for !include tag resolution
+        include_base_path: Base path for !include tag resolution. If None, use cwd. Defaults to None 
+        enable_include: Whether to enable !include tag support. Defaults to True
+        enable_env: Whether to enable !ENV tag support. Defaults to True
 
     Returns:
         Enhanced loader class
     """
     loader_cls = create_subclass(base_loader_cls)
-    constructor = get_include_constructor(fs=include_base_path)
-
-    # Add constructors for special tags
-    yaml.add_constructor("!include", constructor, loader_cls)
-    loader_cls.add_constructor("!ENV", yaml_env_tag.construct_env_tag)
-    loader_cls.add_constructor("!include", yaml_include.Constructor())
+    
+    if enable_include:
+        constructor = get_include_constructor(fs=include_base_path)
+        yaml.add_constructor("!include", constructor, loader_cls)
+    
+    if enable_env:
+        loader_cls.add_constructor("!ENV", yaml_env_tag.construct_env_tag)
+    
     return loader_cls
 
 
