@@ -33,6 +33,9 @@ class SourceType(str, Enum):
     MEMORY = "memory"
     """In-memory cached source"""
 
+    BUNDLE = "bundle"
+    """Reference to a context bundle"""
+
 
 class ContextSource(BaseModel):
     source_id: UUID = Field(default_factory=uuid4)
@@ -76,6 +79,16 @@ class ApiSource(ContextSource):
 
     method: str = "GET"
     """HTTP method to use (GET/POST/etc)"""
+
+
+class BundleSource(ContextSource):
+    """References a context bundle to include its sources."""
+
+    bundle_name: str
+    """Name of the bundle to reference"""
+
+    source_type: SourceType = SourceType.BUNDLE
+    """Always BUNDLE for this source type"""
 
 
 class Prompt(BaseModel):
@@ -128,11 +141,36 @@ class APICall(BaseModel):
     context_sources: list[ContextSource] = []
     """Optional list of context sources to include"""
 
+    # def get_expanded_sources(
+    #     self, manager: APICallCollectionManager
+    # ) -> list[ContextSource]:
+    #     """Get all context sources with bundles expanded."""
+    #     sources = []
+    #     for source in self.context_sources:
+    #         print(source)
+    #         if isinstance(source, BundleSource):
+    #             bundle = manager.get_bundle(source.bundle_name)
+    #             if bundle:
+    #                 sources.extend(bundle.sources)
+    #         else:
+    #             sources.append(source)
+    #     return sources
+
+
+class ContextBundle(BaseModel):
+    """A named bundle of context sources that can be reused across API calls."""
+
+    bundle_id: UUID = Field(default_factory=uuid4)
+    name: str
+    description: str | None = None
+    sources: list[ContextSource]
+
 
 class APICallCollection(BaseModel):
     name: str
-    description: str | None
+    description: str | None = None
     calls: list[APICall]
+    context_bundles: list[ContextBundle] = Field(default_factory=list)
 
 
 if __name__ == "__main__":
@@ -165,5 +203,5 @@ if __name__ == "__main__":
             ),
         ],
     )
-
+    test_call.get_expanded_sources()
     print(test_call.model_dump_json(indent=2))

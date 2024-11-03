@@ -3,25 +3,21 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 from typing import TYPE_CHECKING
 from uuid import UUID
 
-from pydantic import BaseModel
 import upath
 import yaml
 
-from jinjarope.llm.apicallcollection import APICall
+from jinjarope.llm.apicallcollection import (
+    APICall,
+    APICallCollection,
+    ContextBundle,
+)
 
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
-
-
-class APICallCollection(BaseModel):
-    name: str
-    description: str | None = None
-    calls: list[APICall]
 
 
 class APICallCollectionManager:
@@ -98,8 +94,8 @@ class APICallCollectionManager:
                 msg = f"Path {path} not found"
                 raise FileNotFoundError(msg)
 
-            files = path.glob("*.yml") if path.is_dir() else [path]
-            print(path.resolve())
+            # files = path.glob("*.{yaml,yml,toml,json}") if path.is_dir() else [path]
+            files = list(path.iterdir()) if path.is_dir() else [path]
             for file_path in files:
                 self._load_collection_file(file_path)
 
@@ -118,7 +114,6 @@ class APICallCollectionManager:
                 data = yaml.safe_load(f)
             else:
                 data = json.load(f)
-
             collection = APICallCollection(**data)
             self.collections[collection.name] = collection
 
@@ -143,11 +138,36 @@ class APICallCollectionManager:
                     return call
         return None
 
+    def get_bundle(self, identifier: UUID | str) -> ContextBundle | None:
+        """Get a context bundle by UUID or name.
+
+        Args:
+            identifier: Either a UUID or string name of the bundle to retrieve
+
+        Returns:
+            The matching context bundle or None if not found
+        """
+        for collection in self.collections.values():
+            for bundle in collection.context_bundles:
+                if (isinstance(identifier, UUID) and bundle.bundle_id == identifier) or (
+                    isinstance(identifier, str) and bundle.name == identifier
+                ):
+                    return bundle
+        return None
+
+    def list_bundles(self) -> list[tuple[str, str]]:
+        """Get a list of all context bundles as (collection_name, bundle_name) tuples."""
+        return [
+            (coll_name, bundle.name)
+            for coll_name, collection in self.collections.items()
+            for bundle in collection.context_bundles
+        ]
+
     def list_collections(self) -> list[str]:
         """Get a list of all collection names."""
         return list(self.collections.keys())
 
 
 if __name__ == "__main__":
-    manager = APICallCollectionManager([Path("src/jinjarope/llm/prompts")])
+    manager = APICallCollectionManager([upath.UPath("src/jinjarope/llm/prompts")])
     print(manager.list_collections())
