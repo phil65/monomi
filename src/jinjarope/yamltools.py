@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import collections
 import os
 from typing import Any, Literal, TypeVar
 
@@ -34,6 +33,30 @@ LOADERS: dict[str, LoaderType] = {
     "safe": yaml.CSafeLoader,
 }
 T = TypeVar("T", bound=type)
+
+
+def map_class_to_builtin_type(dumper_class, class_type, target_type):
+    """Maps a Python class to use an existing PyYAML representer for a built-in type.
+
+    The original type is preserved, only the representation format is borrowed.
+
+    Args:
+        dumper_class: The YAML Dumper class
+        class_type: The custom Python class to map
+        target_type: The built-in type whose representer should be used
+    """
+    method_name = f"represent_{target_type.__name__}"
+
+    if hasattr(dumper_class, method_name):
+        representer = getattr(dumper_class, method_name)
+
+        def represent_as_builtin(dumper, data):
+            return representer(dumper, data)  # Pass data directly without conversion
+
+        dumper_class.add_representer(class_type, represent_as_builtin)
+    else:
+        msg = f"No representer found for type {target_type}"
+        raise ValueError(msg)
 
 
 def create_subclass(base_cls: T) -> T:
@@ -75,20 +98,6 @@ def get_include_constructor(
     return yaml_include.Constructor(fs=filesystem, **kwargs)
 
 
-def patch_to_dump_ordered_dicts_as_dicts(dumper_cls: DumperType) -> None:
-    """Patch a Dumper to handle OrderedDicts as regular dicts.
-
-    Args:
-        dumper_cls: YAML dumper class to patch
-    """
-
-    def map_representer(dumper: yaml.Dumper, data: dict[Any, Any]) -> yaml.MappingNode:
-        return dumper.represent_dict(data.items())
-
-    for dict_type in (dict, collections.OrderedDict):
-        dumper_cls.add_representer(dict_type, map_representer)
-
-
 def get_safe_loader(base_loader_cls: LoaderType) -> LoaderType:
     """Create a SafeLoader with dummy constructors for common tags.
 
@@ -126,7 +135,7 @@ def get_loader(
 
     Args:
         base_loader_cls: Base loader class to extend
-        include_base_path: Base path for !include tag resolution. If None, use cwd. Defaults to None 
+        include_base_path: Base path for !include tag resolution. If None, use cwd.
         enable_include: Whether to enable !include tag support. Defaults to True
         enable_env: Whether to enable !ENV tag support. Defaults to True
 
@@ -134,14 +143,14 @@ def get_loader(
         Enhanced loader class
     """
     loader_cls = create_subclass(base_loader_cls)
-    
+
     if enable_include:
         constructor = get_include_constructor(fs=include_base_path)
         yaml.add_constructor("!include", constructor, loader_cls)
-    
+
     if enable_env:
         loader_cls.add_constructor("!ENV", yaml_env_tag.construct_env_tag)
-    
+
     return loader_cls
 
 
@@ -167,22 +176,23 @@ def load_yaml(
 
 def dump_yaml(
     obj: Any,
-    ordered_dict_as_dict: bool = False,
+    class_mappings: dict[type, type] | None = None,
     **kwargs: Any,
 ) -> str:
     """Dump a data structure to a YAML string.
 
     Args:
         obj: Object to serialize
-        ordered_dict_as_dict: Whether to treat OrderedDict as regular dict
+        class_mappings: Dict mapping classes to built-in types for YAML representation
         kwargs: Additional arguments for yaml.dump
 
     Returns:
         YAML string representation
     """
     dumper_cls = create_subclass(yaml.Dumper)
-    if ordered_dict_as_dict:
-        patch_to_dump_ordered_dicts_as_dicts(dumper_cls)
+    if class_mappings:
+        for class_type, target_type in class_mappings.items():
+            map_class_to_builtin_type(dumper_cls, class_type, target_type)
     return yaml.dump(obj, Dumper=dumper_cls, **kwargs)
 
 
@@ -190,7 +200,7 @@ if __name__ == "__main__":
     from collections import OrderedDict
 
     test_data = OrderedDict([("b", 2), ("a", 1)])
-    yaml_str = dump_yaml(test_data)
+    yaml_str = dump_yaml(test_data, class_mappings={OrderedDict: dict})
     print(yaml_str)
     loaded_cfg = load_yaml(yaml_str)
     print(fsspec.url_to_fs("C:/test"))

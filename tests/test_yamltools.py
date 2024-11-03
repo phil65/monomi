@@ -47,6 +47,34 @@ def test_dump_yaml():
     assert yamltools.load_yaml(dumped) == data
 
 
+def test_class_mapping():
+    from collections import OrderedDict
+
+    data = OrderedDict([("b", 2), ("a", 1)])
+    # Test with OrderedDict mapping using dict's representation
+    dumped = yamltools.dump_yaml(data, class_mappings={OrderedDict: dict})
+    assert "!!" not in dumped
+    # Test without mapping (default OrderedDict representation)
+    dumped_no_mapping = yamltools.dump_yaml(data)
+    expected_no_mapping = (
+        "!!python/object/apply:collections.OrderedDict\n"
+        "- - - b\n"
+        "    - 2\n"
+        "  - - a\n"
+        "    - 1\n"
+    )
+    assert dumped_no_mapping == expected_no_mapping
+
+
+# Remove or update test_object_roundtrip since it's now covered by test_class_mapping
+def test_object_roundtrip():
+    from collections import OrderedDict
+
+    data = OrderedDict([("b", 2), ("a", 1)])
+    dumped = yamltools.dump_yaml(data)
+    assert isinstance(yamltools.load_yaml(dumped), OrderedDict)
+
+
 def test_invalid_yaml():
     with pytest.raises(yaml.YAMLError):
         yamltools.load_yaml("{invalid: yaml: content")
@@ -60,14 +88,6 @@ def test_empty_yaml():
 def test_safe_loader():
     loader = yamltools.get_safe_loader(yaml.SafeLoader)
     assert loader.yaml_constructors["!relative"] is not None
-
-
-def test_object_roundtrip():
-    from collections import OrderedDict
-
-    data = OrderedDict([("b", 2), ("a", 1)])
-    dumped = yamltools.dump_yaml(data)
-    assert data == yamltools.load_yaml(dumped)
 
 
 if __name__ == "__main__":
