@@ -33,10 +33,10 @@ repos:
     hooks:
       - id: mypy
         # args: [--ignore-missing-imports]
-        additional_dependencies: [mkdocs, orjson]
+        additional_dependencies: [mkdocs, orjson, pydantic]
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.7.1
+    rev: v0.7.2
     hooks:
       - id: ruff
       - id: ruff-format
