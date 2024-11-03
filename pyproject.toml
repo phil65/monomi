@@ -72,6 +72,7 @@ Documentation = "https://phil65.github.io/jinjarope/"
 Source = "https://github.com/phil65/jinjarope"
 
 [tool.pytest.ini_options]
+testpaths = "tests/"
 log_cli = true
 log_format = "%(asctime)s %(levelname)s %(message)s"
 log_date_format = "%Y-%m-%d %H:%M:%S"
@@ -93,6 +94,7 @@ disable_error_code = ["misc", "import"]
 pretty = true
 check_untyped_defs = true
 exclude = ['venv/', '.venv/', 'tests/']
+plugins = ["pydantic.mypy"]
 
 [tool.ruff]
 line-length = 90
