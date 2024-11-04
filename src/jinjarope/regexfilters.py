@@ -19,7 +19,7 @@ def re_replace(
 
     Filter adapted from Ansible
 
-    Arguments:
+    Args:
         value: The value to search-replace.
         pattern: The regex pattern to use
         replacement: The replacement pattern to use
@@ -48,7 +48,7 @@ def re_findall(
 
     Filter adapted from Ansible
 
-    Arguments:
+    Args:
         value: The text to search in
         regex: The regex to use for searching
         ignorecase: Whether char casing should be ignored
@@ -73,7 +73,7 @@ def re_search(
 
     Filter adapted from Ansible
 
-    Arguments:
+    Args:
         value: The text to search in
         regex: The regex to use for searching
         args: Optional back references to return
@@ -109,7 +109,7 @@ def re_escape(string: str, re_type: Literal["python", "posix_basic"] = "python")
 
     Filter adapted from Ansible
 
-    Arguments:
+    Args:
         string: The string to escape
         re_type: The escape type
     """

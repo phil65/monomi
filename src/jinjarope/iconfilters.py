@@ -450,7 +450,7 @@ def get_favicon(
 ):
     """Return a favicon URL for the given URL.
 
-    Arguments:
+    Args:
         url: The URL to get the favicon for.
         provider: The provider to use for the favicon.
         size: Size of the favicon in pixels (not supported by all providers)
@@ -501,7 +501,7 @@ def get_icon_svg(
     When passing a string with "|" delimiters, the returned string will contain multiple
     icons.
 
-    Arguments:
+    Args:
         icon: Pyconify icon name
         color: Icon color. Replaces currentColor with specific color, resulting in icon
                with hardcoded palette.
@@ -550,7 +550,7 @@ def get_pyconify_key(icon: str) -> str:
     Converts the keys from MkDocs-Material ("material/sth" or ":material-sth:")
     to their pyconify equivalent.
 
-    Arguments:
+    Args:
         icon: The string which should be converted to a pyconify key.
     """
     for k, v in icons.PYCONIFY_TO_PREFIXES.items():

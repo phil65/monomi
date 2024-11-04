@@ -60,7 +60,7 @@ def wrap_in_elem(
 
     If text is empty, just return an empty string.
 
-    Arguments:
+    Args:
         text: Text to wrap
         tag: Tag to wrap text in
         add_linebreaks: Adds a linebreak before and after the text
@@ -80,7 +80,7 @@ def html_link(text: str | None = None, link: str | None = None, **kwargs: Any) -
 
     If link is empty string or None, just the text will get returned.
 
-    Arguments:
+    Args:
         text: Text to show for the link
         link: Target url
         kwargs: additional key-value pairs to be inserted as attributes.
@@ -96,7 +96,7 @@ def html_link(text: str | None = None, link: str | None = None, **kwargs: Any) -
 def format_js_map(mapping: dict | str, indent: int = 4) -> str:
     """Return JS map str for given dictionary.
 
-    Arguments:
+    Args:
         mapping: Dictionary to dump
         indent: The amount of indentation for the key-value pairs
     """
@@ -120,7 +120,7 @@ def format_js_map(mapping: dict | str, indent: int = 4) -> str:
 def svg_to_data_uri(svg: str) -> str:
     """Wrap svg as data URL.
 
-    Arguments:
+    Args:
         svg: The svg to wrap into a data URL
     """
     if not isinstance(svg, str):
@@ -134,7 +134,7 @@ def clean_svg(text: str) -> str:
 
     Removes xml headers and doctype declarations.
 
-    Arguments:
+    Args:
         text: The text to cleanup / filter
     """
     text = re.sub(r"<\?xml version.*\?>\s*", "", text, flags=re.DOTALL)
@@ -147,7 +147,7 @@ def format_css_rule(dct: Mapping) -> str:
 
     Mapping must be of shape {".a": {"b": "c"}}
 
-    Arguments:
+    Args:
         dct: The mapping to convert to CSS text
     """
     data: dict[str, list] = {}
@@ -182,7 +182,7 @@ def format_xml(
 ) -> str:
     """(Pretty)print given XML.
 
-    Arguments:
+    Args:
         str_or_elem: XML to prettyprint
         indent: Amount of spaces to use for indentation
         level: Initial indentation level
@@ -208,7 +208,7 @@ def format_xml(
 def ansi2html(ansi_string: str, styles: dict[int, dict[str, str]] | None = None) -> str:
     """Convert ansi string to colored HTML.
 
-    Arguments:
+    Args:
         ansi_string: text with ANSI color codes.
         styles: A mapping from ANSI codes to a dict with css
 
@@ -272,7 +272,7 @@ def ansi2html(ansi_string: str, styles: dict[int, dict[str, str]] | None = None)
 def split_url(value: str, query: QueryStr | None = None) -> str | dict[str, str]:
     """Split a URL into its parts (and optionally return a specific part).
 
-    Arguments:
+    Args:
         value: The URL to split
         query: Optional URL part to extract
     """
@@ -334,7 +334,7 @@ def _get_norm_url(path: str) -> tuple[str, int]:
 def normalize_url(path: str, url: str | None = None, base: str = "") -> str:
     """Return a URL relative to the given url or using the base.
 
-    Arguments:
+    Args:
         path: The path to normalize
         url: Optional relative url
         base: Base path
@@ -367,7 +367,7 @@ def relative_url_mkdocs(url: str, other: str) -> str:
     Paths are normalized ('..' works as parent directory), but going higher than the
     root has no effect ('foo/../../bar' ends up just as 'bar').
 
-    Arguments:
+    Args:
         url: URL A.
         other: URL B.
     """
@@ -393,7 +393,7 @@ def relative_url_mkdocs(url: str, other: str) -> str:
 def relative_url(url_a: str, url_b: str) -> str:
     """Compute the relative path from URL A to URL B.
 
-    Arguments:
+    Args:
         url_a: URL A.
         url_b: URL B.
 

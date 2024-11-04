@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 from dotenv import load_dotenv
 
 # import litellm
-from jinjarope import htmlfilters, lazylitellm
+from jinjarope import htmlfilters, inspectfilters, lazylitellm
 
 
 if TYPE_CHECKING:
@@ -36,13 +36,13 @@ def generate_openai_schema(func: Callable[..., Any]) -> dict[str, Any]:
         msg = "Function must have a docstring"
         raise ValueError(msg)
 
-    signature = inspect.signature(func)
+    signature = inspectfilters.get_signature(func)
     if not signature.parameters:
         msg = "Function must have at least one parameter"
         raise ValueError(msg)
 
-    docstring = inspect.cleandoc(func.__doc__)
-    description = docstring.split("\n\n")[0]
+    description = inspectfilters.get_doc(func)
+    # description = description.split("\n\n")[0]
     properties = {}
     required: list[str] = []
     for name, param in signature.parameters.items():

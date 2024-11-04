@@ -42,7 +42,7 @@ class LoaderMixin:
     def prefixed_with(self, prefix: str):
         """Return loader wrapped in a PrefixLoader instance with given prefix.
 
-        Arguments:
+        Args:
             prefix: The prefix to use
         """
         return PrefixLoader({prefix: self})  # type: ignore[dict-item]
@@ -130,7 +130,7 @@ class PackageLoader(LoaderMixin, jinja2.PackageLoader):
         Compared to the jinja2 equivalent, this loader also supports
         `ModuleType`s and dotted module paths for the `package` argument.
 
-        Arguments:
+        Args:
             package: The python package to create a loader for
             package_path: If given, use the given path as the root.
             encoding: The encoding to use for loading templates
@@ -231,7 +231,7 @@ def from_json(
 ) -> jinja2.BaseLoader | None:
     """Create a loader based on a json representation.
 
-    Arguments:
+    Args:
         dct_or_list: A dictionary or list describing loaders.
     """
     from jinjarope import fsspecloaders

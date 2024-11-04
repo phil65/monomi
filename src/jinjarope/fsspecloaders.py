@@ -97,7 +97,7 @@ class FsSpecFileSystemLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
     def __init__(self, fs: fsspec.AbstractFileSystem | str, **kwargs: Any):
         """Constructor.
 
-        Arguments:
+        Args:
             fs: Either a protocol path string or an fsspec filesystem instance.
                 Also supports "::dir" prefix to set the root path.
             kwargs: Optional storage options for the filesystem.

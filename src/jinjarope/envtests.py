@@ -71,7 +71,7 @@ def _to_tuple(value: Sequence[T]) -> tuple[T, ...]:
 def is_instance(obj: object, typ: str | type) -> bool:
     """Like the isinstance builtin, but also accepts strs as type.
 
-    Arguments:
+    Args:
         obj: The object to check
         typ: A type (name)
     """
@@ -84,7 +84,7 @@ def is_instance(obj: object, typ: str | type) -> bool:
 def is_subclass(obj: type, typ: str | type) -> bool:
     """Like the issubclass builtin, but also accepts strs as type.
 
-    Arguments:
+    Args:
         obj: The class to check
         typ: A type (name)
     """
@@ -107,7 +107,7 @@ def _is_string_like(value: Any) -> bool:
 def is_http_url(string: str) -> bool:
     """Return true when given string represents a HTTP url.
 
-    Arguments:
+    Args:
         string: The string to check
     """
     return string.startswith(("http://", "https://", "www.")) and "\n" not in string
@@ -116,7 +116,7 @@ def is_http_url(string: str) -> bool:
 def is_protocol_url(string: str) -> bool:
     """Return true when given string represents any type of URL.
 
-    Arguments:
+    Args:
         string: The string to check
     """
     return "://" in string and "\n" not in string
@@ -125,7 +125,7 @@ def is_protocol_url(string: str) -> bool:
 def is_python_keyword(string: str) -> bool:
     """Return true when given string represents a python keyword.
 
-    Arguments:
+    Args:
         string: The string to check
     """
     import keyword
@@ -136,7 +136,7 @@ def is_python_keyword(string: str) -> bool:
 def is_python_builtin(fn: str | Callable[..., Any]) -> bool:
     """Return true when given fn / string represents a python builtin.
 
-    Arguments:
+    Args:
         fn: (Name of) function to check
     """
     return fn in dir(builtins) if isinstance(fn, str) else inspect.isbuiltin(fn)
@@ -145,7 +145,7 @@ def is_python_builtin(fn: str | Callable[..., Any]) -> bool:
 def is_in_std_library(fn: str | Callable[..., Any]) -> bool:
     """Return true when given fn / string is part of the std library.
 
-    Arguments:
+    Args:
         fn: (Name of) function to check
     """
     name = fn if isinstance(fn, str) else fn.__module__
@@ -155,7 +155,7 @@ def is_in_std_library(fn: str | Callable[..., Any]) -> bool:
 def is_fsspec_url(string: str | os.PathLike[str]) -> bool:
     """Returns true if the given URL looks like an fsspec protocol, except http/https.
 
-    Arguments:
+    Args:
         string: The URL to check
     """
     return (
@@ -170,7 +170,7 @@ def contains_files(directory: str | os.PathLike[str]) -> bool:
 
     Supports regular file paths and fsspec URLs.
 
-    Arguments:
+    Args:
         directory: The directoy to check
     """
     path = upath.UPath(directory)
@@ -180,7 +180,7 @@ def contains_files(directory: str | os.PathLike[str]) -> bool:
 def is_installed(package_name: str) -> bool:
     """Returns true if a package with given name is found.
 
-    Arguments:
+    Args:
         package_name: The package name to check
     """
     import importlib.util
@@ -191,7 +191,7 @@ def is_installed(package_name: str) -> bool:
 def is_env_var(env_var: str) -> bool:
     """Returns true if an environment variable with given name has a value.
 
-    Arguments:
+    Args:
         env_var: The environment variable name to check
     """
     return bool(os.getenv(env_var))
@@ -200,7 +200,7 @@ def is_env_var(env_var: str) -> bool:
 def is_indented(text: str, indentation: str = "    ") -> bool:
     """Check whether all lines of given text are indented.
 
-    Arguments:
+    Args:
         text: The text to check
         indentation: The indent each line must start with
     """

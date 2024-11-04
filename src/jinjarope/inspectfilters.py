@@ -39,7 +39,7 @@ def list_subclasses(
 
     Note: This call is cached. Consider iter_subclasses for uncached iterating.
 
-    Arguments:
+    Args:
         klass: class to get subclasses from
         filter_abstract: whether abstract base classes should be included.
         filter_generic: whether generic base classes should be included.
@@ -67,7 +67,7 @@ def iter_subclasses(
 ) -> Iterator[ClassType]:
     """(Recursively) iterate all subclasses of given klass.
 
-    Arguments:
+    Args:
         klass: class to get subclasses from
         filter_abstract: whether abstract base classes should be included.
         filter_generic: whether generic base classes should be included.
@@ -104,7 +104,7 @@ def list_baseclasses(
 ) -> list[ClassType]:
     """Return list of all baseclasses of given klass.
 
-    Arguments:
+    Args:
         klass: class to get subclasses from
         filter_abstract: whether abstract base classes should be included.
         filter_generic: whether generic base classes should be included.
@@ -132,7 +132,7 @@ def iter_baseclasses(
 ) -> Iterator[ClassType]:
     """(Recursively) iterate all baseclasses of given klass.
 
-    Arguments:
+    Args:
         klass: class to get subclasses from
         filter_abstract: whether abstract base classes should be included.
         filter_generic: whether generic base classes should be included.
@@ -169,7 +169,7 @@ def get_doc(
 ) -> str:
     """Get __doc__ for given object.
 
-    Arguments:
+    Args:
         obj: Object to get docstrings from
         escape: Whether docstrings should get escaped
         fallback: Fallback in case docstrings dont exist
@@ -200,7 +200,7 @@ def get_argspec(obj: Any, remove_self: bool = True) -> inspect.FullArgSpec:
 
     ArgSpec is cleaned up by removing `self` from method callables.
 
-    Arguments:
+    Args:
         obj: A callable python object
         remove_self: Whether to remove "self" argument from method argspecs
     """
@@ -230,7 +230,7 @@ def get_argspec(obj: Any, remove_self: bool = True) -> inspect.FullArgSpec:
 def get_deprecated_message(obj: Any) -> str | None:
     """Return deprecated message (created by deprecated decorator).
 
-    Arguments:
+    Args:
         obj: Object to check
     """
     return obj.__deprecated__ if hasattr(obj, "__deprecated__") else None
@@ -240,7 +240,7 @@ def get_deprecated_message(obj: Any) -> str | None:
 def get_source(obj: HasCodeType) -> str:
     """Cached wrapper for inspect.getsource.
 
-    Arguments:
+    Args:
         obj: Object to return source for.
     """
     return inspect.getsource(obj)
@@ -250,7 +250,7 @@ def get_source(obj: HasCodeType) -> str:
 def get_source_lines(obj: HasCodeType) -> tuple[list[str], int]:
     """Cached wrapper for inspect.getsourcelines.
 
-    Arguments:
+    Args:
         obj: Object to return source lines for.
     """
     return inspect.getsourcelines(obj)
@@ -260,7 +260,7 @@ def get_source_lines(obj: HasCodeType) -> tuple[list[str], int]:
 def get_signature(obj: Callable[..., Any]) -> inspect.Signature:
     """Cached wrapper for inspect.signature.
 
-    Arguments:
+    Args:
         obj: Callable to get a signature for.
     """
     return inspect.signature(obj)
@@ -270,7 +270,7 @@ def get_signature(obj: Callable[..., Any]) -> inspect.Signature:
 def get_members(obj: object, predicate: Callable[[Any], bool] | None = None):
     """Cached version of inspect.getmembers.
 
-    Arguments:
+    Args:
         obj: Object to get members for
         predicate: Optional predicate for the members
     """
@@ -281,7 +281,7 @@ def get_members(obj: object, predicate: Callable[[Any], bool] | None = None):
 def get_file(obj: HasCodeType) -> pathlib.Path | None:
     """Cached wrapper for inspect.getfile.
 
-    Arguments:
+    Args:
         obj: Object to get file for
     """
     with contextlib.suppress(TypeError):

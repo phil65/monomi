@@ -25,7 +25,7 @@ def load_file_cached(path: str | os.PathLike[str]) -> str:
     Call is cached based on resolved file path.
     Also supports fsspec-style URLs and UPaths.
 
-    Arguments:
+    Args:
         path: The path to get str content from
     """
     return upath.UPath(path).read_text("utf-8")
@@ -41,7 +41,7 @@ def get_output_from_call(
 ) -> str | None:
     """Execute a system call and return its output as a string.
 
-    Arguments:
+    Args:
         call: The system call to make
         cwd: The working directory for the call
         use_cache: Whether to cache the output of calls
@@ -68,7 +68,7 @@ def get_output_from_call(
 def add(text: str | None, prefix: str = "", suffix: str = "") -> str:
     """Add a pre- or suffix to a value if the value is true-ish.
 
-    Arguments:
+    Args:
         text: The text to check
         prefix: Prefix to add if text is true-ish
         suffix: Suffix to add if text is true-ish
@@ -79,7 +79,7 @@ def add(text: str | None, prefix: str = "", suffix: str = "") -> str:
 def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
     """Value ? true_val : false_val.
 
-    Arguments:
+    Args:
         value: The value to check.
         true_val: The value to return if given value is true-ish
         false_val: The value to return if given value is false-ish
@@ -93,7 +93,7 @@ def ternary(value: Any, true_val: Any, false_val: Any, none_val: Any = None):
 def match(obj: Any, mapping: dict[str | type, str] | None = None, **kwargs: Any) -> str:
     """A filter trying to imitate a python match-case statement.
 
-    Arguments:
+    Args:
         obj: match object
         mapping: a mapping for the different cases. If key is type, an isinstance will
                  be performed. If key is a str, check for equality.
@@ -139,7 +139,7 @@ def has_internet() -> bool:
 def now(tz: datetime.tzinfo | None = None) -> datetime.datetime:
     """Get current Datetime.
 
-    Arguments:
+    Args:
         tz: timezone for retuned datetime
     """
     return datetime.datetime.now(tz)

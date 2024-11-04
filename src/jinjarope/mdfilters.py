@@ -21,7 +21,7 @@ def md_link(
 
     If link is empty string or None, just the text will get returned.
 
-    Arguments:
+    Args:
         text: Text to show for the link
         link: Target url
         tooltip: Optional tooltip
@@ -35,7 +35,7 @@ def md_link(
 def extract_header_section(markdown: str, section_name: str) -> str | None:
     """Extract block with given header from markdown.
 
-    Arguments:
+    Args:
         markdown: The markdown to extract a section from
         section_name: The header of the section to extract
     """
@@ -83,7 +83,7 @@ def md_style(
 ) -> str:
     """Apply styling to given markdown.
 
-    Arguments:
+    Args:
         text: Text to style
         size: Optional text size
         bold: Whether styled text should be bold
@@ -109,7 +109,7 @@ def md_style(
 def shift_header_levels(text: str, level_shift: int) -> str:
     """Shift the level of all headers of given text.
 
-    Arguments:
+    Args:
         text: The Text to shift the header levels from
         level_shift: Level delta. (1 means "increase level by 1")
     """
@@ -135,7 +135,7 @@ def autoref_link(
 
     If link is empty string or None, just the text will get returned.
 
-    Arguments:
+    Args:
         text: Text to show for the link
         link: Target url
     """

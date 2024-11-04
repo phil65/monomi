@@ -18,16 +18,16 @@ SerializeFormatStr = Literal["yaml", "json", "ini", "toml"]
 def serialize(data: Any, fmt: SerializeFormatStr, **kwargs: Any) -> str:
     """Serialize given json-like object to given format.
 
-    Arguments:
+    Args:
         data: The data to serialize
         fmt: The serialization format
         kwargs: Keyword arguments passed to the dumper function
     """
     match fmt:
         case "yaml":
-            from jinjarope import yamltools
+            import yamling
 
-            return yamltools.dump_yaml(data, **kwargs)
+            return yamling.dump_yaml(data, **kwargs)
         case "json":
             return json.dumps(data, indent=4, **kwargs)
         case "ini":
@@ -54,16 +54,16 @@ def load_ini(data: str) -> dict[str, dict[str, str]]:
 def deserialize(data: str, fmt: SerializeFormatStr, **kwargs: Any) -> Any:
     """Serialize given json-like object to given format.
 
-    Arguments:
+    Args:
         data: The data to deserialize
         fmt: The serialization format
         kwargs: Keyword arguments passed to the loader function
     """
     match fmt:
         case "yaml":
-            from jinjarope import yamltools
+            import yamling
 
-            return yamltools.load_yaml(data, **kwargs)
+            return yamling.load_yaml(data, **kwargs)
         case "json":
             return json.loads(data, **kwargs)
         case "ini":
@@ -89,7 +89,7 @@ def dig(
     plugins & extensions.
     If Key path does not exist, return None.
 
-    Arguments:
+    Args:
         data: The data to dig into
         sections: Sections to dig into
         keep_path: Return result with original nesting
@@ -130,7 +130,7 @@ def merge(
 ) -> list | dict:
     """Merge given data structures using mergers provided.
 
-    Arguments:
+    Args:
         target: Data structure to merge into
         source:  Data structures to merge into target
         deepcopy: Whether to deepcopy the target

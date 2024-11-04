@@ -39,7 +39,7 @@ class NestedDictLoader(loaders.LoaderMixin, jinja2.BaseLoader):
     def __init__(self, mapping: NestedMapping):
         """Constructor.
 
-        Arguments:
+        Args:
             mapping: A nested dict containing templates
         """
         super().__init__()
@@ -100,7 +100,7 @@ class TemplateFileLoader(NestedDictLoader):
     ):
         """Constructor.
 
-        Arguments:
+        Args:
             path: Path / fsspec protocol URL to the file
             fmt: Config file format. If None, try to auto-infer from file extension
             sub_path: An optional tuple of keys describing the "dictionary path" inside

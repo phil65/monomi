@@ -24,7 +24,7 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
     def __init__(self, env: jinja2.Environment):
         """Instanciate a JinjaLoader filesystem.
 
-        Arguments:
+        Args:
             env: The environment of the loaders to get a filesystem for.
         """
         super().__init__()

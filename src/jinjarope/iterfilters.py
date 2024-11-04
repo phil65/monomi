@@ -14,7 +14,7 @@ def pairwise(items: Iterable[T]) -> itertools.pairwise[tuple[T, T]]:
 
     s -> (s0,s1), (s1,s2), (s2, s3), ...
 
-    Arguments:
+    Args:
         items: The items to iter pair-wise
     """
     return itertools.pairwise(items)
@@ -31,7 +31,7 @@ def chain(*iterables: Iterable[T]) -> itertools.chain[T]:
         ``` py
         chain('ABC', 'DEF') --> A B C D E F
         ```
-    Arguments:
+    Args:
         iterables: The iterables to chain
     """
     return itertools.chain(*iterables)
@@ -60,7 +60,7 @@ def product(
         product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
         ```
 
-    Arguments:
+    Args:
         iterables: The iterables to create a cartesian product from
         repeat: The amount of repititions
     """
@@ -77,7 +77,7 @@ def repeat(obj: T, times: int | None = None) -> Iterable[T]:
         repeat(10, 3) --> 10 10 10
         ```
 
-    Arguments:
+    Args:
         obj: The object to return over and over again
         times: The amount of times to return the object (None means infinite)
     """
@@ -97,7 +97,7 @@ def zip_longest(*iterables: Iterable[Any], fillvalue: Any = None) -> Iterable[An
         zip_longest('ABCD', 'xy', fillvalue='-') --> Ax By C- D-
         ```
 
-    Arguments:
+    Args:
         iterables: The iterables to zip
         fillvalue: value to use for filling in case the iterables are of uneven length
     """
@@ -129,7 +129,7 @@ def islice(iterable: Iterable[T], *args: int | None) -> itertools.islice[T]:
         islice('ABCDEFG', 0, None, 2) --> A C E G
         ```
 
-    Arguments:
+    Args:
         iterable: Iterable to slice
         args: Arguments passed to itertools.islice
     """
@@ -139,7 +139,7 @@ def islice(iterable: Iterable[T], *args: int | None) -> itertools.islice[T]:
 def do_zip(*items: Iterable[T]) -> zip[tuple[T, ...]]:
     """Zip iterables into a single one.
 
-    Arguments:
+    Args:
         items: The iterables to zip
     """
     return zip(*items)
@@ -148,7 +148,7 @@ def do_zip(*items: Iterable[T]) -> zip[tuple[T, ...]]:
 def reduce_list(items: Iterable[T]) -> list[T]:
     """Reduce duplicate items in a list and preserve order.
 
-    Arguments:
+    Args:
         items: The iterable to recude to a unique-item list
     """
     return list(dict.fromkeys(items))
@@ -159,7 +159,7 @@ def flatten_dict(dct: Mapping, sep: str = "/", _parent_key: str = "") -> Mapping
 
     The individual parts of the "key path" are joined with given separator.
 
-    Arguments:
+    Args:
         dct: The dictionary to flatten
         sep: The separator to use for joining
     """
@@ -184,7 +184,7 @@ def batched(iterable: Iterable[T], n: int) -> Generator[tuple[T, ...], None, Non
         batched('ABCDEFG', 3)  # returns ABC DEF G
         ```
 
-    Arguments:
+    Args:
         iterable: The iterable to yield as batches
         n: The batch size
     """
@@ -206,7 +206,7 @@ def natsort(
 
     i.e. A1, B1, A2, A10 will sort A1, A2, A10, B1.
 
-    Arguments:
+    Args:
         val: the iterable to sort
         key: If str, sort by attribute with given name. If callable, use it as keygetter.
              If None, sort by objects itself
@@ -232,7 +232,7 @@ def groupby(
 ) -> dict[str, list[T]]:
     """Group given iterable using given group function.
 
-    Arguments:
+    Args:
         data: Iterable to group
         key: Sort function or attribute name to use for sorting
         sort_groups: Whether to sort the groups
@@ -266,7 +266,7 @@ def groupby_first_letter(
 ) -> dict[str, list[T]]:
     """Group given iterable by first letter.
 
-    Arguments:
+    Args:
         data: Iterable to group
         keyfunc: Optional alternative sort function
     """
@@ -283,7 +283,7 @@ def do_any(seq: Iterable[Any], attribute: str | None = None) -> bool:
 
     The `any` builtin as a filter for Jinja templates.
 
-    Arguments:
+    Args:
         seq: An iterable object.
         attribute: The attribute name to use on each object of the iterable.
     """

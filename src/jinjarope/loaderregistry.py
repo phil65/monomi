@@ -30,7 +30,7 @@ class LoaderRegistry:
 
         Return a FsSpec loader for protocol-like paths or else a FileSystem loader.
 
-        Arguments:
+        Args:
             path: The path to get a loader for
         """
         if "://" in str(path):
@@ -42,7 +42,7 @@ class LoaderRegistry:
 
         If the loader does not exist yet, create and cache it.
 
-        Arguments:
+        Args:
             path: The path to get a loader for
         """
         if path in self.fsspec_loaders:
@@ -59,7 +59,7 @@ class LoaderRegistry:
 
         If the loader does not exist yet, create and cache it.
 
-        Arguments:
+        Args:
             path: The path to get a loader for
         """
         path = pathlib.Path(path).as_posix()
@@ -74,7 +74,7 @@ class LoaderRegistry:
 
         If the loader does not exist yet, create and cache it.
 
-        Arguments:
+        Args:
             package: The package to get a loader for
         """
         if package in self.package_loaders:
@@ -99,7 +99,7 @@ class LoaderRegistry:
         Loader is constructed from cached sub-loaders if existing, otherwise they are
         created (and cached).
 
-        Arguments:
+        Args:
             args: What to get a loader for (can be path or module)
             dir_paths: Directory paths (either FsSpec-protocol URLs to a folder or
                        filesystem paths)

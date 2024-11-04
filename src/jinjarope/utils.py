@@ -29,7 +29,7 @@ class DataclassInstance(Protocol):
 def partial(fn: Callable, *args: Any, **kwargs: Any):
     """Create new function with partial application of given arguments / keywords.
 
-    Arguments:
+    Args:
         fn: The function to generate a partial from
         args: patially applied arguments
         kwargs: partially applied keywords
@@ -42,7 +42,7 @@ def get_dataclass_nondefault_values(
 ) -> dict[str, Any]:
     """Return dictionary with non-default key-value pairs of given dataclass.
 
-    Arguments:
+    Args:
         instance: dataclass instance
     """
     non_default_fields: dict[str, Any] = {}
@@ -69,7 +69,7 @@ def get_dataclass_nondefault_values(
 def get_repr(_obj: Any, *args: Any, **kwargs: Any) -> str:
     """Get a suitable __repr__ string for an object.
 
-    Arguments:
+    Args:
         _obj: The object to get a repr for.
         args: Arguments for the repr
         kwargs: Keyword arguments for the repr
@@ -85,7 +85,7 @@ def get_repr(_obj: Any, *args: Any, **kwargs: Any) -> str:
 def fsspec_get(path: str | os.PathLike[str]) -> str:
     """Fetch a file via fsspec and return file content as a string.
 
-    Arguments:
+    Args:
         path: The path to fetch the file from
     """
     import fsspec
@@ -131,7 +131,7 @@ def entry_points(group: str) -> Mapping[str, Callable[..., Any]]:
 def get_hash(obj: Any, hash_length: int | None = 7) -> str:
     """Get a Md5 hash for given object.
 
-    Arguments:
+    Args:
         obj: The object to get a hash for ()
         hash_length: Optional cut-off value to limit length
     """

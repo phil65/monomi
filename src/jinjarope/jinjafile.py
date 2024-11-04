@@ -28,7 +28,7 @@ class JinjaFile(dict[str, Any]):
     def __init__(self, path: str | os.PathLike[str]):
         """Instanciate the file.
 
-        Arguments:
+        Args:
             path: Path to the jinja file
         """
         super().__init__()
@@ -154,7 +154,7 @@ class JinjaItem:
     ) -> Self:
         """Alternative ctor to construct a JinjaItem based on a callable.
 
-        Arguments:
+        Args:
             fn: Callable to get a JinjaItem for
             typ: The item type
             group: Group for metadata
@@ -171,7 +171,7 @@ class JinjaItem:
     def apply(self, *args: Any, **kwargs: Any) -> Any:
         """Apply the filter function using given arguments and keywords.
 
-        Arguments:
+        Args:
             args: The arguments for the call
             kwargs: They keyword arguments for the call
         """
@@ -180,7 +180,7 @@ class JinjaItem:
     def resolve_example(self, example_name: str) -> str:
         """Render example with given name and return the result.
 
-        Arguments:
+        Args:
             example_name: The example identifier
         """
         example = self.examples[example_name]

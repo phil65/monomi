@@ -25,7 +25,7 @@ class RewriteLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
     def __init__(self, loader: jinja2.BaseLoader, rewrite_fn: Callable[[str, str], str]):
         """Instanciate the RewriteLoader.
 
-        Arguments:
+        Args:
             loader: The loader to rewrite / modify the templates from
             rewrite_fn: Callable to modify templates.
                         It gets called with two arguments (path and template text)

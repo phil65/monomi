@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 def removesuffix(text: str, suffix: str) -> str:
     """Return given suffix from text.
 
-    Arguments:
+    Args:
         text: The text to strip the suffix from
         suffix: The suffix to remove
     """
@@ -31,7 +31,7 @@ def removesuffix(text: str, suffix: str) -> str:
 def removeprefix(text: str, prefix: str) -> str:
     """Return given prefix from text.
 
-    Arguments:
+    Args:
         text: The text to strip the prefix from
         prefix: The prefix to remove
     """
@@ -41,7 +41,7 @@ def removeprefix(text: str, prefix: str) -> str:
 def lstrip(text: str, chars: str | None = None) -> str:
     """Strip given chars from beginning of string.
 
-    Arguments:
+    Args:
         text: The text to strip the chars from
         chars: The chars to remove
     """
@@ -51,7 +51,7 @@ def lstrip(text: str, chars: str | None = None) -> str:
 def rstrip(text: str, chars: str | None = None) -> str:
     """Strip given chars from end of string.
 
-    Arguments:
+    Args:
         text: The text to strip the chars from
         chars: The chars to remove
     """
@@ -61,7 +61,7 @@ def rstrip(text: str, chars: str | None = None) -> str:
 def lower_camel_case(text: str) -> str:
     """Convert given text to lower-camel-case.
 
-    Arguments:
+    Args:
         text: The string to convert
     """
     # do nothing if nothing to camel
@@ -74,7 +74,7 @@ def lower_camel_case(text: str) -> str:
 def snake_case(text: str) -> str:
     """Convert given text to snake-case.
 
-    Arguments:
+    Args:
         text: The string to convert
     """
     #  don't snake-case snakes.
@@ -87,7 +87,7 @@ def snake_case(text: str) -> str:
 def format_code(code: str, line_length: int = 100):
     """Format code to given line length using `black`.
 
-    Arguments:
+    Args:
         code: The code to format
         line_length: Line length limit for formatted code
     """
@@ -104,7 +104,7 @@ def extract_body(src: str) -> str:
 
     Strips off the signature / decorators.
 
-    Arguments:
+    Args:
         src: Source code to extract the body from
     """
     # see https://stackoverflow.com/questions/38050649
@@ -130,7 +130,7 @@ def format_signature(
 ) -> str:
     """Format signature of a callable.
 
-    Arguments:
+    Args:
         fn: The callable to format the signature from
         follow_wrapped: Whether to unwrap the callable
         eval_str: Un-stringize annotations using eval
@@ -162,7 +162,7 @@ def format_filter_signature(
     Outputs text in shape of
     "code: 'str' | test(line_length: 'int' = 100)"
 
-    Arguments:
+    Args:
         fn: The callable to format the signature from
         filter_name: Name of the jinja filter
         follow_wrapped: Whether to unwrap the callable
@@ -183,7 +183,7 @@ def slugify(text: str | os.PathLike[str]) -> str:
 
     Returned text only contains alphanumerical and underscore.
 
-    Arguments:
+    Args:
         text: text to get a slug for
     """
     import re
@@ -199,7 +199,7 @@ def dirname_to_title(dirname: str | os.PathLike[str]) -> str:
     Replaces dashes and underscores with spaces and capitalizes the first letter
     in case all letters are lowercase
 
-    Arguments:
+    Args:
         dirname: directory to get a title for
     """
     title = str(dirname)
@@ -213,7 +213,7 @@ def dirname_to_title(dirname: str | os.PathLike[str]) -> str:
 def escape(text: str) -> str:
     """Escape text using Markupsafe library.
 
-    Arguments:
+    Args:
         text: text to escape
     """
     import markupsafe
@@ -224,7 +224,7 @@ def escape(text: str) -> str:
 def format_timestamp(timestamp: float, fmt: str) -> str:
     """Format Unix timestamp to date string.
 
-    Arguments:
+    Args:
         timestamp: Unix timestamp to format
         fmt: Format string according to strftime() format codes
 
