@@ -86,6 +86,7 @@ plugins:
             inherited_members: false
             signature_crossrefs: true
             separate_signature: true
+            enable_inventory: !ENV [CI, false]
             line_length: 90
           preload_modules:
             - mknodes
