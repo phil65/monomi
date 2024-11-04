@@ -1,5 +1,12 @@
 # jinjarope
 
+<div align="center">
+  <picture>
+    <img alt="JinjaRope"
+         src="https://raw.githubusercontent.com/phil65/jinjarope/main/docs/logo.jpg"
+         width="50%">
+  </picture>
+
 [![PyPI License](https://img.shields.io/pypi/l/jinjarope.svg)](https://pypi.org/project/jinjarope/)
 [![Package status](https://img.shields.io/pypi/status/jinjarope.svg)](https://pypi.org/project/jinjarope/)
 [![Daily downloads](https://img.shields.io/pypi/dd/jinjarope.svg)](https://pypi.org/project/jinjarope/)
@@ -29,7 +36,7 @@
 [![PyUp](https://pyup.io/repos/github/phil65/jinjarope/shield.svg)](https://pyup.io/repos/github/phil65/jinjarope/)
 
 [Read the documentation!](https://phil65.github.io/jinjarope/)
-
+</div>
 ## How to install
 
 ### pip
