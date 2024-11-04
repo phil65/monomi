@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar
+from typing import TYPE_CHECKING, Any, TypeVar
 
 
 if TYPE_CHECKING:
@@ -74,7 +74,8 @@ DEFAULT_MERGERS: dict[type, Callable] = {
 class DeepMerger:
     """A class that handles deep merging of data structures.
 
-    The merger can be customized by providing different merge strategies for different types.
+    The merger can be customized by providing different merge strategies
+    for different types.
 
     Attributes:
         mergers: A dictionary mapping types to their corresponding merge functions
