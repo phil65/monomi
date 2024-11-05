@@ -69,46 +69,6 @@ def cache_with_transforms(
     return decorator
 
 
-# def path_cache(
-#     maxsize: int | None = None,
-#     typed: bool = False,
-#     args_index: int = 0,
-# ) -> Callable[[Callable[P, R]], Callable[P, R]]:
-#     """Decorator that caches function results and normalizes PathLike arguments.
-
-#     Caches the first argument by default. Can be changed via args_index argument.
-#     Also adds cache_info and cache_clear methods to the decorated function.
-
-#     Args:
-#         maxsize: Maximum size of the cache. If None, cache is unbounded.
-#         typed: If True, arguments of different types are cached separately.
-#         args_index: Index of the argument to cache. Default is 0.
-
-#     Returns:
-#         Decorated function with caching capability.
-#     """
-
-#     def decorator(func: Callable[P, R]) -> Callable[P, R]:
-#         # Create cached version of the original function
-#         cached_func = lru_cache(maxsize=maxsize, typed=typed)(func)
-
-#         @wraps(func)
-#         def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-#             # Convert first argument if it's PathLike
-#             if args and isinstance(args[args_index], str | PathLike):
-#                 normalized_args = (upath.UPath(args[0]).resolve(),) + args[1:]
-#                 return cached_func(*normalized_args, **kwargs)  # type: ignore[arg-type]
-#             return cached_func(*args, **kwargs)  # type: ignore[arg-type]
-
-#         # Add cache_info and cache_clear methods to the wrapper
-#         wrapper.cache_info = cached_func.cache_info  # type: ignore
-#         wrapper.cache_clear = cached_func.cache_clear  # type: ignore
-
-#         return wrapper
-
-#     return decorator
-
-
 if __name__ == "__main__":
 
     @cache_with_transforms(arg_transformers={0: lambda p: upath.UPath(p).resolve()})
