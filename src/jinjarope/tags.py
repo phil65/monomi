@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, Any, ClassVar, Literal
 
 from jinja2 import nodes
 from jinja2.ext import Extension
@@ -10,7 +10,7 @@ from jinja2.lexer import describe_token
 
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Callable, Sequence
 
     from jinja2.environment import Environment
     from jinja2.parser import Parser
@@ -225,22 +225,46 @@ class InclusionTag(StandaloneTag):
         return self.template_name
 
 
+def create_tag_extension(
+    typ: Literal["standalone", "container", "inclusion"],
+    tag: str | list[str] | set[str],
+    render_fn: Callable[..., str],
+):
+    """Create a Jinja2 extension from a render function."""
+    jinja_tag = {tag} if isinstance(tag, str) else set(tag)
+    match typ:
+        case "standalone":
+            base_cls: type[BaseTemplateTag] = StandaloneTag
+        case "container":
+            base_cls = ContainerTag
+        case "inclusion":
+            base_cls = InclusionTag
+        case _:
+            msg = f"Invalid extension type: {typ!r}"
+            raise ValueError(msg)
+
+    class Extension(base_cls):  # type: ignore
+        tags = jinja_tag
+        render = staticmethod(render_fn)
+
+    return Extension
+
+
 if __name__ == "__main__":
     import hmac
 
     import jinja2
 
-    class HMACExtension(ContainerTag):
-        tags = {"hmac"}  # noqa: RUF012
+    def render(secret, digest="sha256", caller=None):
+        content = str(caller()).encode()
 
-        def render(self, secret, digest="sha256", caller=None):
-            content = str(caller()).encode()
+        if isinstance(secret, str):
+            secret = secret.encode()
 
-            if isinstance(secret, str):
-                secret = secret.encode()
+        signing = hmac.new(secret, content, digestmod=digest)
+        return signing.hexdigest()
 
-            signing = hmac.new(secret, content, digestmod=digest)
-            return signing.hexdigest()
+    HMACExtension = create_tag_extension("container", "hmac", render)
 
     env = jinja2.Environment(extensions=[HMACExtension])
     template = env.from_string(
