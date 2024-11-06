@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, ClassVar
-import warnings
 
 from jinja2 import nodes
 from jinja2.ext import Extension
@@ -23,6 +22,8 @@ __version__ = "0.6.1"
 
 
 class BaseTemplateTag(Extension):
+    """Base class for template tag extensions providing common functionality."""
+
     def __init__(self, environment: Environment) -> None:
         super().__init__(environment)
         self.context: Context | None = None
@@ -31,9 +32,10 @@ class BaseTemplateTag(Extension):
         self.tag_name: str | None = None
 
     def parse(self, parser: Parser) -> nodes.Node:
+        """Parse the tag definition and return a Node."""
         lineno = parser.stream.current.lineno
         tag_name = parser.stream.current.value
-        additional_params = [
+        meta_kwargs = [
             nodes.Keyword("_context", nodes.ContextReference()),
             nodes.Keyword("_template", nodes.Const(parser.name)),
             nodes.Keyword("_lineno", nodes.Const(lineno)),
@@ -42,29 +44,19 @@ class BaseTemplateTag(Extension):
 
         self.init_parser(parser)
         args, kwargs, options = self.parse_args(parser)
-        kwargs.extend(additional_params)
+        kwargs.extend(meta_kwargs)
         options["tag_name"] = tag_name
-
-        if hasattr(self, "output") and callable(self.output):
-            warnings.warn(
-                'The "output" method of the "BaseTemplateTag" class is deprecated '
-                'and will be removed in a future version. Please use the "create_node" '
-                "method instead.",
-                DeprecationWarning,
-                stacklevel=2,
-            )
-            call_node = self.call_method("render_wrapper", args, kwargs, lineno=lineno)
-            return self.output(parser, call_node, lineno=lineno, **options)  # type: ignore
-
         return self.create_node(parser, args, kwargs, lineno=lineno, **options)
 
     def init_parser(self, parser: Parser) -> None:
-        parser.stream.skip(1)  # skip tag name
+        """Initialize parser by skipping the tag name."""
+        parser.stream.skip(1)
 
     def parse_args(
         self,
         parser: Parser,
     ) -> tuple[list[nodes.Expr], list[nodes.Keyword], dict[str, Any]]:
+        """Parse arguments from the tag definition."""
         args: list[nodes.Expr] = []
         kwargs: list[nodes.Keyword] = []
         options: dict[str, str | None] = {"target": None}
@@ -79,9 +71,9 @@ class BaseTemplateTag(Extension):
 
             if arguments_finished:
                 if not parser.stream.current.test("block_end"):
+                    desc = describe_token(parser.stream.current)
                     parser.fail(
-                        "expected token 'block_end', "
-                        f"got {describe_token(parser.stream.current)!r}",
+                        f"Expected 'block_end', got {desc!r}",
                         parser.stream.current.lineno,
                     )
                 break
@@ -93,17 +85,15 @@ class BaseTemplateTag(Extension):
                 if parser.stream.current.type == "block_end":
                     break
 
-            if (
-                parser.stream.current.type == "name"
-                and parser.stream.look().type == "assign"
-            ):
-                key = parser.stream.current.value
-                parser.stream.skip(2)
+            token = parser.stream.current
+            if token.type == "name" and parser.stream.look().type == "assign":
+                key = token.value
+                parser.stream.skip(2)  # Skip name and assign tokens
                 value = parser.parse_expression()
                 kwargs.append(nodes.Keyword(key, value, lineno=value.lineno))
             else:
                 if kwargs:
-                    parser.fail("Invalid argument syntax", parser.stream.current.lineno)
+                    parser.fail("Invalid argument syntax", token.lineno)
                 args.append(parser.parse_expression())
 
             require_comma = True
@@ -123,6 +113,8 @@ class BaseTemplateTag(Extension):
 
 
 class StandaloneTag(BaseTemplateTag):
+    """Tag that renders to a single output without content block."""
+
     safe_output: ClassVar[bool] = False
 
     def create_node(
@@ -143,8 +135,7 @@ class StandaloneTag(BaseTemplateTag):
         if self.safe_output:
             call_node = nodes.MarkSafeIfAutoescape(call_node, lineno=lineno)
 
-        target = options.get("target")
-        if target:
+        if target := options.get("target"):
             target_node = nodes.Name(target, "store", lineno=lineno)
             return nodes.Assign(target_node, call_node, lineno=lineno)
 
@@ -162,6 +153,8 @@ class StandaloneTag(BaseTemplateTag):
 
 
 class ContainerTag(BaseTemplateTag):
+    """Tag that wraps content and processes it."""
+
     def create_node(
         self,
         parser: Parser,
@@ -171,6 +164,7 @@ class ContainerTag(BaseTemplateTag):
         lineno: int,
         **options: Any,
     ) -> nodes.Node:
+        """Create a node that processes wrapped content."""
         call_node = self.call_method("render_wrapper", args, kwargs, lineno=lineno)
         body = parser.parse_statements(
             (f"name:end{options['tag_name']}",),
@@ -178,8 +172,7 @@ class ContainerTag(BaseTemplateTag):
         )
         call_block = nodes.CallBlock(call_node, [], [], body).set_lineno(lineno)
 
-        target = options.get("target")
-        if target:
+        if target := options.get("target"):
             target_node = nodes.Name(target, "store", lineno=lineno)
             return nodes.AssignBlock(target_node, None, [call_block], lineno=lineno)
         return call_block
@@ -196,38 +189,38 @@ class ContainerTag(BaseTemplateTag):
 
 
 class InclusionTag(StandaloneTag):
+    """Tag that includes other templates with context."""
+
     template_name: str | None = None
     safe_output: ClassVar[bool] = True
 
     def render(self, *args: Any, **kwargs: Any) -> str:
+        """Render included template with context."""
         template_names = self.get_template_names(*args, **kwargs)
-        if isinstance(template_names, str):
-            template = self.environment.get_template(template_names)
-        else:
-            template = self.environment.select_template(template_names)
+        template = (
+            self.environment.get_template(template_names)
+            if isinstance(template_names, str)
+            else self.environment.select_template(template_names)
+        )
+
+        if not self.context:
+            msg = "Context not available"
+            raise RuntimeError(msg)
 
         context = template.new_context(
-            {
-                **self.context.get_all(),  # type: ignore
-                **self.get_context(*args, **kwargs),
-            },
+            {**self.context.get_all(), **self.get_context(*args, **kwargs)},
             shared=True,
         )
         return template.render(context)
 
     def get_context(self, *args: Any, **kwargs: Any) -> dict[str, Any]:
+        """Get additional context for template."""
         return {}
 
-    def get_template_names(
-        self,
-        *args: Any,
-        **kwargs: Any,
-    ) -> str | Sequence[str]:
-        if self.template_name is None:
-            msg = (
-                "InclusionTag requires either a definition of 'template_name' "
-                "or an implementation of 'get_template_names()'"
-            )
+    def get_template_names(self, *args: Any, **kwargs: Any) -> str | Sequence[str]:
+        """Get template name(s) to include."""
+        if not self.template_name:
+            msg = "InclusionTag requires 'template_name' or 'get_template_names()'"
             raise RuntimeError(msg)
         return self.template_name
 
