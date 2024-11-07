@@ -55,6 +55,7 @@ dev-dependencies = [
     # test
     "pytest",
     "pytest-cov",
+    "pytest-asyncio",
     # docs
     "mkdocs-material",
     "mkdocs-mknodes",
