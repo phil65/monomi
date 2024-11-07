@@ -7,17 +7,17 @@ required_packages = ["litellm"]
 
 [filters.llm_complete.examples.basic]
 template = """
-{{ "Describe how to install a package from PyPi" | llm_complete(model="gemini/gemini-1.5-flash") }}
+{{ "Describe how to install a package from PyPi" | llm_complete(model="ollama/smollm2") }}
 """
 
 [filters.llm_complete.examples.with_system_prompt]
 template = """
-{{ "What are the benefits of Python?" | llm_complete(model="gemini/gemini-1.5-flash", system_prompt="You are a helpful programming assistant.") }}
+{{ "What are the benefits of Python?" | llm_complete(model="ollama/smollm2", system_prompt="You are a helpful programming assistant.") }}
 """
 
 [filters.llm_complete.examples.with_context]
 template = """
-{{ "Explain its importance." | llm_complete(model="gemini/gemini-1.5-flash", context="We were discussing Python's role in data science.") }}
+{{ "Explain its importance." | llm_complete(model="ollama/smollm2", context="We were discussing Python's role in data science.") }}
 """
 
 [filters.llm_generate_image]
