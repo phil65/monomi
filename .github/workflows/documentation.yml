@@ -38,7 +38,7 @@ jobs:
       - name: Serve Ollama Model
         uses: phil65/ollama-github-action@v1
         with:
-          model: "smollm2"
+          model: "smollm2:360m"
 
       - name: Install uv
         uses: yezz123/setup-uv@v4
