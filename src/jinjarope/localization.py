@@ -8,7 +8,7 @@ from jinja2.ext import Extension, InternationalizationExtension
 
 
 try:
-    from babel.core import Locale, UnknownLocaleError
+    from babel.core import Locale, UnknownLocaleError  # pyright: ignore
     from babel.support import NullTranslations, Translations
 
     HAS_BABEL = True

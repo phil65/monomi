@@ -171,7 +171,7 @@ class FileSystemLoader(LoaderMixin, jinja2.FileSystemLoader):
 
     def __add__(self, other) -> FileSystemLoader:
         ls = [other] if isinstance(other, jinja2.FileSystemLoader) else other.serchpath
-        return FileSystemLoader([*self.searchpath, *ls])
+        return FileSystemLoader([*self.searchpath, *ls])  # pyright: ignore
 
     def __bool__(self):
         return len(self.searchpath) > 0

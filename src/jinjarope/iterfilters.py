@@ -245,7 +245,7 @@ def groupby(
             return x
 
     elif isinstance(key, str):
-        keyfunc = operator.attrgetter(key)
+        keyfunc = operator.attrgetter(key)  # pyright: ignore
     else:
         keyfunc = key
     if sort_groups or natural_sort:

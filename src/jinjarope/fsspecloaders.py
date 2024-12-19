@@ -144,7 +144,7 @@ class FsSpecFileSystemLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
     ) -> tuple[str, str, Callable[[], bool] | None]:
         try:
             with self.fs.open(template) as file:
-                src = file.read().decode()
+                src = file.read().decode()  # pyright: ignore
         except FileNotFoundError as e:
             raise jinja2.TemplateNotFound(template) from e
         path = pathlib.Path(template).as_posix()
