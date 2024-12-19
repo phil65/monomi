@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from jinja2.runtime import Context
 
 
-__all__ = ["StandaloneTag", "ContainerTag", "InclusionTag"]
+__all__ = ["ContainerTag", "InclusionTag", "StandaloneTag"]
 __version__ = "0.6.1"
 
 
