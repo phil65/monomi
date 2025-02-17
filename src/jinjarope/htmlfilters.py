@@ -268,7 +268,6 @@ def ansi2html(ansi_string: str, styles: dict[int, dict[str, str]] | None = None)
     return "".join(parts)
 
 
-@functools.lru_cache
 def split_url(value: str, query: QueryStr | None = None) -> str | dict[str, str]:
     """Split a URL into its parts (and optionally return a specific part).
 
@@ -330,7 +329,6 @@ def _get_norm_url(path: str) -> tuple[str, int]:
     return path, relative_level
 
 
-@functools.lru_cache
 def normalize_url(path: str, url: str | None = None, base: str = "") -> str:
     """Return a URL relative to the given url or using the base.
 
@@ -389,7 +387,6 @@ def relative_url_mkdocs(url: str, other: str) -> str:
     return relurl + "/" if url.endswith("/") else relurl
 
 
-@functools.lru_cache
 def relative_url(url_a: str, url_b: str) -> str:
     """Compute the relative path from URL A to URL B.
 
