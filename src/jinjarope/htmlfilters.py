@@ -7,13 +7,13 @@ import logging
 import posixpath
 import re
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
-from xml.etree import ElementTree as ET
 
 import requests
 
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
+    from xml.etree import ElementTree as ET
 
 
 logger = logging.getLogger(__name__)
@@ -192,6 +192,8 @@ def format_xml(
         add_declaration: whether a XML declaration should be printed
                          (applies when mode is "xml")
     """
+    from xml.etree import ElementTree as ET
+
     if isinstance(str_or_elem, str):
         str_or_elem = ET.fromstring(str_or_elem)
     space = indent if isinstance(indent, str) else indent * " "
