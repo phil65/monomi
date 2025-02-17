@@ -8,7 +8,6 @@ from typing import Any, Literal, override
 import fsspec
 from fsspec.implementations import memory
 import jinja2
-from upath import UPath
 
 
 logger = logging.getLogger(__name__)
@@ -39,6 +38,8 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
         Returns:
             True if path is a directory
         """
+        from upath import UPath
+
         if not self.env.loader:
             return False
 
@@ -139,6 +140,8 @@ class JinjaLoaderFileSystem(fsspec.AbstractFileSystem):
         Raises:
             FileNotFoundError: If path doesn't exist or env has no loader
         """
+        from upath import UPath
+
         if not self.env.loader:
             msg = "Environment has no loader"
             raise FileNotFoundError(msg)

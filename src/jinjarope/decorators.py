@@ -3,8 +3,6 @@ from __future__ import annotations
 from functools import wraps
 from typing import TYPE_CHECKING, Any, ParamSpec, TypeVar
 
-import upath
-
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -70,6 +68,7 @@ def cache_with_transforms(
 
 
 if __name__ == "__main__":
+    import upath
 
     @cache_with_transforms(arg_transformers={0: lambda p: upath.UPath(p).resolve()})
     def read_file_content(filepath: str | upath.UPath) -> str:

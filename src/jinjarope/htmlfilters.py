@@ -8,8 +8,6 @@ import posixpath
 import re
 from typing import TYPE_CHECKING, Any, Literal, TypeVar
 
-import requests
-
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
@@ -430,6 +428,8 @@ def url_to_b64(image_url: str) -> str | None:
     Raises:
         requests.RequestException: If there's an error downloading the image.
     """
+    import requests
+
     # Download the image
     response = requests.get(image_url)
     response.raise_for_status()

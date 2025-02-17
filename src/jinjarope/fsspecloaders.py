@@ -3,8 +3,6 @@ from __future__ import annotations
 import pathlib
 from typing import TYPE_CHECKING, Any
 
-import fsspec
-import fsspec.core
 import jinja2
 
 from jinjarope import envglobals, loaders as loaders_, utils
@@ -12,6 +10,8 @@ from jinjarope import envglobals, loaders as loaders_, utils
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+
+    import fsspec
 
 
 class FsSpecProtocolPathLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
@@ -102,6 +102,9 @@ class FsSpecFileSystemLoader(loaders_.LoaderMixin, jinja2.BaseLoader):
                 Also supports "::dir" prefix to set the root path.
             kwargs: Optional storage options for the filesystem.
         """
+        import fsspec
+        import fsspec.core
+
         super().__init__()
         match fs:
             case str() if "://" in fs:

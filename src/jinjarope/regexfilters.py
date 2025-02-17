@@ -3,8 +3,6 @@ from __future__ import annotations
 import re
 from typing import Any, Literal
 
-from jinja2.exceptions import FilterArgumentError
-
 
 def re_replace(
     value: str = "",
@@ -80,6 +78,8 @@ def re_search(
         ignorecase: Whether char casing should be ignored
         multiline: Whether to perform a multi-line search
     """
+    from jinja2.exceptions import FilterArgumentError
+
     groups = list()
     for arg in args:
         if arg.startswith("\\g"):

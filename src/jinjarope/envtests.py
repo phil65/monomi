@@ -9,8 +9,6 @@ import re
 import sys
 from typing import TYPE_CHECKING, Any, TypeVar
 
-import upath
-
 from jinjarope import utils
 
 
@@ -173,6 +171,8 @@ def contains_files(directory: str | os.PathLike[str]) -> bool:
     Args:
         directory: The directoy to check
     """
+    import upath
+
     path = upath.UPath(directory)
     return path.exists() and any(path.iterdir())
 

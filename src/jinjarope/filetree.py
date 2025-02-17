@@ -8,7 +8,6 @@ import stat
 from typing import TYPE_CHECKING, Any
 
 from jinja2 import filters
-import upath
 
 from jinjarope import iconfilters, textfilters
 
@@ -96,6 +95,8 @@ class DirectoryTree:
             root_path: Root path of the directory tree.
             options: Options for directory tree printing.
         """
+        import upath
+
         self.root_path = upath.UPath(root_path)
         self.options = options or TreeOptions()
 

@@ -3,8 +3,6 @@ from __future__ import annotations
 from enum import StrEnum
 from typing import TYPE_CHECKING, Final, Literal, TypedDict
 
-import upath
-
 from jinjarope import icons
 
 
@@ -424,6 +422,8 @@ def get_path_icon(path: str | os.PathLike[str]) -> str:
     Returns:
         iconify icon slug
     """
+    import upath
+
     path_obj = upath.UPath(path)
 
     # Handle directories
@@ -579,6 +579,8 @@ def get_path_ascii_icon(path: str | os.PathLike[str]) -> str:
     Returns:
         ASCII icon representing the file type
     """
+    import upath
+
     path_obj = upath.UPath(path)
 
     # Handle symbolic links

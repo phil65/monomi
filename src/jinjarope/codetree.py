@@ -13,8 +13,6 @@ from enum import Enum, auto
 import inspect
 import os
 
-import upath
-
 
 class NodeType(Enum):
     """Types of nodes found in Python code structure analysis.
@@ -134,6 +132,8 @@ def parse_object(obj: os.PathLike[str] | str | type) -> Node:
         print(f"Found {len(root.children)} top-level definitions")
         ```
     """
+    import upath
+
     if isinstance(obj, str | os.PathLike):
         path = upath.UPath(obj)
         content = path.read_text("utf-8")
