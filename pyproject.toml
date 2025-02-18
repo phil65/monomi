@@ -46,7 +46,7 @@ extras = ["black", "pygments", "humanize", "natsort"]
 llm = ["litellm", "python-dotenv", "pillow"]
 icons = ["pyconify"]
 yaml = ["yamling"]
-requests = ["requests"]
+httpx = ["httpx"]
 
 [tool.uv]
 dev-dependencies = [

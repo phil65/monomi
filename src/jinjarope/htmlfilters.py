@@ -428,12 +428,13 @@ def url_to_b64(image_url: str) -> str | None:
     Raises:
         requests.RequestException: If there's an error downloading the image.
     """
-    import requests
+    import httpx
 
     # Download the image
-    response = requests.get(image_url)
-    response.raise_for_status()
-    image_data = response.content
+    with httpx.Client(follow_redirects=True) as client:
+        response = client.get(image_url)
+        response.raise_for_status()
+        image_data = response.content
 
     # Encode the image to base64
     return base64.b64encode(image_data).decode("utf-8")
