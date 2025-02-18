@@ -1,102 +1,18 @@
 from __future__ import annotations
 
-import inspect
 import os
-from typing import TYPE_CHECKING, Any
+from typing import Any
 
 from dotenv import load_dotenv
 
 # import litellm
-from jinjarope import htmlfilters, inspectfilters, lazylitellm
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable
+from jinjarope import htmlfilters, lazylitellm
 
 
 load_dotenv()
 
 
 litellm = lazylitellm.LazyLiteLLM()
-
-
-def generate_openai_schema(func: Callable[..., Any]) -> dict[str, Any]:
-    """Generate an OpenAI-tools-JSON schema for the given function.
-
-    Args:
-        func: The function to generate the schema for.
-
-    Returns:
-        Dict[str, Any]: The OpenAI-tools-JSON schema.
-
-    Raises:
-        ValueError: If the function has no docstring or parameters.
-    """
-    if not func.__doc__:
-        msg = "Function must have a docstring"
-        raise ValueError(msg)
-
-    signature = inspectfilters.get_signature(func)
-    if not signature.parameters:
-        msg = "Function must have at least one parameter"
-        raise ValueError(msg)
-
-    description = inspectfilters.get_doc(func)
-    # description = description.split("\n\n")[0]
-    properties = {}
-    required: list[str] = []
-    for name, param in signature.parameters.items():
-        param_type = "string"
-        if param.annotation != inspect.Parameter.empty:
-            if param.annotation is int:
-                param_type = "integer"
-            elif param.annotation is float:
-                param_type = "number"
-            elif param.annotation is bool:
-                param_type = "boolean"
-
-        properties[name] = {"type": param_type}
-        if param.default == inspect.Parameter.empty:
-            required.append(name)
-    return {
-        "name": func.__name__,
-        "description": description,
-        "parameters": {
-            "type": "object",
-            "properties": properties,
-            "required": required,
-        },
-    }
-
-
-def generate_class_schemas(cls_instance: Any) -> list[dict[str, Any]]:
-    """Generate OpenAI-tools-JSON schemas for all methods of a class instance.
-
-    Args:
-        cls_instance (Any): An instance of the class to generate schemas for.
-
-    Returns:
-        List[Dict[str, Any]]: A list of OpenAI-tools-JSON schemas for the class methods.
-
-    Raises:
-        ValueError: If the input is not a class instance.
-    """
-    if not isinstance(cls_instance, object):
-        msg = "Input must be a class instance"
-        raise TypeError(msg)
-
-    schemas: list[dict[str, Any]] = []
-
-    for name, method in inspect.getmembers(cls_instance, predicate=inspect.ismethod):
-        # Skip magic methods and private methods
-        if not name.startswith("_"):
-            try:
-                schema = generate_openai_schema(method)
-                schemas.append(schema)
-            except ValueError as e:
-                print(f"Skipping method '{name}': {e!s}")
-
-    return schemas
 
 
 def llm_complete(
