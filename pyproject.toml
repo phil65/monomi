@@ -43,7 +43,7 @@ license = "MIT"
 [project.optional-dependencies]
 cli = ["rich", "typer"]
 extras = ["black", "pygments", "humanize", "natsort"]
-llm = ["litellm", "python-dotenv", "pillow"]
+llm = ["llmling-agent[litellm,pillow]"]
 icons = ["pyconify"]
 yaml = ["yamling"]
 httpx = ["httpx"]

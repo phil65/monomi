@@ -1,9 +1,9 @@
 # This file contains definitions for functions of the "litellm" library.
 
 [filters.llm_complete]
-fn = "jinjarope.llmfilters.llm_complete"
+fn = "llmling_agent_functional.run_agent"
 group = "llm"
-required_packages = ["litellm"]
+required_packages = ["llmling-agent", "litellm"]
 
 [filters.llm_complete.examples.basic]
 template = """
@@ -23,24 +23,4 @@ template = """
 [filters.llm_generate_image]
 fn = "jinjarope.llmfilters.llm_generate_image"
 group = "llm"
-required_packages = ["litellm", "pillow"]
-
-# [filters.llm_generate_image.examples.basic]
-# template = """
-# {{ "A beautiful sunset over the ocean" | llm_generate_image(model="gemini/gemini-pro-vision") }}
-# """
-
-# [filters.llm_generate_image.examples.with_size]
-# template = """
-# {{ "A futuristic cityscape" | llm_generate_image(model="gemini/gemini-pro-vision", size="512x512") }}
-# """
-
-# [filters.llm_generate_image.examples.with_quality]
-# template = """
-# {{ "A detailed portrait of a cat" | llm_generate_image(model="gemini/gemini-pro-vision", quality="hd") }}
-# """
-
-# [filters.llm_generate_image.examples.as_b64_json]
-# template = """
-# {{ "A colorful abstract painting" | llm_generate_image(model="gemini/gemini-pro-vision", as_b64_json=true) }}
-# """
+required_packages = ["llmling-agent", "litellm", "pillow"]
